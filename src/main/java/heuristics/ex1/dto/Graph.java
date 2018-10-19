@@ -1,11 +1,13 @@
 package heuristics.ex1.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.ToString;
 
 import java.util.Map;
 
 @ToString
+@Getter
 @AllArgsConstructor
 public class Graph {
 

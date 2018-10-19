@@ -41,7 +41,9 @@ public class GraphBuilder {
         for (int node1 : nodes) {
             Map<Integer, Integer> row = new HashMap<>();
             for (int node2 : nodes) {
-                row.put(node2, bigM);
+                if (node1 != node2) {
+                    row.put(node2, bigM);
+                }
             }
             matrix.put(node1, row);
         }
