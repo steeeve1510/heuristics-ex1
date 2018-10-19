@@ -1,9 +1,9 @@
 package heuristics.ex1;
 
-import heuristics.ex1.build.ProblemBuilder;
+import heuristics.ex1.build.GraphBuilder;
 import heuristics.ex1.construction.ConstructionHeuristic;
 import heuristics.ex1.construction.GreedyConstructionHeuristic;
-import heuristics.ex1.dto.Problem;
+import heuristics.ex1.dto.Graph;
 import heuristics.ex1.dto.Solution;
 
 import java.io.File;
@@ -17,9 +17,9 @@ public class App {
         ConstructionHeuristic constructionHeuristic = new GreedyConstructionHeuristic();
 
 
-        Problem problem = new ProblemBuilder().build(file);
+        Graph graph = new GraphBuilder().build(file);
 
-        Solution solution = constructionHeuristic.solve(problem);
+        Solution solution = constructionHeuristic.solve(graph);
 
 
         System.out.println(solution);
