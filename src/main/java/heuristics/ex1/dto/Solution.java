@@ -11,5 +11,5 @@ import java.util.List;
 @AllArgsConstructor
 public class Solution {
 
-    private List<Edge> edges;
+    private List<Integer> nodes;
 }

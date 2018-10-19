@@ -7,6 +7,9 @@ public class GreedyConstructionHeuristic implements ConstructionHeuristic {
 
     @Override
     public Solution solve(Graph graph) {
+
+
+
         return null;
     }
 }
