@@ -5,17 +5,15 @@ import heuristics.ex1.dto.Solution;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.time.OffsetDateTime;
 import java.util.*;
 
 public class GreedyConstructionHeuristic implements ConstructionHeuristic {
 
     @Override
     public Solution solve(Graph graph) {
-        System.out.println("Construct a solution");
 
         Extension firstEdge = getFirstEdge(graph);
-
-        System.out.println("Got first edge");
 
         int firstNode = firstEdge.getFrom();
         int lastNode = firstEdge.getTo();
@@ -39,34 +37,40 @@ public class GreedyConstructionHeuristic implements ConstructionHeuristic {
                 break;
             }
 
-            List<Extension> extensions = new LinkedList<>();
 
-            firstNode = selectedNodes.getFirst();
+            Extension bestExtension = new Extension(0, 0, Integer.MAX_VALUE);
+            int bestAbsObjectiveValue = bestExtension.getAbsNewObjectiveValue();
+
             for (int neighbor : firstNeighbors) {
                 int weight = graph.getWeight(firstNode, neighbor);
-                extensions.add(new Extension(firstNode, neighbor, objectiveValue + weight));
+                if (Math.abs(objectiveValue + weight) < bestAbsObjectiveValue) {
+                    bestExtension = new Extension(firstNode, neighbor, objectiveValue + weight);;
+                    bestAbsObjectiveValue = bestExtension.getAbsNewObjectiveValue();
+                }
             }
-            lastNode = selectedNodes.getLast();
+
             for (int neighbor : lastNeighbors) {
                 int weight = graph.getWeight(lastNode, neighbor);
-                extensions.add(new Extension(lastNode, neighbor, objectiveValue + weight));
+                if (Math.abs(objectiveValue + weight) < bestAbsObjectiveValue) {
+                    bestExtension = new Extension(lastNode, neighbor, objectiveValue + weight);;
+                    bestAbsObjectiveValue = bestExtension.getAbsNewObjectiveValue();
+                }
             }
-            extensions.sort(Comparator.comparingInt(o -> Math.abs(o.getNewObjectiveValue())));
 
 
-            Extension best = ((LinkedList<Extension>) extensions).getFirst();
-            int from = best.getFrom();
+            int from = bestExtension.getFrom();
             if (from == firstNode) {
-                selectedNodes.addFirst(best.getTo());
-                firstNode = best.getTo();
+                selectedNodes.addFirst(bestExtension.getTo());
+                firstNode = bestExtension.getTo();
             } else {
-                selectedNodes.addLast(best.getTo());
-                lastNode = best.getTo();
+                selectedNodes.addLast(bestExtension.getTo());
+                lastNode = bestExtension.getTo();
             }
-            objectiveValue = best.getNewObjectiveValue();
+            objectiveValue = bestExtension.getNewObjectiveValue();
         }
 
-        objectiveValue +=graph.getWeight(selectedNodes.getFirst(), selectedNodes.getLast());
+        objectiveValue += graph.getWeight(selectedNodes.getFirst(), selectedNodes.getLast());
+
         return new Solution(new LinkedList<>(selectedNodes), objectiveValue);
     }
 
@@ -106,5 +110,9 @@ public class GreedyConstructionHeuristic implements ConstructionHeuristic {
         private int from;
         private int to;
         private int newObjectiveValue;
+
+        public int getAbsNewObjectiveValue() {
+            return Math.abs(newObjectiveValue);
+        }
     }
 }
