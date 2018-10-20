@@ -7,11 +7,15 @@ import heuristics.ex1.dto.Graph;
 import heuristics.ex1.dto.Solution;
 
 import java.io.File;
+import java.io.IOException;
 
 public class App {
 
-    public static void main(String[] args) {
-        File file = new File("src/main/resources/0010.txt");
+    public static void main(String[] args) throws IOException {
+
+        System.in.read();
+
+        File file = new File("src/main/resources/3000.txt");
 
 
         ConstructionHeuristic constructionHeuristic = new GreedyConstructionHeuristic();

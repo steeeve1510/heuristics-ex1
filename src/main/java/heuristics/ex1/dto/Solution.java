@@ -12,4 +12,5 @@ import java.util.List;
 public class Solution {
 
     private List<Integer> nodes;
+    private int objectiveValue;
 }
