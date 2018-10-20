@@ -13,11 +13,10 @@ import heuristics.ex1.localsearch.step.Step;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Random;
 
 public class App {
 
-    private static String instance = "0010";
+    private static String instance = "3000";
 
     private static ConstructionHeuristic constructionHeuristic = new GreedyConstructionHeuristic();
 

@@ -37,16 +37,7 @@ public class GraphBuilder {
                                 .flatMap(e -> Stream.of(e.getNode1(), e.getNode2()))
                                 .collect(Collectors.toSet());
 
-        Map<Integer, Map<Integer, Integer>> matrix = new HashMap<>();
-        for (int node1 : nodes) {
-            Map<Integer, Integer> row = new HashMap<>();
-            for (int node2 : nodes) {
-                if (node1 != node2) {
-                    row.put(node2, bigM);
-                }
-            }
-            matrix.put(node1, row);
-        }
+        Map<Integer, Map<Integer, Integer>> matrix = getInitializedMatrix(nodes, bigM);
 
         edges.forEach(e -> {
             matrix.get(e.getNode1()).put(e.getNode2(), e.getWeight());
@@ -101,5 +92,19 @@ public class GraphBuilder {
                             .sum();
 
         return Math.max(positiveSum, negativeSum) * 2 + 1;
+    }
+
+    private Map<Integer, Map<Integer, Integer>> getInitializedMatrix(Set<Integer> nodes, int value) {
+        Map<Integer, Map<Integer, Integer>> matrix = new HashMap<>();
+        for (int node1 : nodes) {
+            Map<Integer, Integer> row = new HashMap<>();
+            for (int node2 : nodes) {
+                if (node1 != node2) {
+                    row.put(node2, value);
+                }
+            }
+            matrix.put(node1, row);
+        }
+        return matrix;
     }
 }
