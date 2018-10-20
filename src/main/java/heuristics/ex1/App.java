@@ -13,9 +13,7 @@ public class App {
 
     public static void main(String[] args) throws IOException {
 
-        System.in.read();
-
-        File file = new File("src/main/resources/3000.txt");
+        File file = new File("src/main/resources/0010.txt");
 
 
         ConstructionHeuristic constructionHeuristic = new GreedyConstructionHeuristic();

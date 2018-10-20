@@ -17,6 +17,7 @@ import java.util.stream.Stream;
 public class GraphBuilder {
 
     public Graph build(File file) {
+        System.out.println("Build graph");
         List<String> lines;
         try {
             lines = Files.lines(file.toPath()).collect(Collectors.toList());

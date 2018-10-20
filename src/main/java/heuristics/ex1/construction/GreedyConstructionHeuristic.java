@@ -11,34 +11,19 @@ public class GreedyConstructionHeuristic implements ConstructionHeuristic {
 
     @Override
     public Solution solve(Graph graph) {
+        System.out.println("Construct a solution");
 
-        int firstNode = graph.getMatrix().keySet().iterator().next();
-        int lastNode = graph.getAdjacentNodes(firstNode).keySet().iterator().next();
-        int objectiveValue = graph.getWeight(firstNode, lastNode);
+        Extension firstEdge = getFirstEdge(graph);
 
-        // find first edge
-        for (Integer n1 : graph.getMatrix().keySet()) {
-            for (Integer n2 : graph.getAdjacentNodes(n1).keySet()) {
-                int weight = graph.getWeight(n1, n2);
-                if (Math.abs(weight) < Math.abs(objectiveValue)) {
-                    firstNode = n1;
-                    lastNode = n2;
-                    objectiveValue = weight;
-                }
-                if (objectiveValue == 0) {
-                    break;
-                }
-            }
-            if (objectiveValue == 0) {
-                break;
-            }
-        }
+        System.out.println("Got first edge");
 
+        int firstNode = firstEdge.getFrom();
+        int lastNode = firstEdge.getTo();
+        int objectiveValue = firstEdge.getNewObjectiveValue();
 
         Deque<Integer> selectedNodes = new LinkedList<>();
         selectedNodes.addFirst(firstNode);
         selectedNodes.addLast(lastNode);
-
 
         while (true) {
             Set<Integer> firstNeighbors = graph.getAdjacentNodes(firstNode).keySet();
@@ -83,6 +68,36 @@ public class GreedyConstructionHeuristic implements ConstructionHeuristic {
 
         objectiveValue +=graph.getWeight(selectedNodes.getFirst(), selectedNodes.getLast());
         return new Solution(new LinkedList<>(selectedNodes), objectiveValue);
+    }
+
+    private Extension getFirstEdge(Graph graph) {
+        int firstNode = graph.getMatrix().keySet().iterator().next();
+        int lastNode = graph.getAdjacentNodes(firstNode).keySet().iterator().next();
+        int objectiveValue = graph.getWeight(firstNode, lastNode);
+
+        Integer[] nodes = graph.getMatrix().keySet().toArray(new Integer[0]);
+
+        for (Integer iN1 = 0; iN1 < nodes.length; iN1++) {
+            for (Integer iN2 = iN1+1; iN2 < nodes.length; iN2++) {
+                int n1 = nodes[iN1];
+                int n2 = nodes[iN2];
+                int weight = graph.getWeight(n1, n2);
+
+                if (Math.abs(weight) < Math.abs(objectiveValue)) {
+                    firstNode = n1;
+                    lastNode = n2;
+                    objectiveValue = weight;
+                }
+                if (objectiveValue == 0) {
+                    break;
+                }
+            }
+            if (objectiveValue == 0) {
+                break;
+            }
+        }
+
+        return new Extension(firstNode, lastNode, objectiveValue);
     }
 
     @Getter
