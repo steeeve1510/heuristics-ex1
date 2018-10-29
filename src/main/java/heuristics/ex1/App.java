@@ -3,6 +3,7 @@ package heuristics.ex1;
 import heuristics.ex1.build.GraphBuilder;
 import heuristics.ex1.construction.ConstructionHeuristic;
 import heuristics.ex1.construction.GreedyConstructionHeuristic;
+import heuristics.ex1.construction.RandomConstructionHeuristic;
 import heuristics.ex1.dto.Graph;
 import heuristics.ex1.dto.Solution;
 import heuristics.ex1.localsearch.LocalSearch;
@@ -16,9 +17,10 @@ import java.io.IOException;
 
 public class App {
 
-    private static String instance = "3000";
+    private static String instance = "0500";
 
     private static ConstructionHeuristic constructionHeuristic = new GreedyConstructionHeuristic();
+    private static ConstructionHeuristic constructionHeuristic2 = new RandomConstructionHeuristic();
 
     private static Neighborhood neighborhood = new TwoOptNeighborhood();
     private static Step step = new RandomStep();
@@ -33,6 +35,11 @@ public class App {
 
         Graph graph = graphBuilder.build(file);
         Solution solution = constructionHeuristic.solve(graph);
+        solution = localSearch.improve(solution, graph);
+
+        System.out.println(solution);
+
+        solution = constructionHeuristic2.solve(graph);
         solution = localSearch.improve(solution, graph);
 
         System.out.println(solution);
