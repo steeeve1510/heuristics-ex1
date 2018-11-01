@@ -9,7 +9,7 @@ import java.util.List;
 public class TwoOptNeighborhood implements Neighborhood {
 
     @Override
-    public List<Solution> get(Solution solution, Graph graph) {
-        return Collections.singletonList(solution);
+    public Solution get(Solution solution, Graph graph, StepType stepType) {
+        return null;
     }
 }

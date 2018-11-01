@@ -8,9 +8,8 @@ import heuristics.ex1.dto.Graph;
 import heuristics.ex1.dto.Solution;
 import heuristics.ex1.localsearch.LocalSearch;
 import heuristics.ex1.localsearch.neighborhood.Neighborhood;
+import heuristics.ex1.localsearch.neighborhood.StepType;
 import heuristics.ex1.localsearch.neighborhood.TwoOptNeighborhood;
-import heuristics.ex1.localsearch.step.RandomStep;
-import heuristics.ex1.localsearch.step.Step;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,14 +22,14 @@ public class App {
     private static ConstructionHeuristic constructionHeuristic2 = new RandomConstructionHeuristic();
 
     private static Neighborhood neighborhood = new TwoOptNeighborhood();
-    private static Step step = new RandomStep();
+    private static StepType stepType = StepType.RANDOM;
 
     public static void main(String[] args) throws IOException {
 
         File file = new File("src/main/resources/" + instance + ".txt");
 
         GraphBuilder graphBuilder = new GraphBuilder();
-        LocalSearch localSearch = new LocalSearch(neighborhood, step);
+        LocalSearch localSearch = new LocalSearch(neighborhood, stepType);
 
 
         Graph graph = graphBuilder.build(file);

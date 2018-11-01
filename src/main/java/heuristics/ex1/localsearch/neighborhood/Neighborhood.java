@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface Neighborhood {
 
-    List<Solution> get(Solution solution, Graph graph);
+    Solution get(Solution solution, Graph graph, StepType stepType);
 }
