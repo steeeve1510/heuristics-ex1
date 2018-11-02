@@ -16,7 +16,7 @@ import java.io.IOException;
 
 public class App {
 
-    private static String instance = "0500";
+    private static String instance = "0010";
 
     private static ConstructionHeuristic constructionHeuristic = new GreedyConstructionHeuristic();
     private static ConstructionHeuristic constructionHeuristic2 = new RandomConstructionHeuristic();
@@ -34,13 +34,35 @@ public class App {
 
         Graph graph = graphBuilder.build(file);
         Solution solution = constructionHeuristic.solve(graph);
+
+        System.out.println("Constructed:");
+        System.out.println(solution);
+        System.out.println(solution.getObjectiveValue());
+
         solution = localSearch.improve(solution, graph);
 
+        System.out.println("Improved:");
         System.out.println(solution);
+        System.out.println(solution.getObjectiveValue());
 
         solution = constructionHeuristic2.solve(graph);
         solution = localSearch.improve(solution, graph);
 
         System.out.println(solution);
+    }
+
+    public static int getObjectiveValue(Solution solution, Graph graph) {
+        int value = 0;
+        for (int i = 0; i < solution.getSize(); i++) {
+            int j = Math.floorMod(i+1, solution.getSize());
+
+            int x = solution.get(i);
+            int y = solution.get(j);
+
+            int weight = graph.getWeight(x, y);
+
+            value += weight;
+        }
+        return value;
     }
 }

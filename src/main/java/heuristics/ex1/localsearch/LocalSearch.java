@@ -29,7 +29,12 @@ public class LocalSearch {
             if (neighbor.getAbsoluteObjectiveValue() <= solution.getAbsoluteObjectiveValue()) {
                 solution = neighbor;
             }
-        } while (unsuccessfulImprovements < 100);
+
+            if (neighbor.getAbsoluteObjectiveValue() < solution.getAbsoluteObjectiveValue()) {
+                unsuccessfulImprovements = 0;
+            }
+
+        } while (unsuccessfulImprovements < 100000);
 
         return solution;
     }

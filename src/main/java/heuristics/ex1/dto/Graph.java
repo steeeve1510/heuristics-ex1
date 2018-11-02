@@ -12,6 +12,7 @@ import java.util.Map;
 public class Graph {
 
     private Map<Integer, Map<Integer, Integer>> matrix;
+    private int bigM;
 
     public Map<Integer, Integer> getAdjacentNodes(int node) {
         return matrix.get(node);

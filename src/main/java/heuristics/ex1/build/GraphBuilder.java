@@ -44,7 +44,7 @@ public class GraphBuilder {
             matrix.get(e.getNode2()).put(e.getNode1(), e.getWeight());
         });
 
-        return new Graph(matrix);
+        return new Graph(matrix, bigM);
     }
 
     private Function<String, Edge> lineToEdge() {

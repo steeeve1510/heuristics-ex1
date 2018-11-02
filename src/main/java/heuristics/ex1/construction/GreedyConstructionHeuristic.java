@@ -57,7 +57,6 @@ public class GreedyConstructionHeuristic implements ConstructionHeuristic {
                 }
             }
 
-
             int from = bestExtension.getFrom();
             if (from == firstNode) {
                 selectedNodes.addFirst(bestExtension.getTo());
@@ -81,8 +80,8 @@ public class GreedyConstructionHeuristic implements ConstructionHeuristic {
 
         Integer[] nodes = graph.getMatrix().keySet().toArray(new Integer[0]);
 
-        for (Integer iN1 = 0; iN1 < nodes.length; iN1++) {
-            for (Integer iN2 = iN1+1; iN2 < nodes.length; iN2++) {
+        for (int iN1 = 0; iN1 < nodes.length; iN1++) {
+            for (int iN2 = iN1+1; iN2 < nodes.length; iN2++) {
                 int n1 = nodes[iN1];
                 int n2 = nodes[iN2];
                 int weight = graph.getWeight(n1, n2);
@@ -111,7 +110,7 @@ public class GreedyConstructionHeuristic implements ConstructionHeuristic {
         private int to;
         private int newObjectiveValue;
 
-        public int getAbsNewObjectiveValue() {
+        int getAbsNewObjectiveValue() {
             return Math.abs(newObjectiveValue);
         }
     }
