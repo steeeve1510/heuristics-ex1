@@ -16,6 +16,49 @@ public class TwoOptNeighborhood implements Neighborhood {
         switch (stepType) {
             case RANDOM:
                 return getRandomNeighbor(solution, graph);
+            case NEXT_IMPROVEMENT:
+                return getNextImprovement(solution, graph);
+            case BEST_IMPOVEMENT:
+                return getBestImprovement(solution, graph);
+        }
+        return null;
+    }
+
+    private Solution getBestImprovement(Solution solution, Graph graph) {
+        int size = solution.getSize();
+
+        Solution bestSolution = solution;
+
+        for (int i = 0; i < size; i++) {
+            for (int j = i+2; j < size + i - 1; j++) {
+                int node1 = solution.get(i);
+                int node2 = solution.get(Math.floorMod(j, size));
+
+                Solution neighbor = move(node1, node2, solution, graph);
+                if (neighbor.getAbsoluteObjectiveValue() < bestSolution.getAbsoluteObjectiveValue()) {
+                    bestSolution = neighbor;
+                }
+            }
+        }
+
+        if (bestSolution == solution) {
+            return null;
+        }
+        return bestSolution;
+    }
+
+    private Solution getNextImprovement(Solution solution, Graph graph) {
+        int size = solution.getSize();
+        for (int i = 0; i < size; i++) {
+            for (int j = i+2; j < size + i - 1; j++) {
+                int node1 = solution.get(i);
+                int node2 = solution.get(Math.floorMod(j, size));
+
+                Solution neighbor = move(node1, node2, solution, graph);
+                if (neighbor.getAbsoluteObjectiveValue() < solution.getAbsoluteObjectiveValue()) {
+                    return neighbor;
+                }
+            }
         }
         return null;
     }
