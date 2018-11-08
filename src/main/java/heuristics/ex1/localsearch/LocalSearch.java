@@ -22,18 +22,18 @@ public class LocalSearch {
                 break;
             }
 
-            if (neighbor.getAbsoluteObjectiveValue() >= solution.getAbsoluteObjectiveValue()) {
-                unsuccessfulImprovements++;
-            }
-
-            if (neighbor.getAbsoluteObjectiveValue() <= solution.getAbsoluteObjectiveValue()) {
-                solution = neighbor;
-            }
 
             if (neighbor.getAbsoluteObjectiveValue() < solution.getAbsoluteObjectiveValue()) {
                 unsuccessfulImprovements = 0;
             }
+            if (neighbor.getAbsoluteObjectiveValue() >= solution.getAbsoluteObjectiveValue()) {
+                unsuccessfulImprovements++;
+            }
 
+
+            if (neighbor.getAbsoluteObjectiveValue() <= solution.getAbsoluteObjectiveValue()) {
+                solution = neighbor;
+            }
         } while (unsuccessfulImprovements < 100000);
 
         return solution;
