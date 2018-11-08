@@ -6,6 +6,7 @@ import heuristics.ex1.construction.GreedyConstructionHeuristic;
 import heuristics.ex1.construction.RandomConstructionHeuristic;
 import heuristics.ex1.dto.Graph;
 import heuristics.ex1.dto.Solution;
+import heuristics.ex1.grasp.GRASP;
 import heuristics.ex1.localsearch.LocalSearch;
 import heuristics.ex1.localsearch.neighborhood.Neighborhood;
 import heuristics.ex1.localsearch.neighborhood.StepType;
@@ -29,26 +30,35 @@ public class App {
         File file = new File("src/main/resources/" + instance + ".txt");
 
         GraphBuilder graphBuilder = new GraphBuilder();
+        Graph graph = graphBuilder.build(file);
+
+
         LocalSearch localSearch = new LocalSearch(neighborhood, stepType);
 
 
-        Graph graph = graphBuilder.build(file);
-        Solution solution = constructionHeuristic.solve(graph);
+//        Solution solution = constructionHeuristic.solve(graph);
+//
+//        System.out.println("Constructed:");
+//        System.out.println(solution);
+//        System.out.println(solution.getObjectiveValue());
+//
+//        solution = localSearch.improve(solution, graph);
+//
+//        System.out.println("Improved:");
+//        System.out.println(solution);
+//        System.out.println(solution.getObjectiveValue());
+//
+//        solution = constructionHeuristic2.solve(graph);
+//        solution = localSearch.improve(solution, graph);
+//
+//        System.out.println(solution);
 
-        System.out.println("Constructed:");
-        System.out.println(solution);
+
+        GRASP grasp = new GRASP();
+        Solution solution = grasp.solve(graph);
+        System.out.println(solution.getNodes());
         System.out.println(solution.getObjectiveValue());
-
-        solution = localSearch.improve(solution, graph);
-
-        System.out.println("Improved:");
-        System.out.println(solution);
-        System.out.println(solution.getObjectiveValue());
-
-        solution = constructionHeuristic2.solve(graph);
-        solution = localSearch.improve(solution, graph);
-
-        System.out.println(solution);
+        System.out.println(getObjectiveValue(solution, graph));
     }
 
     public static int getObjectiveValue(Solution solution, Graph graph) {
