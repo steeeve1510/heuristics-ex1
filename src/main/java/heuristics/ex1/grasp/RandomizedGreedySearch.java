@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 class RandomizedGreedySearch {
 
-    private static final int RESTRICTED_CANDIDATE_LIST_SIZE = 10;
+    private static final int RESTRICTED_CANDIDATE_LIST_SIZE = 20;
 
     Solution solve(Graph graph) {
         LinkedList<Integer> solution = new LinkedList<>();

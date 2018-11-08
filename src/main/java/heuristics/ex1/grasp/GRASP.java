@@ -27,8 +27,7 @@ public class GRASP {
 
             if (improvedSolution.getAbsoluteObjectiveValue() < bestSolution.getAbsoluteObjectiveValue()) {
                 unsuccessfulImprovements = 0;
-            }
-            if (improvedSolution.getAbsoluteObjectiveValue() >= bestSolution.getAbsoluteObjectiveValue()) {
+            } else {
                 unsuccessfulImprovements++;
             }
 
@@ -36,7 +35,7 @@ public class GRASP {
             if (improvedSolution.getAbsoluteObjectiveValue() <= bestSolution.getAbsoluteObjectiveValue()) {
                 bestSolution = improvedSolution;
             }
-        } while(unsuccessfulImprovements > 1000);
+        } while(unsuccessfulImprovements < 100000);
 
         return bestSolution;
     }

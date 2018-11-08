@@ -25,8 +25,7 @@ public class LocalSearch {
 
             if (neighbor.getAbsoluteObjectiveValue() < solution.getAbsoluteObjectiveValue()) {
                 unsuccessfulImprovements = 0;
-            }
-            if (neighbor.getAbsoluteObjectiveValue() >= solution.getAbsoluteObjectiveValue()) {
+            } else {
                 unsuccessfulImprovements++;
             }
 
