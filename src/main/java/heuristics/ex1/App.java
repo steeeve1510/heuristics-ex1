@@ -17,7 +17,7 @@ import java.io.IOException;
 
 public class App {
 
-    private static String instance = "1000";
+    private static String instance = "0040";
 
     private static ConstructionHeuristic constructionHeuristic = new GreedyConstructionHeuristic();
     private static ConstructionHeuristic constructionHeuristic2 = new RandomConstructionHeuristic();
@@ -34,7 +34,6 @@ public class App {
 
 
         LocalSearch localSearch = new LocalSearch(neighborhood, stepType);
-
 
 //        Solution solution = constructionHeuristic.solve(graph);
 //

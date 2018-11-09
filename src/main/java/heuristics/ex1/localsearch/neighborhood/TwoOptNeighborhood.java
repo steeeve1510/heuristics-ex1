@@ -2,7 +2,9 @@ package heuristics.ex1.localsearch.neighborhood;
 
 import heuristics.ex1.dto.Graph;
 import heuristics.ex1.dto.Solution;
+import org.apache.commons.lang3.ArrayUtils;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -111,14 +113,12 @@ public class TwoOptNeighborhood implements Neighborhood {
         List<Integer> part1 = solution.getPart(node2Successor, node1Successor);
         List<Integer> part2 = solution.getPart(node1Successor, node2Successor);
 
-        List<Integer> partsReversed = new LinkedList<>();
-        new LinkedList<>(part2)
-             .descendingIterator()
-             .forEachRemaining(partsReversed::add);
+        Integer[] part2AsArray = part2.toArray(new Integer[]{});
+        ArrayUtils.reverse(part2AsArray);
 
         return Stream.concat(
                         part1.stream(),
-                        partsReversed.stream()
+                        Arrays.stream(part2AsArray)
                     ).collect(Collectors.toList());
     }
 }

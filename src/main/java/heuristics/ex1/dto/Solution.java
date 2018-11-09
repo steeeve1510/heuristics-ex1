@@ -3,9 +3,10 @@ package heuristics.ex1.dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Getter
 @AllArgsConstructor
@@ -46,17 +47,25 @@ public class Solution {
             throw new IllegalArgumentException("Cannot get part from " + from + " to " + to);
         }
 
-        List<Integer> part;
-        if (fromIndex <= toIndex) {
-            part = nodes.subList(fromIndex, toIndex).stream().map(Integer::new).collect(Collectors.toList());
-        } else {
-            part = nodes.subList(fromIndex, nodes.size()).stream().map(Integer::new).collect(Collectors.toList());;
-            part.addAll(nodes.subList(0, toIndex).stream().map(Integer::new).collect(Collectors.toList()));
-        }
+        Integer[] nodesAsArray = nodes.toArray(new Integer[]{});
 
-        return part.stream()
-                    .map(Integer::new)
-                    .collect(Collectors.toList());
+
+        List<Integer> part;
+        Integer[] partAsArray;
+        if (fromIndex <= toIndex) {
+            partAsArray = Arrays.copyOfRange(nodesAsArray, fromIndex, toIndex, Integer[].class);
+
+            part = Arrays.asList(partAsArray);
+        } else {
+            partAsArray = Arrays.copyOfRange(nodesAsArray, fromIndex, nodesAsArray.length, Integer[].class);
+            Integer[] secondPartAsArray = Arrays.copyOfRange(nodesAsArray, 0, toIndex, Integer[].class);
+
+            part = Stream.concat(
+                    Arrays.stream(partAsArray),
+                    Arrays.stream(secondPartAsArray)
+            ).collect(Collectors.toList());
+        }
+        return part;
     }
 
     public int getSize() {
