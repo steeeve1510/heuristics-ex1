@@ -5,11 +5,8 @@ import heuristics.ex1.dto.Solution;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class TwoOptNeighborhood implements Neighborhood {
 
@@ -116,9 +113,8 @@ public class TwoOptNeighborhood implements Neighborhood {
         Integer[] part2AsArray = part2.toArray(new Integer[]{});
         ArrayUtils.reverse(part2AsArray);
 
-        return Stream.concat(
-                        part1.stream(),
-                        Arrays.stream(part2AsArray)
-                    ).collect(Collectors.toList());
+        Integer[] neighbor = ArrayUtils.addAll(part1.toArray(new Integer[]{}), part2AsArray);
+
+        return Arrays.asList(neighbor);
     }
 }

@@ -2,11 +2,11 @@ package heuristics.ex1.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Getter
 @AllArgsConstructor
@@ -49,23 +49,16 @@ public class Solution {
 
         Integer[] nodesAsArray = nodes.toArray(new Integer[]{});
 
-
-        List<Integer> part;
         Integer[] partAsArray;
         if (fromIndex <= toIndex) {
             partAsArray = Arrays.copyOfRange(nodesAsArray, fromIndex, toIndex, Integer[].class);
-
-            part = Arrays.asList(partAsArray);
         } else {
             partAsArray = Arrays.copyOfRange(nodesAsArray, fromIndex, nodesAsArray.length, Integer[].class);
             Integer[] secondPartAsArray = Arrays.copyOfRange(nodesAsArray, 0, toIndex, Integer[].class);
 
-            part = Stream.concat(
-                    Arrays.stream(partAsArray),
-                    Arrays.stream(secondPartAsArray)
-            ).collect(Collectors.toList());
+            partAsArray = ArrayUtils.addAll(partAsArray, secondPartAsArray);
         }
-        return part;
+        return Arrays.asList(partAsArray);
     }
 
     public int getSize() {
