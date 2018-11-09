@@ -10,11 +10,11 @@ import java.util.stream.Collectors;
 
 class RandomizedGreedySearch {
 
-    private static final int RESTRICTED_CANDIDATE_LIST_SIZE = 15;
+    private static final int RESTRICTED_CANDIDATE_LIST_SIZE = 40;
 
     Solution solve(Graph graph) {
         LinkedList<Integer> solution = new LinkedList<>();
-        int objective = 0;
+        long objective = 0;
 
         Set<Integer> nodes = graph.getMatrix().keySet();
 
@@ -48,7 +48,7 @@ class RandomizedGreedySearch {
         return new Solution(solution, objective);
     }
 
-    private List<Integer> restrict(List<Integer> candidateList, int objective, int lastNode, Graph graph) {
+    private List<Integer> restrict(List<Integer> candidateList, long objective, int lastNode, Graph graph) {
 
         List<NodeWithObjective> nodeWithObjectives = candidateList.stream()
                                         .map(c -> new NodeWithObjective(c, Math.abs(objective + graph.getWeight(lastNode, c))))

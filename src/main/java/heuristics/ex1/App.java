@@ -17,7 +17,7 @@ import java.io.IOException;
 
 public class App {
 
-    private static String instance = "0040";
+    private static String instance = "0400";
 
     private static ConstructionHeuristic constructionHeuristic = new GreedyConstructionHeuristic();
     private static ConstructionHeuristic constructionHeuristic2 = new RandomConstructionHeuristic();
@@ -31,7 +31,6 @@ public class App {
 
         GraphBuilder graphBuilder = new GraphBuilder();
         Graph graph = graphBuilder.build(file);
-
 
         LocalSearch localSearch = new LocalSearch(neighborhood, stepType);
 
@@ -63,8 +62,8 @@ public class App {
         System.out.println(isInfeasible(solution, graph));
     }
 
-    public static int getObjectiveValue(Solution solution, Graph graph) {
-        int value = 0;
+    public static long getObjectiveValue(Solution solution, Graph graph) {
+        long value = 0;
         for (int i = 0; i < solution.getSize(); i++) {
             int j = Math.floorMod(i+1, solution.getSize());
 
@@ -81,6 +80,7 @@ public class App {
     public static boolean isInfeasible(Solution solution, Graph graph) {
         int bigM = graph.getBigM();
 
+        boolean infeasible = false;
         for (int i = 0; i < solution.getSize(); i++) {
             int j = Math.floorMod(i+1, solution.getSize());
 
@@ -90,9 +90,10 @@ public class App {
             int weight = graph.getWeight(x, y);
 
             if (weight == bigM) {
-                return true;
+                System.out.println("Edge from " + x + " to " + y + " is infeasible");
+                infeasible = true;
             }
         }
-        return false;
+        return infeasible;
     }
 }

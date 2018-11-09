@@ -33,7 +33,7 @@ public class LocalSearch {
             if (neighbor.getAbsoluteObjectiveValue() <= solution.getAbsoluteObjectiveValue()) {
                 solution = neighbor;
             }
-        } while (unsuccessfulImprovements < 100000);
+        } while (unsuccessfulImprovements < 1000);
 
         return solution;
     }

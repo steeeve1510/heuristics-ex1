@@ -13,12 +13,13 @@ public class GRASP {
     private StepType stepType         = StepType.NEXT_IMPROVEMENT;
 
     public Solution solve(Graph graph) {
+        System.out.println("Starting GRASP");
         RandomizedGreedySearch randomizedGreedySearch = new RandomizedGreedySearch();
         LocalSearch localSearch = new LocalSearch(neighborhood, stepType);
 
         int unsuccessfulImprovements = 0;
 
-        Solution bestSolution = new Solution(null, Integer.MAX_VALUE);
+        Solution bestSolution = new Solution(null, Long.MAX_VALUE);
 
         do {
             Solution randomSolution = randomizedGreedySearch.solve(graph);
@@ -34,8 +35,13 @@ public class GRASP {
 
             if (improvedSolution.getAbsoluteObjectiveValue() <= bestSolution.getAbsoluteObjectiveValue()) {
                 bestSolution = improvedSolution;
+                System.out.println("Found better solution: " + bestSolution.getAbsoluteObjectiveValue());
             }
-        } while(unsuccessfulImprovements < 1000);
+
+            if (unsuccessfulImprovements % 10 == 0) {
+                System.out.println(unsuccessfulImprovements + " unsuccessful improvements");
+            }
+        } while(unsuccessfulImprovements < 20);
 
         return bestSolution;
     }
