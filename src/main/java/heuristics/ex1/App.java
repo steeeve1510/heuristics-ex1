@@ -17,7 +17,7 @@ import java.io.IOException;
 
 public class App {
 
-    private static String instance = "0100";
+    private static String instance = "1000";
 
     private static ConstructionHeuristic constructionHeuristic = new GreedyConstructionHeuristic();
     private static ConstructionHeuristic constructionHeuristic2 = new RandomConstructionHeuristic();
@@ -56,9 +56,12 @@ public class App {
 
         GRASP grasp = new GRASP();
         Solution solution = grasp.solve(graph);
+
+
         System.out.println(solution.getNodes());
         System.out.println(solution.getObjectiveValue());
         System.out.println(getObjectiveValue(solution, graph));
+        System.out.println(isInfeasible(solution, graph));
     }
 
     public static int getObjectiveValue(Solution solution, Graph graph) {
@@ -74,5 +77,23 @@ public class App {
             value += weight;
         }
         return value;
+    }
+
+    public static boolean isInfeasible(Solution solution, Graph graph) {
+        int bigM = graph.getBigM();
+
+        for (int i = 0; i < solution.getSize(); i++) {
+            int j = Math.floorMod(i+1, solution.getSize());
+
+            int x = solution.get(i);
+            int y = solution.get(j);
+
+            int weight = graph.getWeight(x, y);
+
+            if (weight == bigM) {
+                return true;
+            }
+        }
+        return false;
     }
 }
