@@ -35,7 +35,7 @@ public class GRASP {
             if (improvedSolution.getAbsoluteObjectiveValue() <= bestSolution.getAbsoluteObjectiveValue()) {
                 bestSolution = improvedSolution;
             }
-        } while(unsuccessfulImprovements < 100000);
+        } while(unsuccessfulImprovements < 1000);
 
         return bestSolution;
     }

@@ -90,14 +90,14 @@ public class TwoOptNeighborhood implements Neighborhood {
 
         List<Integer> neighbor = getNeighbor(node1Successor, node2Successor, solution);
 
-        int objectiveValue = solution.getObjectiveValue();
+        long objectiveValue = solution.getObjectiveValue();
 
-        int newObjectiveValue = getNewObjectiveValue(objectiveValue, node1, node1Successor, node2, node2Successor, graph);
+        long newObjectiveValue = getNewObjectiveValue(objectiveValue, node1, node1Successor, node2, node2Successor, graph);
 
         return new Solution(neighbor, newObjectiveValue);
     }
 
-    private int getNewObjectiveValue(int objectiveValue, int node1, int node1Successor, int node2, int node2Successor, Graph graph) {
+    private long getNewObjectiveValue(long objectiveValue, int node1, int node1Successor, int node2, int node2Successor, Graph graph) {
         int oldWeight1 = graph.getWeight(node1, node1Successor);
         int oldWeight2 = graph.getWeight(node2, node2Successor);
 

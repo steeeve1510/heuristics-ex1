@@ -17,7 +17,7 @@ public class GreedyConstructionHeuristic implements ConstructionHeuristic {
 
         int firstNode = firstEdge.getFrom();
         int lastNode = firstEdge.getTo();
-        int objectiveValue = firstEdge.getNewObjectiveValue();
+        long objectiveValue = firstEdge.getNewObjectiveValue();
 
         Deque<Integer> selectedNodes = new LinkedList<>();
         selectedNodes.addFirst(firstNode);
@@ -39,7 +39,7 @@ public class GreedyConstructionHeuristic implements ConstructionHeuristic {
 
 
             Extension bestExtension = new Extension(0, 0, Integer.MAX_VALUE);
-            int bestAbsObjectiveValue = bestExtension.getAbsNewObjectiveValue();
+            long bestAbsObjectiveValue = bestExtension.getAbsNewObjectiveValue();
 
             for (int neighbor : firstNeighbors) {
                 int weight = graph.getWeight(firstNode, neighbor);
@@ -76,7 +76,7 @@ public class GreedyConstructionHeuristic implements ConstructionHeuristic {
     private Extension getFirstEdge(Graph graph) {
         int firstNode = graph.getMatrix().keySet().iterator().next();
         int lastNode = graph.getAdjacentNodes(firstNode).keySet().iterator().next();
-        int objectiveValue = graph.getWeight(firstNode, lastNode);
+        long objectiveValue = graph.getWeight(firstNode, lastNode);
 
         Integer[] nodes = graph.getMatrix().keySet().toArray(new Integer[0]);
 
@@ -108,9 +108,9 @@ public class GreedyConstructionHeuristic implements ConstructionHeuristic {
     private static class Extension {
         private int from;
         private int to;
-        private int newObjectiveValue;
+        private long newObjectiveValue;
 
-        int getAbsNewObjectiveValue() {
+        long getAbsNewObjectiveValue() {
             return Math.abs(newObjectiveValue);
         }
     }

@@ -12,9 +12,9 @@ import java.util.stream.Collectors;
 public class Solution {
 
     private List<Integer> nodes;
-    private int objectiveValue;
+    private long objectiveValue;
 
-    public int getAbsoluteObjectiveValue() {
+    public long getAbsoluteObjectiveValue() {
         return Math.abs(objectiveValue);
     }
 

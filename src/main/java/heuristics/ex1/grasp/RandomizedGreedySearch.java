@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 class RandomizedGreedySearch {
 
-    private static final int RESTRICTED_CANDIDATE_LIST_SIZE = 20;
+    private static final int RESTRICTED_CANDIDATE_LIST_SIZE = 15;
 
     Solution solve(Graph graph) {
         LinkedList<Integer> solution = new LinkedList<>();
@@ -55,7 +55,7 @@ class RandomizedGreedySearch {
                                         .collect(Collectors.toList());
 
         List<NodeWithObjective> sorted = nodeWithObjectives.stream()
-                                        .sorted(Comparator.comparingInt(NodeWithObjective::getObjective))
+                                        .sorted(Comparator.comparingLong(NodeWithObjective::getObjective))
                                         .collect(Collectors.toList());
 
         return sorted.stream()
@@ -68,6 +68,6 @@ class RandomizedGreedySearch {
     @Getter
     private static class NodeWithObjective {
         private int node;
-        private int objective;
+        private long objective;
     }
 }
