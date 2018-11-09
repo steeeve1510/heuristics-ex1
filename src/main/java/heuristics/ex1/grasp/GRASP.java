@@ -38,10 +38,10 @@ public class GRASP {
                 System.out.println("Found better solution: " + bestSolution.getAbsoluteObjectiveValue());
             }
 
-            if (unsuccessfulImprovements % 10 == 0) {
+            if (unsuccessfulImprovements % 10 == 0 && unsuccessfulImprovements != 0) {
                 System.out.println(unsuccessfulImprovements + " unsuccessful improvements");
             }
-        } while(unsuccessfulImprovements < 20);
+        } while(unsuccessfulImprovements < 100);
 
         return bestSolution;
     }

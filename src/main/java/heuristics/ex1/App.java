@@ -17,7 +17,7 @@ import java.io.IOException;
 
 public class App {
 
-    private static String instance = "0400";
+    private static String instance = "0100";
 
     private static ConstructionHeuristic constructionHeuristic = new GreedyConstructionHeuristic();
     private static ConstructionHeuristic constructionHeuristic2 = new RandomConstructionHeuristic();
@@ -56,10 +56,23 @@ public class App {
         Solution solution = grasp.solve(graph);
 
 
-        System.out.println(solution.getNodes());
-        System.out.println(solution.getObjectiveValue());
-        System.out.println(getObjectiveValue(solution, graph));
-        System.out.println(isInfeasible(solution, graph));
+        printResult(graph, solution);
+    }
+
+    private static void printResult(Graph graph, Solution solution) {
+        System.out.println();
+        if (solution.getObjectiveValue() != getObjectiveValue(solution,graph)) {
+            System.out.println("#########################################");
+            System.out.println("Solution is not correct");
+            System.out.println("Objective value:              " + solution.getObjectiveValue());
+            System.out.println("Recalculated objective value: " + getObjectiveValue(solution,graph));
+            System.out.println("#########################################");
+        }
+        System.out.println("Objective value: " + solution.getObjectiveValue());
+        boolean isInfeasible = isInfeasible(solution, graph);
+        System.out.println("The solution is " + (isInfeasible ? "INFEASIBLE!!" : "feasible"));
+        System.out.println();
+        System.out.println(solution);
     }
 
     public static long getObjectiveValue(Solution solution, Graph graph) {
