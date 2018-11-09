@@ -38,7 +38,7 @@ public class GreedyConstructionHeuristic implements ConstructionHeuristic {
             }
 
 
-            Extension bestExtension = new Extension(0, 0, Integer.MAX_VALUE);
+            Extension bestExtension = new Extension(0, 0, Long.MAX_VALUE);
             long bestAbsObjectiveValue = bestExtension.getAbsNewObjectiveValue();
 
             for (int neighbor : firstNeighbors) {
