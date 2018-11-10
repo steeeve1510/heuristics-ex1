@@ -1,5 +1,8 @@
 package heuristics.ex1.grasp;
 
+import heuristics.ex1.construction.ConstructionHeuristic;
+import heuristics.ex1.construction.RandomConstructionHeuristic;
+import heuristics.ex1.construction.RandomizedGreedySearch;
 import heuristics.ex1.dto.Graph;
 import heuristics.ex1.dto.Solution;
 import heuristics.ex1.localsearch.LocalSearch;
@@ -9,12 +12,12 @@ import heuristics.ex1.localsearch.neighborhood.TwoOptNeighborhood;
 
 public class GRASP {
 
-    private Neighborhood neighborhood = new TwoOptNeighborhood();
-    private StepType stepType         = StepType.NEXT_IMPROVEMENT;
+    private ConstructionHeuristic constructionHeuristic = new RandomConstructionHeuristic();
+    private Neighborhood neighborhood                   = new TwoOptNeighborhood();
+    private StepType stepType                           = StepType.NEXT_IMPROVEMENT;
 
     public Solution solve(Graph graph) {
         System.out.println("Starting GRASP");
-        RandomizedGreedySearch randomizedGreedySearch = new RandomizedGreedySearch();
         LocalSearch localSearch = new LocalSearch(neighborhood, stepType);
 
         int unsuccessfulImprovements = 0;
@@ -22,7 +25,7 @@ public class GRASP {
         Solution bestSolution = new Solution(null, Long.MAX_VALUE);
 
         do {
-            Solution randomSolution = randomizedGreedySearch.solve(graph);
+            Solution randomSolution = constructionHeuristic.solve(graph);
             Solution improvedSolution = localSearch.improve(randomSolution, graph);
 
 

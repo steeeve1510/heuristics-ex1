@@ -1,4 +1,4 @@
-package heuristics.ex1.grasp;
+package heuristics.ex1.construction;
 
 import heuristics.ex1.dto.Graph;
 import heuristics.ex1.dto.Solution;
@@ -8,11 +8,12 @@ import lombok.Getter;
 import java.util.*;
 import java.util.stream.Collectors;
 
-class RandomizedGreedySearch {
+public class RandomizedGreedySearch implements ConstructionHeuristic {
 
     private static final int RESTRICTED_CANDIDATE_LIST_SIZE = 40;
 
-    Solution solve(Graph graph) {
+    @Override
+    public Solution solve(Graph graph) {
         LinkedList<Integer> solution = new LinkedList<>();
         long objective = 0;
 

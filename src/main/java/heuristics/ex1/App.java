@@ -17,7 +17,7 @@ import java.io.IOException;
 
 public class App {
 
-    private static String instance = "0100";
+    private static String instance = "0400";
 
     private static ConstructionHeuristic constructionHeuristic = new GreedyConstructionHeuristic();
     private static ConstructionHeuristic constructionHeuristic2 = new RandomConstructionHeuristic();
@@ -46,7 +46,7 @@ public class App {
 //        System.out.println(solution);
 //        System.out.println(solution.getObjectiveValue());
 //
-//        solution = constructionHeuristic2.solve(graph);
+//        Solution solution = constructionHeuristic2.solve(graph);
 //        solution = localSearch.improve(solution, graph);
 //
 //        System.out.println(solution);
@@ -54,7 +54,6 @@ public class App {
 
         GRASP grasp = new GRASP();
         Solution solution = grasp.solve(graph);
-
 
         printResult(graph, solution);
     }
