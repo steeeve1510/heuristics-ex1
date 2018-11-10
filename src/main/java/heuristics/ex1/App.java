@@ -11,13 +11,14 @@ import heuristics.ex1.localsearch.LocalSearch;
 import heuristics.ex1.localsearch.neighborhood.Neighborhood;
 import heuristics.ex1.localsearch.neighborhood.StepType;
 import heuristics.ex1.localsearch.neighborhood.TwoOptNeighborhood;
+import heuristics.ex1.vnd.VND;
 
 import java.io.File;
 import java.io.IOException;
 
 public class App {
 
-    private static String instance = "0400";
+    private static String instance = "0100";
 
     private static ConstructionHeuristic constructionHeuristic = new GreedyConstructionHeuristic();
     private static ConstructionHeuristic constructionHeuristic2 = new RandomConstructionHeuristic();
@@ -54,6 +55,9 @@ public class App {
 
         GRASP grasp = new GRASP();
         Solution solution = grasp.solve(graph);
+
+        VND vnd = new VND();
+        solution = vnd.improve(solution, graph);
 
         printResult(graph, solution);
     }
