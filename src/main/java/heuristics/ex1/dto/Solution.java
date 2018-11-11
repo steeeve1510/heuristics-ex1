@@ -39,6 +39,15 @@ public class Solution {
         return nodes.get(indexOfSuccessor);
     }
 
+    public int getPredecessor(int node) {
+        int index = nodes.indexOf(node);
+        if (index < 0) {
+            throw new IllegalArgumentException("Solution does not contain node " + node);
+        }
+        int indexOfSuccessor = (index-1) % nodes.size();
+        return nodes.get(indexOfSuccessor);
+    }
+
     public List<Integer> getPart(int from, int to) {
         int fromIndex = nodes.indexOf(from);
         int toIndex = nodes.indexOf(to);
