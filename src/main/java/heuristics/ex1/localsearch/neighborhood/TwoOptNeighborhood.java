@@ -33,9 +33,12 @@ public class TwoOptNeighborhood implements Neighborhood {
                 int node1 = solution.get(i);
                 int node2 = solution.get(Math.floorMod(j, size));
 
-                Solution neighbor = move(node1, node2, solution, graph);
-                if (neighbor.getAbsoluteObjectiveValue() < bestSolution.getAbsoluteObjectiveValue()) {
-                    bestSolution = neighbor;
+                int node1Successor = solution.getSuccessor(node1);
+                int node2Successor = solution.getSuccessor(node2);
+
+                long newObjectiveValue = getNewObjectiveValue(solution, node1, node1Successor, node2, node2Successor, graph);
+                if (newObjectiveValue < bestSolution.getAbsoluteObjectiveValue()) {
+                    bestSolution = getNeighbor(node1Successor, node2Successor, solution, newObjectiveValue);
                 }
             }
         }
@@ -53,9 +56,12 @@ public class TwoOptNeighborhood implements Neighborhood {
                 int node1 = solution.get(i);
                 int node2 = solution.get(Math.floorMod(j, size));
 
-                Solution neighbor = move(node1, node2, solution, graph);
-                if (neighbor.getAbsoluteObjectiveValue() < solution.getAbsoluteObjectiveValue()) {
-                    return neighbor;
+                int node1Successor = solution.getSuccessor(node1);
+                int node2Successor = solution.getSuccessor(node2);
+
+                long newObjectiveValue = getNewObjectiveValue(solution, node1, node1Successor, node2, node2Successor, graph);
+                if (newObjectiveValue < solution.getAbsoluteObjectiveValue()) {
+                    return getNeighbor(node1Successor, node2Successor, solution, newObjectiveValue);
                 }
             }
         }
@@ -87,26 +93,22 @@ public class TwoOptNeighborhood implements Neighborhood {
         int node1Successor = solution.getSuccessor(node1);
         int node2Successor = solution.getSuccessor(node2);
 
-        List<Integer> neighbor = getNeighbor(node1Successor, node2Successor, solution);
+        long newObjectiveValue = getNewObjectiveValue(solution, node1, node1Successor, node2, node2Successor, graph);
 
-        long objectiveValue = solution.getObjectiveValue();
-
-        long newObjectiveValue = getNewObjectiveValue(objectiveValue, node1, node1Successor, node2, node2Successor, graph);
-
-        return new Solution(neighbor, newObjectiveValue);
+        return getNeighbor(node1Successor, node2Successor, solution, newObjectiveValue);
     }
 
-    private long getNewObjectiveValue(long objectiveValue, int node1, int node1Successor, int node2, int node2Successor, Graph graph) {
+    private long getNewObjectiveValue(Solution currentSolution, int node1, int node1Successor, int node2, int node2Successor, Graph graph) {
         int oldWeight1 = graph.getWeight(node1, node1Successor);
         int oldWeight2 = graph.getWeight(node2, node2Successor);
 
         int newWeight1 = graph.getWeight(node1, node2);
         int newWeight2 = graph.getWeight(node1Successor, node2Successor);
 
-        return objectiveValue - oldWeight1 - oldWeight2 + newWeight1 + newWeight2;
+        return currentSolution.getObjectiveValue() - oldWeight1 - oldWeight2 + newWeight1 + newWeight2;
     }
 
-    private List<Integer> getNeighbor(int node1Successor, int node2Successor, Solution solution) {
+    private Solution getNeighbor(int node1Successor, int node2Successor, Solution solution, long objectiveValue) {
         List<Integer> part1 = solution.getPart(node2Successor, node1Successor);
         List<Integer> part2 = solution.getPart(node1Successor, node2Successor);
 
@@ -115,6 +117,6 @@ public class TwoOptNeighborhood implements Neighborhood {
 
         Integer[] neighbor = ArrayUtils.addAll(part1.toArray(new Integer[]{}), part2AsArray);
 
-        return Arrays.asList(neighbor);
+        return new Solution(Arrays.asList(neighbor), objectiveValue);
     }
 }
