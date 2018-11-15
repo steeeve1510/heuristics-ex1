@@ -11,6 +11,7 @@ import heuristics.ex1.localsearch.LocalSearch;
 import heuristics.ex1.localsearch.neighborhood.Neighborhood;
 import heuristics.ex1.localsearch.neighborhood.StepType;
 import heuristics.ex1.localsearch.neighborhood.TwoOptNeighborhood;
+import heuristics.ex1.sa.SimulatedAnnealing;
 import heuristics.ex1.vnd.VND;
 
 import java.io.File;
@@ -53,11 +54,14 @@ public class App {
 //        System.out.println(solution);
 
 
-        GRASP grasp = new GRASP();
-        Solution solution = grasp.solve(graph);
+//        GRASP grasp = new GRASP();
+//        Solution solution = grasp.solve(graph);
+//
+//        VND vnd = new VND();
+//        solution = vnd.improve(solution, graph);
 
-        VND vnd = new VND();
-        solution = vnd.improve(solution, graph);
+        SimulatedAnnealing sa = new SimulatedAnnealing();
+        Solution solution = sa.solve(graph);
 
         printResult(graph, solution);
     }
