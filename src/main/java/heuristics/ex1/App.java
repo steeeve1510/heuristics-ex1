@@ -17,13 +17,13 @@ import java.io.IOException;
 
 public class App {
 
-    private static String instance = "1000";
+    private static String instance = "0150";
 
     private static ConstructionHeuristic constructionHeuristic = new GreedyConstructionHeuristic();
     private static ConstructionHeuristic constructionHeuristic2 = new RandomConstructionHeuristic();
 
     private static Neighborhood neighborhood = new ThreeOptNeighborhoodNew();
-    private static StepType stepType = StepType.RANDOM;
+    private static StepType stepType = StepType.BEST_IMPOVEMENT;
 
     public static void main(String[] args) throws IOException {
 
@@ -36,7 +36,7 @@ public class App {
 
         Solution solution = constructionHeuristic.solve(graph);
 
-        solution = localSearch.improve(solution, graph);
+//        solution = localSearch.improve(solution, graph);
 //
 //        System.out.println("Improved:");
 //        System.out.println(solution);
@@ -51,8 +51,8 @@ public class App {
 //        GRASP grasp = new GRASP();
 //        Solution solution = grasp.solve(graph);
 //
-//        VND vnd = new VND();
-//        solution = vnd.improve(solution, graph);
+        VND vnd = new VND();
+        solution = vnd.improve(solution, graph);
 
 //        SimulatedAnnealing sa = new SimulatedAnnealing();
 //        Solution solution = sa.solve(graph);
@@ -67,6 +67,13 @@ public class App {
             System.out.println("Solution is not correct");
             System.out.println("Objective value:              " + solution.getObjectiveValue());
             System.out.println("Recalculated objective value: " + getObjectiveValue(solution,graph));
+            System.out.println("#########################################");
+        }
+        if (solution.getSize() != graph.getMatrix().keySet().size()) {
+            System.out.println("#########################################");
+            System.out.println("Solution is not correct");
+            System.out.println("Solution size: " + solution.getSize());
+            System.out.println("Matrix size  : " + graph.getMatrix().keySet().size());
             System.out.println("#########################################");
         }
         System.out.println("Objective value: " + solution.getObjectiveValue());

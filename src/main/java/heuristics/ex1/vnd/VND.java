@@ -14,7 +14,7 @@ public class VND {
     public VND() {
         neighborhoods.add(new TwoOptNeighborhood());
         neighborhoods.add(new TwoFiveOptNeighborhood());
-        neighborhoods.add(new ThreeOptNeighborhood());
+        neighborhoods.add(new ThreeOptNeighborhoodNew());
     }
 
     public Solution improve(Solution solution, Graph graph) {
