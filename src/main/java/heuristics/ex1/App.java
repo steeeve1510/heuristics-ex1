@@ -22,7 +22,7 @@ public class App {
     private static ConstructionHeuristic constructionHeuristic = new GreedyConstructionHeuristic();
     private static ConstructionHeuristic constructionHeuristic2 = new RandomConstructionHeuristic();
 
-    private static Neighborhood neighborhood = new TwoFiveOptNeighborhood();
+    private static Neighborhood neighborhood = new ThreeOptNeighborhoodNew();
     private static StepType stepType = StepType.RANDOM;
 
     public static void main(String[] args) throws IOException {
