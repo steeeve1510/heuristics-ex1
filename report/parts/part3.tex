@@ -1,0 +1,31 @@
+\section*{3. Infeasible 2-opt Solution}
+
+The following Hamiltonian graph has a 2-opt solution. The solution is denoted by the red line. It usses the infeasible edge form \textit{a} to \textit{b}.
+
+\tikzstyle{vertex}=[circle,fill=black!25,minimum size=20pt,inner sep=0pt]
+\tikzstyle{selected vertex} = [vertex, fill=red!24]
+\tikzstyle{edge} = [draw,thick,-]
+\tikzstyle{weight} = [font=\small]
+\tikzstyle{inner weight} = [font=\small, yshift=20pt]
+\tikzstyle{selected edge} = [draw,line width=5pt,-,red!20]
+
+\begin{figure}
+\centering
+\begin{tikzpicture}[scale=3, auto, swap]
+    % Draw verticies
+    \foreach \pos/\name in {{(1,2)/a}, {(3,2)/b}, {(4,1)/c},
+                            {(3,0)/d}, {(1,0)/e}, {(0,1)/f}}
+        \node[vertex] (\name) at \pos {$\name$};
+    % Draw edges
+    \foreach \source/ \dest /\weight in { b/c/1 ,c/d/1, d/e/1, e/f/1, f/a/1,
+                                          f/c/3 }
+        \path[edge] (\source) -- node[weight] {$\weight$} (\dest);
+    \foreach \source/ \dest /\weight in { a/e/3, b/d/3 }
+        \path[edge] (\source) -- node[inner weight] {$\weight$} (\dest);
+    % Draw selected edges
+    \begin{pgfonlayer}{background}
+    \foreach \source / \dest in {a/b, b/c, c/d, d/e, e/f, f/a}
+        \path[selected edge] (\source.center) -- (\dest.center);
+    \end{pgfonlayer}
+\end{tikzpicture}
+\end{figure}

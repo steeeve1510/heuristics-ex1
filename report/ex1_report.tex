@@ -7,6 +7,15 @@
 \usepackage{amsmath}
 \usepackage{enumitem}
 
+
+\usepackage{tikz}
+\usepackage{verbatim}
+\usetikzlibrary{arrows,shapes}
+
+% Declare layers
+\pgfdeclarelayer{background}
+\pgfsetlayers{background,main}
+
 \begin{document}
 
 \title{Programming assignment 1}
@@ -17,5 +26,6 @@
 
 \input{parts/part1.tex}
 \input{parts/part2.tex}
+\input{parts/part3.tex}
 
 \end{document}
