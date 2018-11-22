@@ -97,7 +97,7 @@ public class TwoFiveOptNeighborhood implements Neighborhood {
 
         List<Integer> neighbor = getNeighbor(node1, node2, solution);
 
-        long objectiveValue = solution.getAbsoluteObjectiveValue();
+        long objectiveValue = solution.getObjectiveValue();
 
         long newObjectiveValue = getNewObjectiveValue(objectiveValue, node1, node1Successor, node1Predecessor, node2, node2Successor, graph);
 
@@ -105,13 +105,13 @@ public class TwoFiveOptNeighborhood implements Neighborhood {
     }
 
     private long getNewObjectiveValue(long objectiveValue, int node1, int node1Successor, int node1Predecessor, int node2, int node2Successor, Graph graph) {
-        int oldWeight1 = graph.getWeight(node1, node1Successor);
-        int oldWeight2 = graph.getWeight(node1, node1Predecessor);
-        int oldWeight3 = graph.getWeight(node2, node2Successor);
+        long oldWeight1 = graph.getWeight(node1, node1Successor);
+        long oldWeight2 = graph.getWeight(node1, node1Predecessor);
+        long oldWeight3 = graph.getWeight(node2, node2Successor);
 
-        int newWeight2 = graph.getWeight(node1Predecessor, node1Successor);
-        int newWeight1 = graph.getWeight(node2, node1);
-        int newWeight3 = graph.getWeight(node1, node2Successor);
+        long newWeight2 = graph.getWeight(node1Predecessor, node1Successor);
+        long newWeight1 = graph.getWeight(node2, node1);
+        long newWeight3 = graph.getWeight(node1, node2Successor);
 
         return objectiveValue - oldWeight1 - oldWeight2 - oldWeight3 + newWeight1 + newWeight2 + newWeight3;
     }

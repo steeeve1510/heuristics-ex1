@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.apache.commons.lang3.ArrayUtils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -44,7 +45,7 @@ public class Solution {
         if (index < 0) {
             throw new IllegalArgumentException("Solution does not contain node " + node);
         }
-        int indexOfSuccessor = (index-1) % nodes.size();
+        int indexOfSuccessor = Math.floorMod(index-1, nodes.size());
         return nodes.get(indexOfSuccessor);
     }
 
@@ -67,7 +68,7 @@ public class Solution {
 
             partAsArray = ArrayUtils.addAll(partAsArray, secondPartAsArray);
         }
-        return Arrays.asList(partAsArray);
+        return new ArrayList<>(Arrays.asList(partAsArray));
     }
 
     public int getSize() {

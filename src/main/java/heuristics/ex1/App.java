@@ -8,9 +8,7 @@ import heuristics.ex1.dto.Graph;
 import heuristics.ex1.dto.Solution;
 import heuristics.ex1.grasp.GRASP;
 import heuristics.ex1.localsearch.LocalSearch;
-import heuristics.ex1.localsearch.neighborhood.Neighborhood;
-import heuristics.ex1.localsearch.neighborhood.StepType;
-import heuristics.ex1.localsearch.neighborhood.TwoOptNeighborhood;
+import heuristics.ex1.localsearch.neighborhood.*;
 import heuristics.ex1.sa.SimulatedAnnealing;
 import heuristics.ex1.vnd.VND;
 
@@ -19,13 +17,13 @@ import java.io.IOException;
 
 public class App {
 
-    private static String instance = "0100";
+    private static String instance = "0050";
 
     private static ConstructionHeuristic constructionHeuristic = new GreedyConstructionHeuristic();
     private static ConstructionHeuristic constructionHeuristic2 = new RandomConstructionHeuristic();
 
-    private static Neighborhood neighborhood = new TwoOptNeighborhood();
-    private static StepType stepType = StepType.NEXT_IMPROVEMENT;
+    private static Neighborhood neighborhood = new TwoFiveOptNeighborhood();
+    private static StepType stepType = StepType.RANDOM;
 
     public static void main(String[] args) throws IOException {
 
@@ -36,13 +34,9 @@ public class App {
 
         LocalSearch localSearch = new LocalSearch(neighborhood, stepType);
 
-//        Solution solution = constructionHeuristic.solve(graph);
-//
-//        System.out.println("Constructed:");
-//        System.out.println(solution);
-//        System.out.println(solution.getObjectiveValue());
-//
-//        solution = localSearch.improve(solution, graph);
+        Solution solution = constructionHeuristic.solve(graph);
+
+        solution = localSearch.improve(solution, graph);
 //
 //        System.out.println("Improved:");
 //        System.out.println(solution);
@@ -60,8 +54,8 @@ public class App {
 //        VND vnd = new VND();
 //        solution = vnd.improve(solution, graph);
 
-        SimulatedAnnealing sa = new SimulatedAnnealing();
-        Solution solution = sa.solve(graph);
+//        SimulatedAnnealing sa = new SimulatedAnnealing();
+//        Solution solution = sa.solve(graph);
 
         printResult(graph, solution);
     }
