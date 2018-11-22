@@ -5,10 +5,10 @@ N &= \{(i,j) \: | \: e_{i,j} \in E \wedge d_{i,j} \leq 0 \} \\
 P &= \{(i,j) \: | \: e_{i,j} \in E \wedge d_{i,j} \geq 0 \} \\
 w_N &= \lvert \sum_{(i,j) \in N} d_{i,j} \rvert \\ 
 w_P &= \sum_{(i,j) \in P} d_{i,j} \\ 
-\textit{M} &= max( w_N , w_P ) + 1
+\textit{M} &= max( w_N , w_P ) * 2 + 1
 \end{align*}
 
-For every feasible solution the sum of it weights has a value between $w_N$ and $w_P$. Any infeasible solution $X$ will consist of zero or more existing edges. This part shall be called $A$ with the some of the weight $w_A$. If no existing edge is chosen $w_A$ will be $0$. $w_A$ is always between $w_N$ and $w_P$. Additionally $X$ has $i$ non-existing edges, with $i>0$. As by definition those non-existing edges will be considered with a weight of $M$.
+For every feasible solution the sum of it weights has a value between $w_N$ and $w_P$. Any infeasible solution $X$ will consist of zero or more existing edges. This part shall be called $A$ with the sum of the weight $w_A$. If no existing edge is chosen $w_A$ will be $0$. $w_A$ is always between $w_N$ and $w_P$. Additionally $X$ has $i$ non-existing edges, with $i>0$. As by definition those non-existing edges will be considered with a weight of $M$.
 
 So $X$ has a weight $w_X$ of:
 \begin{align*}
