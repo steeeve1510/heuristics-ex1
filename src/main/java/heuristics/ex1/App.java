@@ -17,7 +17,7 @@ import java.io.IOException;
 
 public class App {
 
-    private static String instance = "0050";
+    private static String instance = "1000";
 
     private static ConstructionHeuristic constructionHeuristic = new GreedyConstructionHeuristic();
     private static ConstructionHeuristic constructionHeuristic2 = new RandomConstructionHeuristic();

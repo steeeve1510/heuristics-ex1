@@ -121,7 +121,8 @@ public class ThreeOptNeighborhoodNew implements Neighborhood {
         long clearedObjectiveValue = solution.getObjectiveValue() - oldWeight1 - oldWeight2 - oldWeight3;
 
         List<Solution> solutions = new ArrayList<>();
-        Solution neighbor1 = getNeighborCase1(
+
+        Solution neighbor4 = getNeighborCase4(
                 node1, node1Successor,
                 node2, node2Successor,
                 node3, node3Successor,
@@ -130,7 +131,7 @@ public class ThreeOptNeighborhoodNew implements Neighborhood {
                 graph
         );
 
-        Solution neighbor2 = getNeighborCase2(
+        Solution neighbor5 = getNeighborCase5(
                 node1, node1Successor,
                 node2, node2Successor,
                 node3, node3Successor,
@@ -139,7 +140,7 @@ public class ThreeOptNeighborhoodNew implements Neighborhood {
                 graph
         );
 
-        Solution neighbor3 = getNeighborCase3(
+        Solution neighbor6 = getNeighborCase6(
                 node1, node1Successor,
                 node2, node2Successor,
                 node3, node3Successor,
@@ -148,14 +149,68 @@ public class ThreeOptNeighborhoodNew implements Neighborhood {
                 graph
         );
 
-        solutions.add(neighbor1);
-        solutions.add(neighbor2);
-        solutions.add(neighbor3);
+        Solution neighbor7 = getNeighborCase7(
+                node1, node1Successor,
+                node2, node2Successor,
+                node3, node3Successor,
+                part1To2, part2To3, part3To1,
+                clearedObjectiveValue,
+                graph
+        );
+
+        solutions.add(neighbor4);
+        solutions.add(neighbor5);
+        solutions.add(neighbor6);
+        solutions.add(neighbor7);
 
         return solutions;
     }
 
-    private Solution getNeighborCase1(int node1, int node1Successor,
+    private Solution getNeighborCase4(int node1, int node1Successor,
+                                      int node2, int node2Successor,
+                                      int node3, int node3Successor,
+                                      List<Integer> part1To2, List<Integer> part2To3, List<Integer> part3To1,
+                                      long clearedObjectiveValue,
+                                      Graph graph) {
+
+        Integer[] p1To2 = part1To2.toArray(new Integer[]{});
+        Integer[] p1To3 = part3To1.toArray(new Integer[]{});
+        ArrayUtils.reverse(p1To3);
+        Integer[] p2To3 = part2To3.toArray(new Integer[]{});
+        Integer[] neighborNodes = ArrayUtils.addAll(p1To2, ArrayUtils.addAll(p1To3, p2To3));
+
+        long newWeight1 = graph.getWeight(node2, node1);
+        long newWeight2 = graph.getWeight(node3Successor, node2Successor);
+        long newWeight3 = graph.getWeight(node3, node1Successor);
+
+        long newObjectiveValue = clearedObjectiveValue + newWeight1 + newWeight2 + newWeight3;
+
+        return new Solution(Arrays.asList(neighborNodes), newObjectiveValue);
+    }
+
+    private Solution getNeighborCase5(int node1, int node1Successor,
+                                      int node2, int node2Successor,
+                                      int node3, int node3Successor,
+                                      List<Integer> part1To2, List<Integer> part2To3, List<Integer> part3To1,
+                                      long clearedObjectiveValue,
+                                      Graph graph) {
+
+        Integer[] p1To2 = part1To2.toArray(new Integer[]{});
+        Integer[] p3To1 = part3To1.toArray(new Integer[]{});
+        Integer[] p3To2 = part2To3.toArray(new Integer[]{});
+        ArrayUtils.reverse(p3To2);
+        Integer[] neighborNodes = ArrayUtils.addAll(p1To2, ArrayUtils.addAll(p3To1, p3To2));
+
+        long newWeight1 = graph.getWeight(node2, node3Successor);
+        long newWeight2 = graph.getWeight(node1, node3);
+        long newWeight3 = graph.getWeight(node2Successor, node1Successor);
+
+        long newObjectiveValue = clearedObjectiveValue + newWeight1 + newWeight2 + newWeight3;
+
+        return new Solution(Arrays.asList(neighborNodes), newObjectiveValue);
+    }
+
+    private Solution getNeighborCase6(int node1, int node1Successor,
                                       int node2, int node2Successor,
                                       int node3, int node3Successor,
                                       List<Integer> part1To2, List<Integer> part2To3, List<Integer> part3To1,
@@ -178,7 +233,7 @@ public class ThreeOptNeighborhoodNew implements Neighborhood {
         return new Solution(Arrays.asList(neighborNodes), newObjectiveValue);
     }
 
-    private Solution getNeighborCase2(int node1, int node1Successor,
+    private Solution getNeighborCase7(int node1, int node1Successor,
                                       int node2, int node2Successor,
                                       int node3, int node3Successor,
                                       List<Integer> part1To2, List<Integer> part2To3, List<Integer> part3To1,
@@ -199,25 +254,4 @@ public class ThreeOptNeighborhoodNew implements Neighborhood {
         return new Solution(Arrays.asList(neighborNodes), newObjectiveValue);
     }
 
-    private Solution getNeighborCase3(int node1, int node1Successor,
-                                      int node2, int node2Successor,
-                                      int node3, int node3Successor,
-                                      List<Integer> part1To2, List<Integer> part2To3, List<Integer> part3To1,
-                                      long clearedObjectiveValue,
-                                      Graph graph) {
-
-        Integer[] p1To2 = part1To2.toArray(new Integer[]{});
-        Integer[] p1To3 = part3To1.toArray(new Integer[]{});
-        ArrayUtils.reverse(p1To3);
-        Integer[] p2To3 = part2To3.toArray(new Integer[]{});
-        Integer[] neighborNodes = ArrayUtils.addAll(p1To2, ArrayUtils.addAll(p1To3, p2To3));
-
-        long newWeight1 = graph.getWeight(node2, node1);
-        long newWeight2 = graph.getWeight(node3Successor, node2Successor);
-        long newWeight3 = graph.getWeight(node3, node1Successor);
-
-        long newObjectiveValue = clearedObjectiveValue + newWeight1 + newWeight2 + newWeight3;
-
-        return new Solution(Arrays.asList(neighborNodes), newObjectiveValue);
-    }
 }
