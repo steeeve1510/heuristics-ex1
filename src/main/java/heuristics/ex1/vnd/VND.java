@@ -2,9 +2,7 @@ package heuristics.ex1.vnd;
 
 import heuristics.ex1.dto.Graph;
 import heuristics.ex1.dto.Solution;
-import heuristics.ex1.localsearch.neighborhood.Neighborhood;
-import heuristics.ex1.localsearch.neighborhood.StepType;
-import heuristics.ex1.localsearch.neighborhood.TwoOptNeighborhood;
+import heuristics.ex1.localsearch.neighborhood.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +13,8 @@ public class VND {
 
     public VND() {
         neighborhoods.add(new TwoOptNeighborhood());
+        neighborhoods.add(new TwoFiveOptNeighborhood());
+        neighborhoods.add(new ThreeOptNeighborhood());
     }
 
     public Solution improve(Solution solution, Graph graph) {
