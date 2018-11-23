@@ -23,7 +23,7 @@ public class Benchmark {
     public static void main(String[] args) throws IOException {
         List<File> instances = getInstances();
 
-        Printer printer = new Printer("03c - localsearch 2opt random.csv");
+        Printer printer = new Printer("03b - localsearch 2opt next.csv");
 
         printer.println("name,run,isInfeasible,timedOut,objectiveValue,solution");
         for (File instance : instances) {
@@ -33,8 +33,8 @@ public class Benchmark {
 //            randomConstruction(instance, graph, printer);
 
 //            localSearch_best(new TwoOptNeighborhood(), instance, graph, printer);
-//            localSearch_next(new TwoOptNeighborhood(),instance, graph, printer);
-            localSearch_random(new TwoOptNeighborhood(), instance, graph, printer);
+            localSearch_next(new TwoOptNeighborhood(),instance, graph, printer);
+//            localSearch_random(new TwoOptNeighborhood(), instance, graph, printer);
 
 //            localSearch_best(new TwoFiveOptNeighborhood(), instance, graph, printer);
 //            localSearch_next(new TwoFiveOptNeighborhood(),instance, graph, printer);
