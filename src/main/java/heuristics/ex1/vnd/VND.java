@@ -18,16 +18,14 @@ public class VND {
     }
 
     public Solution improve(Solution solution, Graph graph) {
-        System.out.println("Starting VND");
         int l = 0;
 
         do {
             Neighborhood neighborhood = neighborhoods.get(l);
 
-            Solution neighbor = neighborhood.get(solution, graph, StepType.BEST_IMPOVEMENT);
+            Solution neighbor = neighborhood.get(solution, graph, StepType.NEXT_IMPROVEMENT);
 
             if (neighbor != null && neighbor.getAbsoluteObjectiveValue() < solution.getAbsoluteObjectiveValue()) {
-                System.out.println("Found improvement: " + neighbor.getAbsoluteObjectiveValue());
                 solution = neighbor;
                 l = 0;
             } else {
