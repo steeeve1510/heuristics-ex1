@@ -1,7 +1,7 @@
 package heuristics.ex1.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.ArrayList;
@@ -10,11 +10,18 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
-@AllArgsConstructor
 public class Solution {
 
     private List<Integer> nodes;
     private long objectiveValue;
+    @Getter
+    @Setter
+    private boolean timedOut = false;
+
+    public Solution(List<Integer> nodes, long objectiveValue) {
+        this.nodes = nodes;
+        this.objectiveValue = objectiveValue;
+    }
 
     public long getAbsoluteObjectiveValue() {
         return Math.abs(objectiveValue);
