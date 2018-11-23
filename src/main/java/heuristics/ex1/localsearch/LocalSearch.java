@@ -9,19 +9,29 @@ import lombok.AllArgsConstructor;
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadMXBean;
 
-@AllArgsConstructor
 public class LocalSearch {
 
     private Neighborhood neighborhood;
     private StepType stepType;
+    private int maxTimeInSeconds;
+
+    public LocalSearch(Neighborhood neighborhood, StepType stepType) {
+        this(neighborhood, stepType, 15 * 60);
+    }
+
+    public LocalSearch(Neighborhood neighborhood, StepType stepType, int maxTimeInSeconds) {
+        this.neighborhood = neighborhood;
+        this.stepType = stepType;
+        this.maxTimeInSeconds = maxTimeInSeconds;
+    }
 
     public Solution improve(Solution solution, Graph graph) {
 
         long size = solution.getSize();
-        long maxUnsuccessfulImprovements = size * 100;
+        long maxUnsuccessfulImprovements = size * 250;
 
         long startTime = ManagementFactory.getThreadMXBean().getCurrentThreadCpuTime();
-        long endTime = startTime + 1000L * 1000L * 1000L * 60L * 15L; // 15Minutes
+        long endTime = startTime + 1000L * 1000L * 1000L * maxTimeInSeconds;
 
         boolean timedOut = false;
         int unsuccessfulImprovements = 0;

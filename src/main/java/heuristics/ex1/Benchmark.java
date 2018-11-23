@@ -7,8 +7,7 @@ import heuristics.ex1.construction.RandomConstructionHeuristic;
 import heuristics.ex1.dto.Graph;
 import heuristics.ex1.dto.Solution;
 import heuristics.ex1.localsearch.LocalSearch;
-import heuristics.ex1.localsearch.neighborhood.StepType;
-import heuristics.ex1.localsearch.neighborhood.TwoOptNeighborhood;
+import heuristics.ex1.localsearch.neighborhood.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,12 +18,12 @@ import java.util.stream.Collectors;
 
 public class Benchmark {
 
-    private static final int RUNS = 20;
+    private static final int RUNS = 10;
 
     public static void main(String[] args) throws IOException {
         List<File> instances = getInstances();
 
-        Printer printer = new Printer("03a - localsearch 2opt best.csv");
+        Printer printer = new Printer("03c - localsearch 2opt random.csv");
 
         printer.println("name,run,isInfeasible,timedOut,objectiveValue,solution");
         for (File instance : instances) {
@@ -33,9 +32,17 @@ public class Benchmark {
 //            greedyConstruction(instance, graph, printer);
 //            randomConstruction(instance, graph, printer);
 
-            localSearch_2opt_best(instance, graph, printer);
-//            localSearch_2opt_next(instance, graph, printer);
-//            localSearch_2opt_random(instance, graph, printer);
+//            localSearch_best(new TwoOptNeighborhood(), instance, graph, printer);
+//            localSearch_next(new TwoOptNeighborhood(),instance, graph, printer);
+            localSearch_random(new TwoOptNeighborhood(), instance, graph, printer);
+
+//            localSearch_best(new TwoFiveOptNeighborhood(), instance, graph, printer);
+//            localSearch_next(new TwoFiveOptNeighborhood(),instance, graph, printer);
+//            localSearch_random(new TwoFiveOptNeighborhood(), instance, graph, printer);
+
+//            localSearch_best(new ThreeOptNeighborhoodNew(), instance, graph, printer);
+//            localSearch_next(new ThreeOptNeighborhoodNew(),instance, graph, printer);
+//            localSearch_random(new ThreeOptNeighborhoodNew(), instance, graph, printer);
         }
 
         printer.close();
@@ -67,12 +74,13 @@ public class Benchmark {
         }
     }
 
-    private static void localSearch_2opt_best(File instance, Graph graph, Printer printer) {
+
+    private static void localSearch_best(Neighborhood neighborhood, File instance, Graph graph, Printer printer) {
         ConstructionHeuristic constructionHeuristic = new GreedyConstructionHeuristic();
 
         Solution solution = constructionHeuristic.solve(graph);
 
-        LocalSearch localSearch = new LocalSearch(new TwoOptNeighborhood(), StepType.BEST_IMPOVEMENT);
+        LocalSearch localSearch = new LocalSearch(neighborhood, StepType.BEST_IMPOVEMENT);
         solution = localSearch.improve(solution, graph);
 
         String name = instance.getName().substring(0, instance.getName().length() - 4);
@@ -82,12 +90,12 @@ public class Benchmark {
         printer.println(name + "," + 1 + "," + isInfeasible + "," + solution.isTimedOut() + "," + objectiveValue + "," + solution);
     }
 
-    private static void localSearch_2opt_next(File instance, Graph graph, Printer printer) {
+    private static void localSearch_next(Neighborhood neighborhood, File instance, Graph graph, Printer printer) {
         ConstructionHeuristic constructionHeuristic = new GreedyConstructionHeuristic();
 
         Solution solution = constructionHeuristic.solve(graph);
 
-        LocalSearch localSearch = new LocalSearch(new TwoOptNeighborhood(), StepType.NEXT_IMPROVEMENT);
+        LocalSearch localSearch = new LocalSearch(neighborhood, StepType.NEXT_IMPROVEMENT);
         solution = localSearch.improve(solution, graph);
 
         String name = instance.getName().substring(0, instance.getName().length() - 4);
@@ -97,13 +105,13 @@ public class Benchmark {
         printer.println(name + "," + 1 + "," + isInfeasible + "," + solution.isTimedOut() + "," + objectiveValue + "," + solution);
     }
 
-    private static void localSearch_2opt_random(File instance, Graph graph, Printer printer) {
+    private static void localSearch_random(Neighborhood neighborhood, File instance, Graph graph, Printer printer) {
         ConstructionHeuristic constructionHeuristic = new GreedyConstructionHeuristic();
 
         Solution solution = constructionHeuristic.solve(graph);
 
         // 10000 unsuccessfulImprovements
-        LocalSearch localSearch = new LocalSearch(new TwoOptNeighborhood(), StepType.RANDOM);
+        LocalSearch localSearch = new LocalSearch(neighborhood, StepType.RANDOM, 90);
         for (int i = 1; i <= RUNS; i++) {
             Solution improvedSolution = localSearch.improve(solution, graph);
 
@@ -114,7 +122,6 @@ public class Benchmark {
             printer.println(name + "," + i + "," + isInfeasible + "," + solution.isTimedOut() + "," + objectiveValue + "," + improvedSolution);
         }
     }
-
 
 
 
