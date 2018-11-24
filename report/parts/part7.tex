@@ -1,2 +1,4 @@
 \section*{7. Neighborhood structures}
-As neighborhood structures 2-opt, 2.5-opt and 3-opt were chosen. The 2-opt works as the 2-exchange method for TSP shown in the slides. 2.5-opt and 3-opt are generalization of the 2-opt approach. (They all exchange edges of the tour)
+As neighborhood structures 2-opt, 2.5-opt and 3-opt were chosen. The 2-opt works as the 2-exchange method for TSP shown in the slides. (It removes 2 edges and introduces two new edges). The 2.5-opt chooses a city and an edge. The city is removed from the current position and reintroduced between the cities corresponding to the chosen edge. The 3-opt removes three edges and reintroduces three new edges.
+
+Incremental evaluation is the same for all neighborhood structure. The costs of the edges, which are removed, are subtracted and the costs of the edges which are introduced are added to the objective value.
