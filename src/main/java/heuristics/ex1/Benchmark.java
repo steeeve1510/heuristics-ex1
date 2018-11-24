@@ -4,6 +4,7 @@ import heuristics.ex1.build.GraphBuilder;
 import heuristics.ex1.construction.ConstructionHeuristic;
 import heuristics.ex1.construction.GreedyConstructionHeuristic;
 import heuristics.ex1.construction.RandomConstructionHeuristic;
+import heuristics.ex1.construction.RandomizedGreedySearch;
 import heuristics.ex1.dto.Graph;
 import heuristics.ex1.dto.Solution;
 import heuristics.ex1.localsearch.LocalSearch;
@@ -19,7 +20,7 @@ import java.util.stream.Collectors;
 
 public class Benchmark {
 
-    private static final int RUNS = 10;
+    private static final int RUNS = 20;
 
     public static void main(String[] args) throws IOException {
         List<File> instances = getInstances();
@@ -75,12 +76,12 @@ public class Benchmark {
 
 
 
-        Printer printer = new Printer("06 - vnd.csv");
+        Printer printer = new Printer("02b - greedy random construction heuristic.csv");
         for (File instance : instances) {
             Graph graph = new GraphBuilder().build(instance);
 
 //            greedyConstruction(instance, graph, printer);
-//            randomConstruction(instance, graph, printer);
+            randomConstruction(instance, graph, printer);
 
 //            localSearch_best(new TwoOptNeighborhood(), instance, graph, printer);
 //            localSearch_next(new TwoOptNeighborhood(),instance, graph, printer);
@@ -94,7 +95,7 @@ public class Benchmark {
 //            localSearch_next(new ThreeOptNeighborhoodNew(),instance, graph, printer);
 //            localSearch_random(new ThreeOptNeighborhoodNew(), instance, graph, printer);
 
-            vnd(instance, graph, printer);
+//            vnd(instance, graph, printer);
         }
         printer.close();
         printer = null;
@@ -114,7 +115,7 @@ public class Benchmark {
     }
 
     private static void randomConstruction(File instance, Graph graph, Printer printer) {
-        ConstructionHeuristic constructionHeuristic = new RandomConstructionHeuristic();
+        ConstructionHeuristic constructionHeuristic = new RandomizedGreedySearch();
 
         for (int i = 1; i <= RUNS; i++) {
             Solution solution = constructionHeuristic.solve(graph);

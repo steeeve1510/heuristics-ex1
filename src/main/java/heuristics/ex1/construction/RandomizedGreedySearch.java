@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 public class RandomizedGreedySearch implements ConstructionHeuristic {
 
-    private static final int RESTRICTED_CANDIDATE_LIST_SIZE = 40;
+    private static final int RESTRICTED_CANDIDATE_LIST_FACTOR = 10;
 
     @Override
     public Solution solve(Graph graph) {
@@ -60,7 +60,7 @@ public class RandomizedGreedySearch implements ConstructionHeuristic {
                                         .collect(Collectors.toList());
 
         return sorted.stream()
-                     .limit(RESTRICTED_CANDIDATE_LIST_SIZE)
+                     .limit(graph.getMatrix().size() / RESTRICTED_CANDIDATE_LIST_FACTOR)
                      .map(NodeWithObjective::getNode)
                      .collect(Collectors.toList());
     }
