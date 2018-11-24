@@ -24,6 +24,57 @@ public class Benchmark {
     public static void main(String[] args) throws IOException {
         List<File> instances = getInstances();
 
+
+//        Printer printer3 = new Printer("05c - localsearch 3opt random.csv");
+//        for (File instance : instances) {
+//            Graph graph = new GraphBuilder().build(instance);
+//
+////            greedyConstruction(instance, graph, printer);
+////            randomConstruction(instance, graph, printer);
+//
+////            localSearch_best(new TwoOptNeighborhood(), instance, graph, printer3);
+////            localSearch_next(new TwoOptNeighborhood(),instance, graph, printer3);
+////            localSearch_random(new TwoOptNeighborhood(), instance, graph, printer3);
+//
+////            localSearch_best(new TwoFiveOptNeighborhood(), instance, graph, printer3);
+////            localSearch_next(new TwoFiveOptNeighborhood(),instance, graph, printer3);
+////            localSearch_random(new TwoFiveOptNeighborhood(), instance, graph, printer3);
+//
+////            localSearch_best(new ThreeOptNeighborhoodNew(), instance, graph, printer3);
+////            localSearch_next(new ThreeOptNeighborhoodNew(),instance, graph, printer3);
+//            localSearch_random(new ThreeOptNeighborhoodNew(), instance, graph, printer3);
+//        }
+//        printer3.close();
+//        printer3 = null;
+//
+//
+//
+//
+//        Printer printer2 = new Printer("05b - localsearch 3opt next.csv");
+//        for (File instance : instances) {
+//            Graph graph = new GraphBuilder().build(instance);
+//
+////            greedyConstruction(instance, graph, printer);
+////            randomConstruction(instance, graph, printer);
+//
+////            localSearch_best(new TwoOptNeighborhood(), instance, graph, printer2);
+////            localSearch_next(new TwoOptNeighborhood(),instance, graph, printer2);
+////            localSearch_random(new TwoOptNeighborhood(), instance, graph, printer2);
+//
+////            localSearch_best(new TwoFiveOptNeighborhood(), instance, graph, printer2);
+////            localSearch_next(new TwoFiveOptNeighborhood(),instance, graph, printer2);
+////            localSearch_random(new TwoFiveOptNeighborhood(), instance, graph, printer2);
+//
+////            localSearch_best(new ThreeOptNeighborhoodNew(), instance, graph, printer2);
+//            localSearch_next(new ThreeOptNeighborhoodNew(),instance, graph, printer2);
+////            localSearch_random(new ThreeOptNeighborhoodNew(), instance, graph, printer2);
+//        }
+//        printer2.close();
+//        printer2 = null;
+
+
+
+
         Printer printer = new Printer("06 - vnd.csv");
         for (File instance : instances) {
             Graph graph = new GraphBuilder().build(instance);
@@ -48,49 +99,6 @@ public class Benchmark {
         printer.close();
         printer = null;
 
-//        Printer printer2 = new Printer("05b - localsearch 3opt next.csv");
-//        for (File instance : instances) {
-//            Graph graph = new GraphBuilder().build(instance);
-//
-////            greedyConstruction(instance, graph, printer);
-////            randomConstruction(instance, graph, printer);
-//
-////            localSearch_best(new TwoOptNeighborhood(), instance, graph, printer2);
-////            localSearch_next(new TwoOptNeighborhood(),instance, graph, printer2);
-////            localSearch_random(new TwoOptNeighborhood(), instance, graph, printer2);
-//
-////            localSearch_best(new TwoFiveOptNeighborhood(), instance, graph, printer2);
-////            localSearch_next(new TwoFiveOptNeighborhood(),instance, graph, printer2);
-////            localSearch_random(new TwoFiveOptNeighborhood(), instance, graph, printer2);
-//
-////            localSearch_best(new ThreeOptNeighborhoodNew(), instance, graph, printer2);
-//            localSearch_next(new ThreeOptNeighborhoodNew(),instance, graph, printer2);
-////            localSearch_random(new ThreeOptNeighborhoodNew(), instance, graph, printer2);
-//        }
-//        printer2.close();
-//        printer2 = null;
-//
-//        Printer printer3 = new Printer("05c - localsearch 3opt random.csv");
-//        for (File instance : instances) {
-//            Graph graph = new GraphBuilder().build(instance);
-//
-////            greedyConstruction(instance, graph, printer);
-////            randomConstruction(instance, graph, printer);
-//
-////            localSearch_best(new TwoOptNeighborhood(), instance, graph, printer3);
-////            localSearch_next(new TwoOptNeighborhood(),instance, graph, printer3);
-////            localSearch_random(new TwoOptNeighborhood(), instance, graph, printer3);
-//
-////            localSearch_best(new TwoFiveOptNeighborhood(), instance, graph, printer3);
-////            localSearch_next(new TwoFiveOptNeighborhood(),instance, graph, printer3);
-////            localSearch_random(new TwoFiveOptNeighborhood(), instance, graph, printer3);
-//
-////            localSearch_best(new ThreeOptNeighborhoodNew(), instance, graph, printer3);
-////            localSearch_next(new ThreeOptNeighborhoodNew(),instance, graph, printer3);
-//            localSearch_random(new ThreeOptNeighborhoodNew(), instance, graph, printer3);
-//        }
-//        printer3.close();
-//        printer3 = null;
     }
 
     private static void greedyConstruction(File instance, Graph graph, Printer printer) {
