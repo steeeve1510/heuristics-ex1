@@ -1,4 +1,355 @@
 \section*{7. Neighborhood structures}
-As neighborhood structures 2-opt, 2.5-opt and 3-opt were chosen. The 2-opt works as the 2-exchange method for TSP shown in the slides. (It removes 2 edges and introduces two new edges). The 2.5-opt chooses a city and an edge. The city is removed from the current position and reintroduced between the cities corresponding to the chosen edge. The 3-opt removes three edges and reintroduces three new edges.
+As neighborhood structures 2-opt, 2.5-opt and 3-opt were chosen. The 2-opt works as the 2-exchange method for TSP shown in the slides. (It removes 2 edges and introduces two new edges). The 2.5-opt chooses a city and an edge. The city is removed from the current position and reintroduced between the cities of the chosen edge. The 3-opt removes three edges and reintroduces three new edges.
 
 Incremental evaluation is the same for all neighborhood structure. The costs of the edges, which are removed, are subtracted and the costs of the edges which are introduced are added to the objective value.
+
+For the random improvement steps each run had at most 90 seconds to complete. Otherwise the test run is marked as \textit{timeout} in the results table.
+\begin{table}
+\centering
+	\begin{tabular}{|| c | c | c | c ||} 
+		\hline
+		Instance & Best-Value & Infeasible & Time (ms) \\
+		\hline\hline
+0010 & 699933 & false & 272ms \\
+0015 & 1399759 & false & 332ms \\
+0020 & 429 & false & 473ms \\
+0025 & 4899690 & false & 927ms \\
+0030 & 100498 & false & 1058ms \\
+0040 & 1799380 & false & 2632ms \\
+0050 & 1699178 & false & 5467ms \\
+0060 & 14999444 & false & 10559ms \\
+0070 & 17699340 & false & 18950ms \\
+0080 & 155802169 & true & 47ms \\
+0090 & 14998959 & false & 44592ms \\
+0100 & 201623407 & true & 93ms \\
+0150 & 43398528 & false & 343225ms \\
+0200 & 383445887 & true & 1413ms \\
+0250 & 2735986891 & true & 3344ms \\
+0300 & 3937012091 & true & 6438ms \\
+0400 & 7035769133 & true & 19087ms \\
+0500 & 13447932886 & true & 45317ms \\
+0600 & 12906137872 & true & 101043ms \\
+0700 & 20242890602 & true & 164400ms \\
+0800 & 19641493916 & true & 311129ms \\
+0900 & 19545024277 & true & 440787ms \\
+1000 & 239199632699 & true & timeout \\
+1500 & 150079477135 & true & timeout \\
+2000 & 21547583195 & true & timeout \\
+2500 & 296089698825 & true & timeout \\
+3000 & 657424981821 & true & timeout \\
+		\hline
+	\end{tabular}
+\caption{Local search - 2-opt - best improvement - results}
+\end{table}
+
+\begin{table}
+\centering
+	\begin{tabular}{|| c | c | c | c ||} 
+		\hline
+		Instance & Best-Value & Infeasible & Time (ms) \\
+		\hline\hline
+0010 & 699877 & false & 4ms \\
+0015 & 6899950 & false & 8ms \\
+0020 & 1899587 & false & 20ms \\
+0025 & 3399471 & false & 25ms \\
+0030 & 2899273 & false & 40ms \\
+0040 & 3199069 & false & 23ms \\
+0050 & 5198880 & false & 41ms \\
+0060 & 114201455 & true & 3ms \\
+0070 & 125701859 & true & 9ms \\
+0080 & 156702282 & true & 10ms \\
+0090 & 170321167 & true & 24ms \\
+0100 & 625868660 & true & 33ms \\
+0150 & 621970001 & true & 94ms \\
+0200 & 2096822804 & true & 188ms \\
+0250 & 2707886346 & true & 335ms \\
+0300 & 5229347742 & true & 489ms \\
+0400 & 12368218314 & true & 854ms \\
+0500 & 15672753783 & true & 1195ms \\
+0600 & 32593142288 & true & 2721ms \\
+0700 & 35983096281 & true & 3653ms \\
+0800 & 50371487802 & true & 7119ms \\
+0900 & 61103764436 & true & 10685ms \\
+1000 & 239199632699 & true & 1731ms \\
+1500 & 150079477135 & true & 3608ms \\
+2000 & 8985268576 & true & 86513ms \\
+2500 & 122579988854 & true & 143224ms \\
+3000 & 657424981821 & true & 13243ms \\
+		\hline
+	\end{tabular}
+\caption{Local search - 2-opt - next improvement - results}
+\end{table}
+
+
+\begin{table}
+\centering
+\resizebox{\textwidth}{!}{
+	\begin{tabular}{|| c | c | c | c | c | c | c | c ||} 
+		\hline
+		Instance & Best-Value & Infeasible & Objective Mean & Objective SD & Time Mean & Time SD & \# feasible solution \\
+		\hline\hline
+0010 & 139 & false & 50002.5 & 49805.5 & 4.1ms & 1.4ms & 10/10 \\
+0015 & 326 & false & 30220.9 & 45609.6 & 6.2ms & 0.6ms & 10/10 \\
+0020 & 408 & false & 40070.0 & 48495.8 & 10.4ms & 0.8ms & 10/10 \\
+0025 & 585 & false & 20516.2 & 39744.6 & 14.8ms & 1.2ms & 10/10 \\
+0030 & 642 & false & 60128.5 & 79338.4 & 18.9ms & 2.8ms & 10/10 \\
+0040 & 824 & false & 20816.8 & 39632.5 & 30.0ms & 3.5ms & 10/10 \\
+0050 & 1057 & false & 60428.7 & 65480.0 & 45.6ms & 8.0ms & 10/10 \\
+0060 & 1405 & false & 119008.8 & 97199.7 & 71.0ms & 13.6ms & 5/10 \\
+0070 & 1699 & false & 180368.8 & 238353.2 & 113.6ms & 21.2ms & 5/10 \\
+0080 & 298108 & false & 298108.0 & 0.0 & 222.0ms & 0.0ms & 1/10 \\
+0090 & 2210 & false & 2210.0 & 0.0 & 162.0ms & 0.0ms & 1/10 \\
+0100 & 197603 & false & 197675.5 & 72.5 & 206.0ms & 29.0ms & 2/10 \\
+0150 & 10297028 & false & 10297028.0 & 0.0 & 614.0ms & 0.0ms & 1/10 \\
+0200 & 360945514 & true & - & - & - & - & 0/10 \\
+0250 & 1019315232 & true & - & - & - & - & 0/10 \\
+0300 & 1882906298 & true & - & - & - & - & 0/10 \\
+0400 & 5203551499 & true & - & - & - & - & 0/10 \\
+0500 & 8873789241 & true & - & - & - & - & 0/10 \\
+0600 & 12883437886 & true & - & - & - & - & 0/10 \\
+0700 & 21798551568 & true & - & - & - & - & 0/10 \\
+0800 & 26812661813 & true & - & - & - & - & 0/10 \\
+0900 & 33341137027 & true & - & - & - & - & 0/10 \\
+1000 & 48671450494 & true & - & - & - & - & 0/10 \\
+1500 & 46326978483 & true & - & - & - & - & 0/10 \\
+2000 & 13545271258 & true & - & - & - & - & 0/10 \\
+2500 & 225120688815 & true & - & - & - & - & 0/10 \\
+3000 & 533324980964 & true & - & - & - & - & 0/10 \\
+		\hline
+	\end{tabular}
+}
+\caption{Local search - 2-opt - random improvement - results}
+\end{table}
+
+
+
+
+
+\begin{table}
+\centering
+	\begin{tabular}{|| c | c | c | c ||} 
+		\hline
+		Instance & Best-Value & Infeasible & Time \\
+		\hline\hline
+0010 & 99751 & false & 5 \\
+0015 & 337 & false & 5 \\
+0020 & 428 & false & 9 \\
+0025 & 100595 & false & 9 \\
+0030 & 609 & false & 18 \\
+0040 & 200789 & false & 31 \\
+0050 & 99083 & false & 36 \\
+0060 & 418204715 & true & 38 \\
+0070 & 611507213 & true & 156 \\
+0080 & 1260113220 & true & 225 \\
+0090 & 814784626 & true & 228 \\
+0100 & 885992254 & true & 510 \\
+0150 & 3405549773 & true & 2349 \\
+0200 & 6534869866 & true & 2893 \\
+0250 & 10627387592 & true & 8141 \\
+0300 & 20105053175 & true & 20827 \\
+0400 & 32205506210 & true & 47927 \\
+0500 & 52128504804 & true & 129514 \\
+0600 & 68262514959 & true & 213248 \\
+0700 & 91403623343 & true & 392336 \\
+0800 & 123094386985 & true & 795009 \\
+0900 & 142745655609 & true & timeout \\
+1000 & 200302960262 & true & timeout \\
+1500 & 136675192173 & true & timeout \\
+2000 & 26912697839 & true & timeout \\
+2500 & 336507601419 & true & timeout \\
+3000 & 653550544628 & true & timeout \\
+		\hline
+	\end{tabular}
+\caption{Local search - 2-5-opt - best improvement - results}
+\end{table}
+
+\begin{table}
+\centering
+	\begin{tabular}{|| c | c | c | c ||} 
+		\hline
+		Instance & Best-Value & Infeasible & Time \\
+		\hline\hline
+0010 & 182 & false & 0 \\
+0015 & 316 & false & 0 \\
+0020 & 517 & false & 2 \\
+0025 & 3499625 & false & 3 \\
+0030 & 74308100 & true & 2 \\
+0040 & 194720980 & true & 10 \\
+0050 & 99017 & false & 9 \\
+0060 & 278103442 & true & 29 \\
+0070 & 764608719 & true & 60 \\
+0080 & 1075811264 & true & 146 \\
+0090 & 1220526327 & true & 96 \\
+0100 & 1336337862 & true & 78 \\
+0150 & 4102219786 & true & 430 \\
+0200 & 6102925527 & true & 465 \\
+0250 & 11183244499 & true & 3426 \\
+0300 & 20099953137 & true & 9377 \\
+0400 & 33989622603 & true & 19074 \\
+0500 & 49861683355 & true & 26549 \\
+0600 & 64315974101 & true & 85980 \\
+0700 & 94545944015 & true & 129078 \\
+0800 & 115853318122 & true & 181840 \\
+0900 & 142741555650 & true & 386723 \\
+1000 & 185975638774 & true & 465751 \\
+1500 & 121311948653 & true & timeout \\
+2000 & 22251844365 & true & timeout \\
+2500 & 287217285321 & true & timeout \\
+3000 & 577995768663 & true & timeout \\
+		\hline
+	\end{tabular}
+\caption{Local search - 2-5-opt - next improvement - results}
+\end{table}
+
+\begin{table}
+\resizebox{\textwidth}{!}{
+	\begin{tabular}{|| c | c | c | c | c | c | c | c ||} 
+		\hline
+		Instance & Best-Value & Infeasible & Objective Mean & Objective SD & Time Mean & Time SD & \# feasible solution \\
+		\hline\hline
+0010 & 148 & false & 10138.5 & 29870.8 & 4.9 & 1.2 & 10/10 \\
+0015 & 337 & false & 40067.2 & 48623.0 & 5.4 & 0.8 & 10/10 \\
+0020 & 483 & false & 111046.6 & 128251.2 & 9.0 & 2.1 & 9/10 \\
+0025 & 99481 & false & 883196.7 & 1127346.0 & 15.8 & 1.5 & 6/10 \\
+0030 & 609 & false & 88882.9 & 87060.4 & 20.9 & 3.7 & 9/10 \\
+0040 & 200844 & false & 299930.5 & 99086.5 & 31.5 & 0.5 & 2/10 \\
+0050 & 1059 & false & 100165.8 & 114694.0 & 36.2 & 10.1 & 9/10 \\
+0060 & 272803327 & true & - & - & - & - & 0/10 \\
+0070 & 452705654 & true & - & - & - & - & 0/10 \\
+0080 & 889209297 & true & - & - & - & - & 0/10 \\
+0090 & 607363746 & true & - & - & - & - & 0/10 \\
+0100 & 880692040 & true & - & - & - & - & 0/10 \\
+0150 & 3745284442 & true & - & - & - & - & 0/10 \\
+0200 & 5657080857 & true & - & - & - & - & 0/10 \\
+0250 & 9489372988 & true & - & - & - & - & 0/10 \\
+0300 & 16742511328 & true & - & - & - & - & 0/10 \\
+0400 & 29519281330 & true & - & - & - & - & 0/10 \\
+0500 & 50984293832 & true & - & - & - & - & 0/10 \\
+0600 & 66945801385 & true & - & - & - & - & 0/10 \\
+0700 & 94538243750 & true & - & - & - & - & 0/10 \\
+0800 & 119463651999 & true & - & - & - & - & 0/10 \\
+0900 & 140750253607 & true & - & - & - & - & 0/10 \\
+1000 & 188009183402 & true & - & - & - & - & 0/10 \\
+1500 & 124168230054 & true & - & - & - & - & 0/10 \\
+2000 & 24230777235 & true & - & - & - & - & 0/10 \\
+2500 & 320054262139 & true & - & - & - & - & 0/10 \\
+3000 & 626410082565 & true & - & - & - & - & 0/10 \\
+		\hline
+	\end{tabular}
+}
+\caption{Local search - 2-5-opt - random improvement - results}
+\end{table}
+
+
+
+
+
+
+
+
+\begin{table}
+\centering
+	\begin{tabular}{|| c | c | c | c ||} 
+		\hline
+		Instance & Best-Value & Infeasible & Time \\
+		\hline\hline
+0010 & 149 & false & 31ms \\
+0015 & 316 & false & 31ms \\
+0020 & 431 & false & 62ms \\
+0025 & 563 & false & 78ms \\
+0030 & 501 & false & 140ms \\
+0040 & 734 & false & 234ms \\
+0050 & 981 & false & 328ms \\
+0060 & 1165 & false & 578ms \\
+0070 & 1650 & false & 1375ms \\
+0080 & 1700 & false & 2875ms \\
+0090 & 1603 & false & 2921ms \\
+0100 & 1604 & false & 4203ms \\
+0150 & 3287 & false & 41875ms \\
+0200 & 3852 & false & 123500ms \\
+0250 & 5405 & false & 547218ms \\
+0300 & 65396681 & false & 910765ms \\
+0400 & 24127130423 & true & timeout \\
+0500 & 49876483943 & true & timeout \\
+0600 & 78809725157 & true & timeout \\
+0700 & 121397674923 & true & timeout \\
+0800 & 155756900335 & true & timeout \\
+0900 & 182468297533 & true & timeout \\
+1000 & 235107441054 & true & timeout \\
+		\hline
+	\end{tabular}
+\caption{Local search - 3-opt - best improvement - results}
+\end{table}
+
+\begin{table}
+\centering
+	\begin{tabular}{|| c | c | c | c ||} 
+		\hline
+		Instance & Best-Value & Infeasible & Time \\
+		\hline\hline
+0010 & 182 & false & 0ms \\
+0015 & 337 & false & 0ms \\
+0020 & 406 & false & 0ms \\
+0025 & 664 & false & 15ms \\
+0030 & 632 & false & 15ms \\
+0040 & 979 & false & 62ms \\
+0050 & 1258 & false & 62ms \\
+0060 & 1799 & false & 171ms \\
+0070 & 1752 & false & 218ms \\
+0080 & 1941 & false & 453ms \\
+0090 & 2265 & false & 406ms \\
+0100 & 2259 & false & 671ms \\
+0150 & 4069 & false & 2375ms \\
+0200 & 4817 & false & 22078ms \\
+0250 & 6213 & false & 22031ms \\
+0300 & 527669094 & true & 52734ms \\
+0400 & 729410161 & true & 166234ms \\
+0500 & 899612449 & true & 372703ms \\
+0600 & 84183 & false & 957656ms \\
+0700 & 2847923254 & true & 918375ms \\
+0800 & 5073855198 & true & timeout \\
+0900 & 13515917309 & true & timeout \\
+1000 & 32297283107 & true & timeout \\
+		\hline
+	\end{tabular}
+\caption{Local search - 3-opt - next improvement - results}
+\end{table}
+
+\begin{table}
+\resizebox{\textwidth}{!}{
+	\begin{tabular}{|| c | c | c | c | c | c | c | c ||} 
+		\hline
+		Instance & Best-Value & Infeasible & Objective Mean & Objective SD & Time Mean & Time SD & \# feasible solution \\
+		\hline\hline
+0010 & 105 & false & 171.4 & 40.9 & 12.1ms & 9.2ms & 10/10 \\
+0015 & 316 & false & 408.7 & 60.3 & 24.6ms & 12.4ms & 10/10 \\
+0020 & 429 & false & 503.7 & 53.6 & 33.8ms & 21.8ms & 10/10 \\
+0025 & 575 & false & 631.6 & 38.6 & 38.6ms & 10.3ms & 10/10 \\
+0030 & 665 & false & 20634.0 & 39665.3 & 37.1ms & 10.2ms & 10/10 \\
+0040 & 877 & false & 20799.2 & 39628.1 & 93.3ms & 31.4ms & 10/10 \\
+0050 & 1180 & false & 533236.2 & 1193066.3 & 157.6ms & 52.3ms & 9/10 \\
+0060 & 1460 & false & 411712.1 & 866292.0 & 386.3ms & 89.0ms & 8/10 \\
+0070 & 1962 & false & 225523.4 & 146631.9 & 564.0ms & 146.8ms & 8/10 \\
+0080 & 598099 & false & 7798493.5 & 7200394.5 & 757.5ms & 7.5ms & 2/10 \\
+0090 & 7098009 & false & 7098009.0 & 0.0 & 453.0ms & 0.0ms & 1/10 \\
+0100 & 182323216 & true & - & - & - & - & 0/10 \\
+0150 & 962104997 & true & - & - & - & - & 0/10 \\
+0200 & 1689079173 & true & - & - & - & - & 0/10 \\
+0250 & 3276344000 & true & - & - & - & - & 0/10 \\
+0300 & 6598485266 & true & - & - & - & - & 0/10 \\
+0400 & 14180335736 & true & - & - & - & - & 0/10 \\
+0500 & 23659830801 & true & - & - & - & - & 0/10 \\
+0600 & 32666744078 & true & - & - & - & - & 0/10 \\
+0700 & 51837704630 & true & - & - & - & - & 0/10 \\
+0800 & 83083801889 & true & - & - & - & - & 0/10 \\
+0900 & 114809022746 & true & - & - & - & - & 0/10 \\
+1000 & 149054206280 & true & - & - & - & - & 0/10 \\
+1500 & 127000609197 & true & - & - & - & - & 0/10 \\
+2000 & 24843762476 & true & - & - & - & - & 0/10 \\
+2500 & 326365399560 & true & - & - & - & - & 0/10 \\
+3000 & 638042594717 & true & - & - & - & - & 0/10 \\
+		\hline
+	\end{tabular}
+}
+\caption{Local search - 3-opt - random improvement - results}
+\end{table}

@@ -51,40 +51,77 @@ public class EvaluateBenchmark {
             String line;
 
             if (entriesForInstance.size() > 1) {
-                double meanObjectiveValue = entriesForInstance.stream()
-                        .mapToLong(Entry::getObjectiveValue)
-                        .average()
-                        .orElseThrow(() -> new RuntimeException("Dafuq"));
-                double sdObjectiveValue = calculateSD(
-                        entriesForInstance.stream()
-                            .map(Entry::getObjectiveValue)
-                            .collect(Collectors.toList())
-                );
+                List<Entry> filteredEntriesForInstance = entriesForInstance.stream()
+                        .filter(e -> !e.isInfeasible())
+                        .collect(Collectors.toList());
 
-                double meanTime = entriesForInstance.stream()
-                        .mapToLong(Entry::getTime)
-                        .average()
-                        .orElseThrow(() -> new RuntimeException("Dafuq"));
-                double sdTime = calculateSD(
-                        entriesForInstance.stream()
-                                .map(Entry::getTime)
-                                .collect(Collectors.toList())
-                );
+                int numberOfFeasible = filteredEntriesForInstance.size();
+                int numberOfInfeasible = entriesForInstance.size()  - filteredEntriesForInstance.size();
 
-                line = instanceString + " & " +
-                        bestObjectiveValue + " & " +
-                        bestIsInfeasible + " & " +
-                        String.format("%.1f", meanObjectiveValue) + " & " +
-                        String.format("%.1f", sdObjectiveValue) + " & " +
-                        String.format("%.1f", meanTime) + " & " +
-                        String.format("%.1f", sdTime) + " \\\\";
+                if (filteredEntriesForInstance.size() > 0) {
+                    double meanObjectiveValue = filteredEntriesForInstance.stream()
+                            .mapToLong(Entry::getObjectiveValue)
+                            .average()
+                            .orElseThrow(() -> new RuntimeException("Dafuq"));
+                    double sdObjectiveValue = calculateSD(
+                            filteredEntriesForInstance.stream()
+                                    .map(Entry::getObjectiveValue)
+                                    .collect(Collectors.toList())
+                    );
+
+                    double meanTime = filteredEntriesForInstance.stream()
+                            .mapToLong(Entry::getTime)
+                            .average()
+                            .orElseThrow(() -> new RuntimeException("Dafuq"));
+                    double sdTime = calculateSD(
+                            filteredEntriesForInstance.stream()
+                                    .map(Entry::getTime)
+                                    .collect(Collectors.toList())
+                    );
+
+                    if (new Double(meanTime).longValue() > -1) {
+                        line = instanceString + " & " +
+                                bestObjectiveValue + " & " +
+                                bestIsInfeasible + " & " +
+                                String.format("%.1f", meanObjectiveValue) + " & " +
+                                String.format("%.1f", sdObjectiveValue) + " & " +
+                                String.format("%.1f", meanTime) + "ms & " +
+                                String.format("%.1f", sdTime) + "ms & " +
+                                numberOfFeasible + "/10 \\\\";
+                    } else {
+                        line = instanceString + " & " +
+                                bestObjectiveValue + " & " +
+                                bestIsInfeasible + " & " +
+                                String.format("%.1f", meanObjectiveValue) + " & " +
+                                String.format("%.1f", sdObjectiveValue) + " & " +
+                                "timeout" + " & " +
+                                "timeout" + " & " +
+                                numberOfFeasible + "/10 \\\\";
+                    }
+
+                } else {
+                    line = instanceString + " & " +
+                            bestObjectiveValue + " & " +
+                            bestIsInfeasible + " & " +
+                            "-" + " & " +
+                            "-" + " & " +
+                            "-" + " & " +
+                            "-" + " & " +
+                            "0/10" + " \\\\";
+                }
+
+
             } else {
                 long bestTime = minimum.getTime();
+                String bestTimeString = bestTime + "ms";
+                if (bestTime == -1) {
+                    bestTimeString = "timeout";
+                }
 
                 line = instanceString + " & " +
                         bestObjectiveValue + " & " +
                         bestIsInfeasible + " & " +
-                        bestTime + " \\\\";
+                        bestTimeString + " \\\\";
             }
 
             System.out.println(line);
@@ -158,21 +195,22 @@ public class EvaluateBenchmark {
     private static List<File> getFiles() {
         List<String> names = new LinkedList<>();
 //        names.add("01 - greedy construction - new.csv");
-        names.add("02 - random construction - new.csv");
-//        names.add("03a - localsearch 2opt best.csv");
-//        names.add("03b - localsearch 2opt next.csv");
-//        names.add("03c - localsearch 2opt random.csv");
-//        names.add("04a - localsearch 2-5opt best.csv");
-//        names.add("04b - localsearch 2-5opt next.csv");
-//        names.add("04c - localsearch 2-5opt random.csv");
-//        names.add("05a - localsearch 3opt best.csv");
-//        names.add("05a - localsearch 3opt best_old.csv");
-//        names.add("05a - localsearch 3opt best_old2.csv");
-//        names.add("05b - localsearch 3opt next.csv");
-//        names.add("05c - localsearch 3opt random.csv");
-//        names.add("06 - vnd.csv");
-//        names.add("06 - vnd_old.csv");
-//        names.add("07 - grasp.csv");
+//        names.add("02 - random construction - new.csv");
+
+//        names.add("03a - localsearch 2opt best - new.csv");
+//        names.add("03b - localsearch 2opt next - new.csv");
+//        names.add("03c - localsearch 2opt random - new.csv");
+
+//        names.add("04a - localsearch 2-5opt best - new.csv");
+//        names.add("04b - localsearch 2-5opt next - new.csv");
+//        names.add("04c - localsearch 2-5opt random - new.csv");
+//
+        names.add("05a - localsearch 3opt best - new.csv");
+//        names.add("05b - localsearch 3opt next - new.csv");
+//        names.add("05c - localsearch 3opt random - new.csv");
+
+//        names.add("06 - vnd - new.csv");
+//        names.add("07 - grasp - new.csv");
 
         return names.stream()
                 .map(n -> new File("benchmarks/" + n))

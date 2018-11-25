@@ -1,42 +1,42 @@
+\newpage
 \section*{8. GRASP}
-GRASP is implemented as proposed in the slides. Like local search the number of iterations since the last successful improvements is the termination criteria and can be configured. \\ 
+GRASP is implemented as proposed in the slides. Like local search the number of iterations since the last successful improvements is the termination criteria and can be configured. In our example maximal 100 unsuccessful improvements have been chosen. For the neighborhood structure 3-opt with \textit{next improvement} step has been chosen. For the results each instance consists of 10 runs with a maximum CPU time limit of 90 seconds.
 
-The next table shows the best  value obtained, if the best solution found is infeasible and the average runtime of 10 runs, or of a single one if the search was aborted because of the time limit.
-
-The second machine was used in order to test the GRASP method with a 2Opt local search and \textit{next improvement} step type. The search was aborted after 100 unsuccessful improvements or 15 minutes of CPU time have elapsed.
-
-\begin{center}
-	\begin{tabular}{||c | c | c | c||} 
+\begin{table}
+\resizebox{\textwidth}{!}{
+	\begin{tabular}{|| c | c | c | c | c | c | c | c ||} 
 		\hline
-		Instance  & Value & Infeasible & Time (ms) \\
+		Instance & Best-Value & Infeasible & Objective Mean & Objective SD & Time Mean & Time SD & \# feasible solution \\
 		\hline\hline
-		0010	& 	105	& 	FALSE	& 	241,9	\\
-		0015	& 	305	& 	FALSE	& 	322,9	\\
-		0020	& 	332	& 	FALSE	& 	690,2	\\
-		0025	& 	464	& 	FALSE	& 	1016,7	\\
-		0030	& 	631	& 	FALSE	& 	1510,4	\\
-		0040	& 	934	& 	FALSE	& 	3344,8	\\
-		0050	& 	916	& 	FALSE	& 	4660,5	\\
-		0060	& 	1381	& 	FALSE	& 	5204,2	\\
-		0070	& 	1600	& 	FALSE	& 	9252,6	\\
-	0080	& 	1901	& 	FALSE	& 	4616,9	\\
-	0090	& 	1924	& 	FALSE	& 	6544,9	\\
-	0100	& 	2339	& 	FALSE	& 	2785,4	\\
-	0150	& 	3957	& 	FALSE	& 	5408,9	\\
-	0200	& 	-20296296	& 	TRUE	& 	11752,8	\\
-	0250	& 	472258509	& 	TRUE	& 	23494,9	\\
-	0300	& 	1882505990	& 	TRUE	& 	37893,4	\\
-	0400	& 	5209051710	& 	TRUE	& 	94252,6	\\
-		0500	&	7515	&	TRUE	&	525712,36	\\
-		0600	&	8785	&	TRUE	&	840000	\\
-		0700	&	5203	&	TRUE	&	933359	\\
-		0800	&	18244	&	TRUE	&	998406	\\
-		0900	&	25759	&	TRUE	&	1045625	\\
-		1000	&	5245	&	TRUE	&	819281	\\
-		1500	&	2,39817E+11	&	TRUE	&	909531	\\
-		2000	&	9920087449	&	TRUE	&	954937	\\
-		2500	&	71937	&	TRUE	&	1092890	\\
-		3000	&	458991	&	TRUE	&	997062	\\
+0010 & 105 & false & 105.0 & 0.0 & 44.7ms & 26.3ms & 10/10 \\
+0015 & 271 & false & 282.5 & 9.6 & 193.2ms & 78.5ms & 10/10 \\
+0020 & 307 & false & 345.9 & 17.9 & 349.1ms & 138.4ms & 10/10 \\
+0025 & 421 & false & 455.4 & 20.8 & 699.9ms & 142.6ms & 10/10 \\
+0030 & 564 & false & 599.6 & 23.8 & 1703.0ms & 705.1ms & 10/10 \\
+0040 & 705 & false & 764.2 & 29.7 & 4147.3ms & 1521.8ms & 10/10 \\
+0050 & 973 & false & 1068.1 & 39.9 & 10559.5ms & 4614.0ms & 10/10 \\
+0060 & 1240 & false & 1279.6 & 27.5 & 22283.5ms & 4617.6ms & 10/10 \\
+0070 & 1401 & false & 1441.3 & 23.1 & 37230.9ms & 14648.2ms & 10/10 \\
+0080 & 1622 & false & 1653.8 & 24.1 & 53241.6ms & 10388.5ms & 10/10 \\
+0090 & 1849 & false & 1912.9 & 38.8 & 72239.9ms & 15120.0ms & 10/10 \\
+0100 & 1986 & false & 2063.1 & 49.7 & timeout & timeout & 10/10 \\
+0150 & 3457 & false & 3677.3 & 82.2 & timeout & timeout & 10/10 \\
+0200 & 4515 & false & 4660.5 & 79.1 & timeout & timeout & 10/10 \\
+0250 & 6128 & false & 6346.9 & 176.4 & timeout & timeout & 10/10 \\
+0300 & 7686 & false & 7894.7 & 169.3 & timeout & timeout & 7/10 \\
+0400 & 89955 & false & 90344095.3 & 63127977.1 & timeout & timeout & 4/10 \\
+0500 & 37504 & true & - & - & - & - & 0/10 \\
+0600 & 34 & true & - & - & - & - & 0/10 \\
+0700 & 3209 & true & - & - & - & - & 0/10 \\
+0800 & 0 & true & - & - & - & - & 0/10 \\
+0900 & 12261 & true & - & - & - & - & 0/10 \\
+1000 & 12902 & true & - & - & - & - & 0/10 \\
+1500 & 147789287171 & true & - & - & - & - & 0/10 \\
+2000 & 34579502565 & true & - & - & - & - & 0/10 \\
+2500 & 6216 & true & - & - & - & - & 0/10 \\
+3000 & 2555 & true & - & - & - & - & 0/10 \\
 		\hline
 	\end{tabular}
-\end{center}
+}
+\caption{GRASP - results}
+\end{table}
