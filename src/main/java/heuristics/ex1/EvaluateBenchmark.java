@@ -71,11 +71,13 @@ public class EvaluateBenchmark {
 
                     double meanTime = filteredEntriesForInstance.stream()
                             .mapToLong(Entry::getTime)
+                            .filter(n -> n>0)
                             .average()
-                            .orElseThrow(() -> new RuntimeException("Dafuq"));
+                            .orElse(-1);
                     double sdTime = calculateSD(
                             filteredEntriesForInstance.stream()
                                     .map(Entry::getTime)
+                                    .filter(n -> n>0)
                                     .collect(Collectors.toList())
                     );
 
@@ -189,6 +191,10 @@ public class EvaluateBenchmark {
         long objectiveValue = Long.parseLong(parts[5]);
         String solution = parts[6];
 
+        if (timedOut) {
+            time = -1;
+        }
+
         return new Entry(instance, run, isInfeasible, timedOut, time, objectiveValue, solution);
     }
 
@@ -205,12 +211,13 @@ public class EvaluateBenchmark {
 //        names.add("04b - localsearch 2-5opt next - new.csv");
 //        names.add("04c - localsearch 2-5opt random - new.csv");
 //
-        names.add("05a - localsearch 3opt best - new.csv");
+//        names.add("05a - localsearch 3opt best - new.csv");
 //        names.add("05b - localsearch 3opt next - new.csv");
 //        names.add("05c - localsearch 3opt random - new.csv");
 
 //        names.add("06 - vnd - new.csv");
 //        names.add("07 - grasp - new.csv");
+        names.add("08 - sa - new.csv");
 
         return names.stream()
                 .map(n -> new File("benchmarks/" + n))

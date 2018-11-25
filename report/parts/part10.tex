@@ -1,8 +1,5 @@
 \section*{10. Simulated Annealing}
 A simulated annealing algorithm  is implemented as proposed in the slides. The algorithm generates a solution which is chosen if it is better than the current one or a random criterion based on the current \textit{temperature} is met. It stops when the temperature reaches certain low point or 15 minutes of CPU time have elapsed.
 
-The initial temperature $ T_i $ was $ 1000 $ and the cooling factor $ \alpha $ chosen was $ 0.95 $. In each temperature level $ |V|*(|V|-1) $ iterations is spent until cooling again.
-
-In general, with only 3 exceptions, the search using the 3Opt neighbourhood outperformed the search using 2Opt neighbourhood. The next table shows the best  value obtained, if the best solution found is infeasible and the average runtime of 4 runs, or of a single one if the search was aborted because of the time limit.
-%TODO should I add value of best solution or that is uploaded with the solution?
+The initial temperature $ T_i $ was $ 1000 $ and the cooling factor $ \alpha $ chosen was $ 0.95 $. In each temperature level $ |V|*(|V|-1) $ iterations is spent until cooling again. As neighborhood structure we chose 3-opt. The results are shown in section 13.
 
