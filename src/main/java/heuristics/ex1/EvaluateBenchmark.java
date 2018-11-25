@@ -24,7 +24,7 @@ public class EvaluateBenchmark {
                 .flatMap(f -> read(f).stream())
                 .collect(Collectors.toList());
 
-        storeSubmissionFiles(entries, "vnd");
+        storeSubmissionFiles(entries, "grasp");
     }
 
     private static void storeSubmissionFiles(List<Entry> entries, String folder) throws FileNotFoundException {
@@ -88,8 +88,9 @@ public class EvaluateBenchmark {
 //        names.add("05a - localsearch 3opt best_old2.csv");
 //        names.add("05b - localsearch 3opt next.csv");
 //        names.add("05c - localsearch 3opt random.csv");
-        names.add("06 - vnd.csv");
+//        names.add("06 - vnd.csv");
 //        names.add("06 - vnd_old.csv");
+        names.add("07 - grasp.csv");
 
         return names.stream()
                 .map(n -> new File("benchmarks/" + n))

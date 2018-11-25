@@ -212,7 +212,7 @@ public class Benchmark {
                     + ","+ elapsedTime+"," + solution);
         }
     }
-    
+
     private static void grasp2(File instance, Graph graph, Printer printer) {
 
         GRASP grasp = new GRASP(90);
