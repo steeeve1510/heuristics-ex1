@@ -8,24 +8,6 @@ w_N &= \lvert \sum_{(i,j) \in N} d_{i,j} \rvert \\
 w_P &= \sum_{(i,j) \in P} d_{i,j}  
 \end{align*}
 
-
-----
-We define the constant $ big-M $ as
-\begin{align*}
-\textit{M} &= max( w_N , w_P ) * 2 + 1
-\end{align*}
-
-For every feasible solution the sum of it weights has a value between $w_N$ and $w_P$. Any infeasible solution $X$ will consist of zero or more existing edges. This part shall be called $A$ with the sum of the weights $w_A$. If no existing edge is chosen $w_A$ will be $0$. $w_A$ is always between $w_N$ and $w_P$. Additionally $X$ has $i$ non-existing edges, with $i>0$. By definition, those non-existing edges will be considered with a weight of $M$.
-
-So $X$ has a weight $w_X$ of:
-\begin{align*}
-w_X = w_A + i * M \geq w_N + i * M \geq w_N + M
-\end{align*}
-
-By definition of $M$,  $w_N + M$ must greater than $w_P$. Therefore we can conclude that every infeasible solution has a worse objective value than any feasible solution.
-
-----
-
 Assume an infeasible solution $ X $ (represented by a list of edges). We can divide $ X $ into two smaller subset of edges $ X_T $ of existing edges and $ X_F $ of non-existing edges, with weights $ w_T $ and $ w_F $ respectively. For $ w_T $ we have that $ -(w_N) < w_T < w_P $, while for every possible feasible solution $ Z $  the weight $ w_Z $ is $ -(w_N) \leq w_X \leq w_P $. Adding the weights of the infeasible solution $ w_F + w_T$ must always yield a result outside of the range for $ w_Z $. Defining the constant $ big-M $ as
 $$\textit{M}= max( w_N , w_P ) * 2 + 1$$
 achieves this. 
