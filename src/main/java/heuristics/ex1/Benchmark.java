@@ -7,6 +7,7 @@ import heuristics.ex1.construction.RandomConstructionHeuristic;
 import heuristics.ex1.construction.RandomizedGreedySearch;
 import heuristics.ex1.dto.Graph;
 import heuristics.ex1.dto.Solution;
+import heuristics.ex1.grasp.GRASP;
 import heuristics.ex1.localsearch.LocalSearch;
 import heuristics.ex1.localsearch.neighborhood.*;
 import heuristics.ex1.vnd.VND;
@@ -20,7 +21,7 @@ import java.util.stream.Collectors;
 
 public class Benchmark {
 
-    private static final int RUNS = 20;
+    private static final int RUNS = 10;
 
     public static void main(String[] args) throws IOException {
         List<File> instances = getInstances();
@@ -76,12 +77,12 @@ public class Benchmark {
 
 
 
-        Printer printer = new Printer("02b - greedy random construction heuristic.csv");
+        Printer printer = new Printer("07 - grasp.csv");
         for (File instance : instances) {
             Graph graph = new GraphBuilder().build(instance);
 
 //            greedyConstruction(instance, graph, printer);
-            randomConstruction(instance, graph, printer);
+//            randomConstruction(instance, graph, printer);
 
 //            localSearch_best(new TwoOptNeighborhood(), instance, graph, printer);
 //            localSearch_next(new TwoOptNeighborhood(),instance, graph, printer);
@@ -96,6 +97,7 @@ public class Benchmark {
 //            localSearch_random(new ThreeOptNeighborhoodNew(), instance, graph, printer);
 
 //            vnd(instance, graph, printer);
+            grasp(instance, graph, printer);
         }
         printer.close();
         printer = null;
@@ -190,6 +192,21 @@ public class Benchmark {
         long objectiveValue = solution.getAbsoluteObjectiveValue();
 
         printer.println(name + "," + 1 + "," + isInfeasible + "," + solution.isTimedOut() + "," + objectiveValue + "," + solution);
+    }
+
+
+    private static void grasp(File instance, Graph graph, Printer printer) {
+
+        GRASP grasp = new GRASP(90);
+        for (int i = 1; i <= RUNS; i++) {
+            Solution improvedSolution = grasp.solve(graph);
+
+            String name = instance.getName().substring(0, instance.getName().length() - 4);
+            boolean isInfeasible = isInfeasible(improvedSolution, graph);
+            long objectiveValue = improvedSolution.getAbsoluteObjectiveValue();
+
+            printer.println(name + "," + i + "," + isInfeasible + "," + improvedSolution.isTimedOut() + "," + objectiveValue + "," + improvedSolution);
+        }
     }
 
 
