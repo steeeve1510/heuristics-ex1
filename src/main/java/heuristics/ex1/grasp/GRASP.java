@@ -53,7 +53,7 @@ public class GRASP {
 
 
             if (improvedSolution.getAbsoluteObjectiveValue() <= bestSolution.getAbsoluteObjectiveValue()) {
-                bestSolution = improvedSolution;    
+                bestSolution = improvedSolution;
             }
 
             long currentTime = ManagementFactory.getThreadMXBean().getCurrentThreadCpuTime();
