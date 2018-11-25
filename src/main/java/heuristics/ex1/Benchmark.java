@@ -10,6 +10,7 @@ import heuristics.ex1.dto.Solution;
 import heuristics.ex1.localsearch.LocalSearch;
 import heuristics.ex1.localsearch.neighborhood.*;
 import heuristics.ex1.vnd.VND;
+import heuristics.ex1.grasp.GRASP;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,6 +18,8 @@ import java.io.PrintWriter;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.lang.management.ManagementFactory;
+
 
 public class Benchmark {
 
@@ -192,7 +195,21 @@ public class Benchmark {
         printer.println(name + "," + 1 + "," + isInfeasible + "," + solution.isTimedOut() + "," + objectiveValue + "," + solution);
     }
 
+    private static void grasp(File instance, Graph graph, Printer printer) {
+        GRASP grasp = new GRASP();
+        String name = instance.getName().substring(0, instance.getName().length() - 4);
+        long initialTime, elapsedTime;
+        for (int i = 1; i <= RUNS; i++) {
+            initialTime = ManagementFactory.getThreadMXBean().getCurrentThreadCpuTime();
+            Solution solution = grasp.solve(graph);
+            elapsedTime = (ManagementFactory.getThreadMXBean().getCurrentThreadCpuTime() - initialTime) / 1000000L;
 
+            boolean isInfeasible = isInfeasible(solution, graph);
+            long objectiveValue = solution.getAbsoluteObjectiveValue();
+            printer.println(name + "," + i + "," + isInfeasible + "," + solution.isTimedOut() + "," + objectiveValue
+                    + ","+ elapsedTime+"," + solution);
+        }
+    }
 
     private static boolean isInfeasible(Solution solution, Graph graph) {
         int bigM = graph.getBigM();

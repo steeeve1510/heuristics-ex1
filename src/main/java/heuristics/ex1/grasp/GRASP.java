@@ -10,6 +10,8 @@ import heuristics.ex1.localsearch.neighborhood.Neighborhood;
 import heuristics.ex1.localsearch.neighborhood.StepType;
 import heuristics.ex1.localsearch.neighborhood.TwoOptNeighborhood;
 
+import java.lang.management.ManagementFactory;
+
 public class GRASP {
 
     private ConstructionHeuristic constructionHeuristic = new RandomConstructionHeuristic();
@@ -17,10 +19,13 @@ public class GRASP {
     private StepType stepType                           = StepType.NEXT_IMPROVEMENT;
 
     public Solution solve(Graph graph) {
-        System.out.println("Starting GRASP");
+        //System.out.println("Starting GRASP");
         LocalSearch localSearch = new LocalSearch(neighborhood, stepType);
 
         int unsuccessfulImprovements = 0;
+        boolean timedOut = false;
+        long startTime = ManagementFactory.getThreadMXBean().getCurrentThreadCpuTime();
+        long endTime = startTime + 1000L * 1000L * 1000L * 60L * 15L; // 15Min in nanoS
 
         Solution bestSolution = new Solution(null, Long.MAX_VALUE);
 
@@ -38,13 +43,19 @@ public class GRASP {
 
             if (improvedSolution.getAbsoluteObjectiveValue() <= bestSolution.getAbsoluteObjectiveValue()) {
                 bestSolution = improvedSolution;
-                System.out.println("Found better solution: " + bestSolution.getObjectiveValue());
+                //System.out.println("Found better solution: " + bestSolution.getObjectiveValue());
             }
 
             if (unsuccessfulImprovements % 10 == 0 && unsuccessfulImprovements != 0) {
-                System.out.println(unsuccessfulImprovements + " unsuccessful improvements");
+                //System.out.println(unsuccessfulImprovements + " unsuccessful improvements");
             }
-        } while(unsuccessfulImprovements < 100);
+
+            if (ManagementFactory.getThreadMXBean().getCurrentThreadCpuTime() > endTime){
+                timedOut = true;
+                bestSolution.setTimedOut(true);
+            }
+
+        } while(unsuccessfulImprovements < 100 && !timedOut);
 
         return bestSolution;
     }

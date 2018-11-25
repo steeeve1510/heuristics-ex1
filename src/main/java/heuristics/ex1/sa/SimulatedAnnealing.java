@@ -8,6 +8,8 @@ import heuristics.ex1.localsearch.neighborhood.Neighborhood;
 import heuristics.ex1.localsearch.neighborhood.StepType;
 import heuristics.ex1.localsearch.neighborhood.TwoOptNeighborhood;
 
+import java.lang.management.ManagementFactory;
+
 public class SimulatedAnnealing {
 
     private ConstructionHeuristic construction = new GreedyConstructionHeuristic();
@@ -28,6 +30,9 @@ public class SimulatedAnnealing {
 
         long step = 0;
         double temperature = INITIAL_TEMPERATURE;
+        boolean timedOut = false;
+        long startTime = ManagementFactory.getThreadMXBean().getCurrentThreadCpuTime();
+        long endTime = startTime + 1000L * 1000L * 1000L * 60L * 15L; // 15Min in nanoS
 
         do {
             long iterations = 0;
@@ -44,7 +49,12 @@ public class SimulatedAnnealing {
                 iterations++;
             } while (iterations < maxIterations);
             temperature = cool(temperature, step);
-        } while (temperature > COOL_UNTIL);
+            //Method might take longer than 15 min bc it only checks time after every temp level is finished
+            if (ManagementFactory.getThreadMXBean().getCurrentThreadCpuTime() > endTime){
+                timedOut = true;
+                solution.setTimedOut(true);
+            }
+        } while (temperature > COOL_UNTIL && !timedOut );
 
         return solution;
     }
