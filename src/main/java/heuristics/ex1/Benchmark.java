@@ -4,22 +4,20 @@ import heuristics.ex1.build.GraphBuilder;
 import heuristics.ex1.construction.ConstructionHeuristic;
 import heuristics.ex1.construction.GreedyConstructionHeuristic;
 import heuristics.ex1.construction.RandomConstructionHeuristic;
-import heuristics.ex1.construction.RandomizedGreedySearch;
 import heuristics.ex1.dto.Graph;
 import heuristics.ex1.dto.Solution;
 import heuristics.ex1.grasp.GRASP;
 import heuristics.ex1.localsearch.LocalSearch;
 import heuristics.ex1.localsearch.neighborhood.*;
 import heuristics.ex1.vnd.VND;
-import heuristics.ex1.grasp.GRASP;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.management.ManagementFactory;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.lang.management.ManagementFactory;
 
 
 public class Benchmark {
@@ -30,77 +28,48 @@ public class Benchmark {
         List<File> instances = getInstances();
 
 
-//        Printer printer3 = new Printer("05c - localsearch 3opt random.csv");
-//        for (File instance : instances) {
-//            Graph graph = new GraphBuilder().build(instance);
-//
-////            greedyConstruction(instance, graph, printer);
-////            randomConstruction(instance, graph, printer);
-//
-////            localSearch_best(new TwoOptNeighborhood(), instance, graph, printer3);
-////            localSearch_next(new TwoOptNeighborhood(),instance, graph, printer3);
-////            localSearch_random(new TwoOptNeighborhood(), instance, graph, printer3);
-//
-////            localSearch_best(new TwoFiveOptNeighborhood(), instance, graph, printer3);
-////            localSearch_next(new TwoFiveOptNeighborhood(),instance, graph, printer3);
-////            localSearch_random(new TwoFiveOptNeighborhood(), instance, graph, printer3);
-//
-////            localSearch_best(new ThreeOptNeighborhoodNew(), instance, graph, printer3);
-////            localSearch_next(new ThreeOptNeighborhoodNew(),instance, graph, printer3);
-//            localSearch_random(new ThreeOptNeighborhoodNew(), instance, graph, printer3);
-//        }
-//        printer3.close();
-//        printer3 = null;
-//
-//
-//
-//
-//        Printer printer2 = new Printer("05b - localsearch 3opt next.csv");
-//        for (File instance : instances) {
-//            Graph graph = new GraphBuilder().build(instance);
-//
-////            greedyConstruction(instance, graph, printer);
-////            randomConstruction(instance, graph, printer);
-//
-////            localSearch_best(new TwoOptNeighborhood(), instance, graph, printer2);
-////            localSearch_next(new TwoOptNeighborhood(),instance, graph, printer2);
-////            localSearch_random(new TwoOptNeighborhood(), instance, graph, printer2);
-//
-////            localSearch_best(new TwoFiveOptNeighborhood(), instance, graph, printer2);
-////            localSearch_next(new TwoFiveOptNeighborhood(),instance, graph, printer2);
-////            localSearch_random(new TwoFiveOptNeighborhood(), instance, graph, printer2);
-//
-////            localSearch_best(new ThreeOptNeighborhoodNew(), instance, graph, printer2);
-//            localSearch_next(new ThreeOptNeighborhoodNew(),instance, graph, printer2);
-////            localSearch_random(new ThreeOptNeighborhoodNew(), instance, graph, printer2);
-//        }
-//        printer2.close();
-//        printer2 = null;
+        Printer printer3 = new Printer("05a - localsearch 3opt best - new.csv");
+        try {
+            for (File instance : instances) {
+                Graph graph = new GraphBuilder().build(instance);
+
+                localSearch_best(new ThreeOptNeighborhoodNew(), instance, graph, printer3);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        printer3.close();
+        printer3 = null;
 
 
 
 
-        Printer printer = new Printer("07 - grasp.csv");
-        for (File instance : instances) {
-            Graph graph = new GraphBuilder().build(instance);
+        Printer printer2 = new Printer("05b - localsearch 3opt next - new.csv");
+        try {
+            for (File instance : instances) {
+                Graph graph = new GraphBuilder().build(instance);
 
-//            greedyConstruction(instance, graph, printer);
-//            randomConstruction(instance, graph, printer);
+                localSearch_next(new ThreeOptNeighborhoodNew(),instance, graph, printer2);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        printer2.close();
+        printer2 = null;
 
-//            localSearch_best(new TwoOptNeighborhood(), instance, graph, printer);
-//            localSearch_next(new TwoOptNeighborhood(),instance, graph, printer);
-//            localSearch_random(new TwoOptNeighborhood(), instance, graph, printer);
 
-//            localSearch_best(new TwoFiveOptNeighborhood(), instance, graph, printer);
-//            localSearch_next(new TwoFiveOptNeighborhood(),instance, graph, printer);
-//            localSearch_random(new TwoFiveOptNeighborhood(), instance, graph, printer);
 
-//            localSearch_best(new ThreeOptNeighborhoodNew(), instance, graph, printer);
-//            localSearch_next(new ThreeOptNeighborhoodNew(),instance, graph, printer);
-//            localSearch_random(new ThreeOptNeighborhoodNew(), instance, graph, printer);
 
-//            vnd(instance, graph, printer);
-            grasp(instance, graph, printer);
+        Printer printer = new Printer("05c - localsearch 3opt random - new.csv");
+        try {
+            for (File instance : instances) {
+                Graph graph = new GraphBuilder().build(instance);
+
+                localSearch_random(new ThreeOptNeighborhoodNew(), instance, graph, printer);
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         printer.close();
         printer = null;
@@ -110,26 +79,31 @@ public class Benchmark {
     private static void greedyConstruction(File instance, Graph graph, Printer printer) {
         ConstructionHeuristic constructionHeuristic = new GreedyConstructionHeuristic();
 
+        long initialTime = ManagementFactory.getThreadMXBean().getCurrentThreadCpuTime();
         Solution solution = constructionHeuristic.solve(graph);
+        long elapsedTime = (ManagementFactory.getThreadMXBean().getCurrentThreadCpuTime() - initialTime) / (1000L * 1000L);
+
 
         String name = instance.getName().substring(0, instance.getName().length() - 4);
         boolean isInfeasible = isInfeasible(solution, graph);
         long objectiveValue = solution.getAbsoluteObjectiveValue();
 
-        printer.println(name + "," + 1 + "," + isInfeasible + "," + objectiveValue + "," + solution);
+        printer.println(name + "," + 1 + "," + isInfeasible + "," + solution.isTimedOut() + "," + elapsedTime + "," + objectiveValue + "," + solution);
     }
 
     private static void randomConstruction(File instance, Graph graph, Printer printer) {
-        ConstructionHeuristic constructionHeuristic = new RandomizedGreedySearch();
+        ConstructionHeuristic constructionHeuristic = new RandomConstructionHeuristic();
 
         for (int i = 1; i <= RUNS; i++) {
+            long initialTime = ManagementFactory.getThreadMXBean().getCurrentThreadCpuTime();
             Solution solution = constructionHeuristic.solve(graph);
+            long elapsedTime = (ManagementFactory.getThreadMXBean().getCurrentThreadCpuTime() - initialTime) / (1000L * 1000L);
 
             String name = instance.getName().substring(0, instance.getName().length() - 4);
             boolean isInfeasible = isInfeasible(solution, graph);
             long objectiveValue = solution.getAbsoluteObjectiveValue();
 
-            printer.println(name + "," + i + "," + isInfeasible + "," + solution.isTimedOut() + "," + objectiveValue + "," + solution);
+            printer.println(name + "," + i + "," + isInfeasible + "," + solution.isTimedOut() + "," + elapsedTime + "," + objectiveValue + "," + solution);
         }
     }
 
@@ -140,13 +114,20 @@ public class Benchmark {
         Solution solution = constructionHeuristic.solve(graph);
 
         LocalSearch localSearch = new LocalSearch(neighborhood, StepType.BEST_IMPOVEMENT);
+
+        long initialTime = ManagementFactory.getThreadMXBean().getCurrentThreadCpuTime();
         solution = localSearch.improve(solution, graph);
+        long elapsedTime = (ManagementFactory.getThreadMXBean().getCurrentThreadCpuTime() - initialTime) / (1000L * 1000L);
 
         String name = instance.getName().substring(0, instance.getName().length() - 4);
         boolean isInfeasible = isInfeasible(solution, graph);
         long objectiveValue = solution.getAbsoluteObjectiveValue();
 
-        printer.println(name + "," + 1 + "," + isInfeasible + "," + solution.isTimedOut() + "," + objectiveValue + "," + solution);
+        printer.println(name + "," + 1 + "," + isInfeasible + "," + solution.isTimedOut() + "," + elapsedTime + "," + objectiveValue + "," + solution);
+
+        if (solution.isTimedOut()) {
+            throw new RuntimeException("Time out");
+        }
     }
 
     private static void localSearch_next(Neighborhood neighborhood, File instance, Graph graph, Printer printer) {
@@ -155,13 +136,20 @@ public class Benchmark {
         Solution solution = constructionHeuristic.solve(graph);
 
         LocalSearch localSearch = new LocalSearch(neighborhood, StepType.NEXT_IMPROVEMENT);
+
+        long initialTime = ManagementFactory.getThreadMXBean().getCurrentThreadCpuTime();
         solution = localSearch.improve(solution, graph);
+        long elapsedTime = (ManagementFactory.getThreadMXBean().getCurrentThreadCpuTime() - initialTime) / (1000L * 1000L);
 
         String name = instance.getName().substring(0, instance.getName().length() - 4);
         boolean isInfeasible = isInfeasible(solution, graph);
         long objectiveValue = solution.getAbsoluteObjectiveValue();
 
-        printer.println(name + "," + 1 + "," + isInfeasible + "," + solution.isTimedOut() + "," + objectiveValue + "," + solution);
+        printer.println(name + "," + 1 + "," + isInfeasible + "," + solution.isTimedOut() + "," + elapsedTime + "," + objectiveValue + "," + solution);
+
+        if (solution.isTimedOut()) {
+            throw new RuntimeException("Time out");
+        }
     }
 
     private static void localSearch_random(Neighborhood neighborhood, File instance, Graph graph, Printer printer) {
@@ -169,15 +157,27 @@ public class Benchmark {
 
         Solution solution = constructionHeuristic.solve(graph);
 
+        int timeOutCounter = 0;
+
         LocalSearch localSearch = new LocalSearch(neighborhood, StepType.RANDOM, 90);
         for (int i = 1; i <= RUNS; i++) {
+            long initialTime = ManagementFactory.getThreadMXBean().getCurrentThreadCpuTime();
             Solution improvedSolution = localSearch.improve(solution, graph);
+            long elapsedTime = (ManagementFactory.getThreadMXBean().getCurrentThreadCpuTime() - initialTime) / (1000L * 1000L);
 
             String name = instance.getName().substring(0, instance.getName().length() - 4);
             boolean isInfeasible = isInfeasible(improvedSolution, graph);
             long objectiveValue = improvedSolution.getAbsoluteObjectiveValue();
 
-            printer.println(name + "," + i + "," + isInfeasible + "," + improvedSolution.isTimedOut() + "," + objectiveValue + "," + improvedSolution);
+            printer.println(name + "," + i + "," + isInfeasible + "," + improvedSolution.isTimedOut() + "," + elapsedTime + "," + objectiveValue + "," + improvedSolution);
+
+            if (solution.isTimedOut()) {
+                timeOutCounter++;
+            }
+
+            if (timeOutCounter > RUNS / 2) {
+                throw new RuntimeException("Time out");
+            }
         }
     }
 
@@ -295,7 +295,7 @@ public class Benchmark {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            this.println("name,run,isInfeasible,timedOut,objectiveValue,solution");
+            this.println("name,run,isInfeasible,timedOut,time,objectiveValue,solution");
         }
 
         void println(String line) {

@@ -24,7 +24,88 @@ public class EvaluateBenchmark {
                 .flatMap(f -> read(f).stream())
                 .collect(Collectors.toList());
 
-        storeSubmissionFiles(entries, "grasp");
+        createLatexStatistics(entries);
+    }
+
+    private static void createLatexStatistics(List<Entry> entries) throws FileNotFoundException {
+
+        Map<Integer, List<Entry>> entryPerInstance = entries.stream()
+                .collect(Collectors.groupingBy(Entry::getInstance));
+
+        List<Integer> instances = entryPerInstance.keySet().stream()
+                .sorted()
+                .collect(Collectors.toList());
+
+        for (int instance : instances) {
+            List<Entry> entriesForInstance = entryPerInstance.get(instance);
+
+            Entry minimum = entriesForInstance.stream()
+                    .min(Comparator.comparingLong(Entry::getObjectiveValue))
+                    .orElseThrow(() -> new IllegalArgumentException("Could't find element with minimum"));
+
+            String instanceString = String.format("%04d", minimum.getInstance());
+
+            long bestObjectiveValue = minimum.getObjectiveValue();
+            boolean bestIsInfeasible = minimum.isInfeasible();
+
+            String line;
+
+            if (entriesForInstance.size() > 1) {
+                double meanObjectiveValue = entriesForInstance.stream()
+                        .mapToLong(Entry::getObjectiveValue)
+                        .average()
+                        .orElseThrow(() -> new RuntimeException("Dafuq"));
+                double sdObjectiveValue = calculateSD(
+                        entriesForInstance.stream()
+                            .map(Entry::getObjectiveValue)
+                            .collect(Collectors.toList())
+                );
+
+                double meanTime = entriesForInstance.stream()
+                        .mapToLong(Entry::getTime)
+                        .average()
+                        .orElseThrow(() -> new RuntimeException("Dafuq"));
+                double sdTime = calculateSD(
+                        entriesForInstance.stream()
+                                .map(Entry::getTime)
+                                .collect(Collectors.toList())
+                );
+
+                line = instanceString + " & " +
+                        bestObjectiveValue + " & " +
+                        bestIsInfeasible + " & " +
+                        String.format("%.1f", meanObjectiveValue) + " & " +
+                        String.format("%.1f", sdObjectiveValue) + " & " +
+                        String.format("%.1f", meanTime) + " & " +
+                        String.format("%.1f", sdTime) + " \\\\";
+            } else {
+                long bestTime = minimum.getTime();
+
+                line = instanceString + " & " +
+                        bestObjectiveValue + " & " +
+                        bestIsInfeasible + " & " +
+                        bestTime + " \\\\";
+            }
+
+            System.out.println(line);
+        }
+    }
+
+
+    public static double calculateSD(List<Long> numbers) {
+        double standardDeviation = 0L;
+        int length = numbers.size();
+
+        double mean = numbers.stream()
+                .mapToLong(n -> n)
+                .average()
+                .orElseThrow(() -> new RuntimeException("could not calculate mean"));
+
+        for(long num : numbers) {
+            standardDeviation += Math.pow(num - mean, 2);
+        }
+
+        return Math.sqrt(standardDeviation/length);
     }
 
     private static void storeSubmissionFiles(List<Entry> entries, String folder) throws FileNotFoundException {
@@ -67,16 +148,17 @@ public class EvaluateBenchmark {
         int run = Integer.parseInt(parts[1]);
         boolean isInfeasible = "true".equalsIgnoreCase(parts[2]);
         boolean timedOut = "true".equalsIgnoreCase(parts[3]);
-        long objectiveValue = Long.parseLong(parts[4]);
-        String solution = parts[5];
+        long time = Long.parseLong(parts[4]);
+        long objectiveValue = Long.parseLong(parts[5]);
+        String solution = parts[6];
 
-        return new Entry(instance, run, isInfeasible, timedOut, objectiveValue, solution);
+        return new Entry(instance, run, isInfeasible, timedOut, time, objectiveValue, solution);
     }
 
     private static List<File> getFiles() {
         List<String> names = new LinkedList<>();
-//        names.add("01 - greedy construction.csv");
-//        names.add("02 - random construction.csv");
+//        names.add("01 - greedy construction - new.csv");
+        names.add("02 - random construction - new.csv");
 //        names.add("03a - localsearch 2opt best.csv");
 //        names.add("03b - localsearch 2opt next.csv");
 //        names.add("03c - localsearch 2opt random.csv");
@@ -90,7 +172,7 @@ public class EvaluateBenchmark {
 //        names.add("05c - localsearch 3opt random.csv");
 //        names.add("06 - vnd.csv");
 //        names.add("06 - vnd_old.csv");
-        names.add("07 - grasp.csv");
+//        names.add("07 - grasp.csv");
 
         return names.stream()
                 .map(n -> new File("benchmarks/" + n))
@@ -105,6 +187,7 @@ public class EvaluateBenchmark {
         private int run;
         private boolean isInfeasible;
         private boolean timedOut;
+        private long time;
         private long objectiveValue;
         private String solution;
     }

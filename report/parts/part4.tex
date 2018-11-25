@@ -1,2 +1,38 @@
 \section*{4. Deterministic construction heuristic}
 The deterministic construction heuristic searches at first for the edge, which is closest to 0. Beginning with this edge the heuristic generates a path. It looks at both ends of the path and finds the edge which worsens the objective value the least to any unvisited node.
+
+\begin{center}
+	\begin{tabular}{||c | c | c | c||} 
+		\hline
+		Instance  & Value & Infeasible & Time (ms) \\
+		\hline\hline
+0010 & 699933 & false & 3 \\
+0015 & 40200529 & true & 1 \\
+0020 & 137001316 & true & 2 \\
+0025 & 253302190 & true & 1 \\
+0030 & 228823580 & true & 2 \\
+0040 & 406941809 & true & 2 \\
+0050 & 246502808 & true & 4 \\
+0060 & 701807439 & true & 5 \\
+0070 & 1084212229 & true & 5 \\
+0080 & 2175622068 & true & 6 \\
+0090 & 1846589141 & true & 6 \\
+0100 & 2240829260 & true & 7 \\
+0150 & 6845898129 & true & 23 \\
+0200 & 8294548068 & true & 25 \\
+0250 & 15685401465 & true & 30 \\
+0300 & 27508605224 & true & 36 \\
+0400 & 41182390700 & true & 67 \\
+0500 & 64639825257 & true & 103 \\
+0600 & 84080280216 & true & 110 \\
+0700 & 127710417401 & true & 151 \\
+0800 & 159382135001 & true & 167 \\
+0900 & 186437301555 & true & 244 \\
+1000 & 239199632699 & true & 275 \\
+1500 & 150079477135 & true & 371 \\
+2000 & 27661660382 & true & 576 \\
+2500 & 340298764194 & true & 883 \\
+3000 & 657424981821 & true & 1225 \\
+		\hline
+	\end{tabular}
+\end{center}
