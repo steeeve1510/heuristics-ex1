@@ -31,7 +31,7 @@ public class ThreeOptNeighborhoodNew implements Neighborhood {
         Solution bestSolution = solution;
 
         for (int i = 0; i < size; i++) {
-            System.out.println(i);
+            //System.out.println(i);
             for (int j = i+2; j < size + i - 3; j++) {
                 for (int k = j+2; k < size + i - 1; k++) {
 
