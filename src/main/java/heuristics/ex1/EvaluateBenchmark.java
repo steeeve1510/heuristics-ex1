@@ -24,7 +24,8 @@ public class EvaluateBenchmark {
                 .flatMap(f -> read(f).stream())
                 .collect(Collectors.toList());
 
-        createLatexStatistics(entries);
+        storeSubmissionFiles(entries, "sa");
+//        createLatexStatistics(entries);
     }
 
     private static void createLatexStatistics(List<Entry> entries) throws FileNotFoundException {
