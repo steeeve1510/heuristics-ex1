@@ -9,6 +9,7 @@ import heuristics.ex1.dto.Solution;
 import heuristics.ex1.grasp.GRASP;
 import heuristics.ex1.localsearch.LocalSearch;
 import heuristics.ex1.localsearch.neighborhood.*;
+import heuristics.ex1.sa.SimulatedAnnealing;
 import heuristics.ex1.vnd.VND;
 
 import java.io.File;
@@ -28,44 +29,44 @@ public class Benchmark {
         List<File> instances = getInstances();
 
 
-        Printer printer3 = new Printer("05a - localsearch 3opt best - new.csv");
+//        Printer printer3 = new Printer("05a - localsearch 3opt best - new.csv");
+//        try {
+//            for (File instance : instances) {
+//                Graph graph = new GraphBuilder().build(instance);
+//
+//                localSearch_best(new ThreeOptNeighborhoodNew(), instance, graph, printer3);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        printer3.close();
+//        printer3 = null;
+//
+//
+//
+//
+//        Printer printer2 = new Printer("05b - localsearch 3opt next - new.csv");
+//        try {
+//            for (File instance : instances) {
+//                Graph graph = new GraphBuilder().build(instance);
+//
+//                localSearch_next(new ThreeOptNeighborhoodNew(),instance, graph, printer2);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        printer2.close();
+//        printer2 = null;
+
+
+
+
+        Printer printer = new Printer("08 - sa - new.csv");
         try {
             for (File instance : instances) {
                 Graph graph = new GraphBuilder().build(instance);
 
-                localSearch_best(new ThreeOptNeighborhoodNew(), instance, graph, printer3);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        printer3.close();
-        printer3 = null;
-
-
-
-
-        Printer printer2 = new Printer("05b - localsearch 3opt next - new.csv");
-        try {
-            for (File instance : instances) {
-                Graph graph = new GraphBuilder().build(instance);
-
-                localSearch_next(new ThreeOptNeighborhoodNew(),instance, graph, printer2);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        printer2.close();
-        printer2 = null;
-
-
-
-
-        Printer printer = new Printer("05c - localsearch 3opt random - new.csv");
-        try {
-            for (File instance : instances) {
-                Graph graph = new GraphBuilder().build(instance);
-
-                localSearch_random(new ThreeOptNeighborhoodNew(), instance, graph, printer);
+                simulatedAnnealing(instance, graph, printer);
 
             }
         } catch (Exception e) {
@@ -188,13 +189,20 @@ public class Benchmark {
         Solution solution = constructionHeuristic.solve(graph);
 
         VND vnd = new VND();
+
+        long initialTime = ManagementFactory.getThreadMXBean().getCurrentThreadCpuTime();
         solution = vnd.improve(solution, graph);
+        long elapsedTime = (ManagementFactory.getThreadMXBean().getCurrentThreadCpuTime() - initialTime) / (1000L * 1000L);
 
         String name = instance.getName().substring(0, instance.getName().length() - 4);
         boolean isInfeasible = isInfeasible(solution, graph);
         long objectiveValue = solution.getAbsoluteObjectiveValue();
 
-        printer.println(name + "," + 1 + "," + isInfeasible + "," + solution.isTimedOut() + "," + objectiveValue + "," + solution);
+        printer.println(name + "," + 1 + "," + isInfeasible + "," + solution.isTimedOut() + "," + elapsedTime + "," + objectiveValue + "," + solution);
+
+        if (solution.isTimedOut()) {
+            throw new RuntimeException("Time out");
+        }
     }
 
     private static void grasp(File instance, Graph graph, Printer printer) {
@@ -215,15 +223,56 @@ public class Benchmark {
 
     private static void grasp2(File instance, Graph graph, Printer printer) {
 
+        int timeOutCounter = 0;
+
         GRASP grasp = new GRASP(90);
         for (int i = 1; i <= RUNS; i++) {
+
+            long initialTime = ManagementFactory.getThreadMXBean().getCurrentThreadCpuTime();
             Solution improvedSolution = grasp.solve(graph);
+            long elapsedTime = (ManagementFactory.getThreadMXBean().getCurrentThreadCpuTime() - initialTime) / (1000L * 1000L);
+
 
             String name = instance.getName().substring(0, instance.getName().length() - 4);
             boolean isInfeasible = isInfeasible(improvedSolution, graph);
             long objectiveValue = improvedSolution.getAbsoluteObjectiveValue();
 
-            printer.println(name + "," + i + "," + isInfeasible + "," + improvedSolution.isTimedOut() + "," + objectiveValue + "," + improvedSolution);
+            printer.println(name + "," + i + "," + isInfeasible + "," + improvedSolution.isTimedOut() + "," + elapsedTime + "," + objectiveValue + "," + improvedSolution);
+
+            if (improvedSolution.isTimedOut()) {
+                timeOutCounter++;
+            }
+
+            if (timeOutCounter > RUNS / 2) {
+                throw new RuntimeException("Time out");
+            }
+        }
+    }
+    private static void simulatedAnnealing(File instance, Graph graph, Printer printer) {
+
+        int timeOutCounter = 0;
+
+        SimulatedAnnealing simulatedAnnealing = new SimulatedAnnealing(90);
+        for (int i = 1; i <= RUNS; i++) {
+
+            long initialTime = ManagementFactory.getThreadMXBean().getCurrentThreadCpuTime();
+            Solution improvedSolution = simulatedAnnealing.solve(graph);
+            long elapsedTime = (ManagementFactory.getThreadMXBean().getCurrentThreadCpuTime() - initialTime) / (1000L * 1000L);
+
+
+            String name = instance.getName().substring(0, instance.getName().length() - 4);
+            boolean isInfeasible = isInfeasible(improvedSolution, graph);
+            long objectiveValue = improvedSolution.getAbsoluteObjectiveValue();
+
+            printer.println(name + "," + i + "," + isInfeasible + "," + improvedSolution.isTimedOut() + "," + elapsedTime + "," + objectiveValue + "," + improvedSolution);
+
+            if (improvedSolution.isTimedOut()) {
+                timeOutCounter++;
+            }
+
+            if (timeOutCounter > RUNS / 2) {
+//                throw new RuntimeException("Time out");
+            }
         }
     }
 

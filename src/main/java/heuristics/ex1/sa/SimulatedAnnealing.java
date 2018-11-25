@@ -6,15 +6,23 @@ import heuristics.ex1.dto.Graph;
 import heuristics.ex1.dto.Solution;
 import heuristics.ex1.localsearch.neighborhood.Neighborhood;
 import heuristics.ex1.localsearch.neighborhood.StepType;
-import heuristics.ex1.localsearch.neighborhood.TwoOptNeighborhood;
+import heuristics.ex1.localsearch.neighborhood.ThreeOptNeighborhoodNew;
 
 import java.lang.management.ManagementFactory;
 
 public class SimulatedAnnealing {
 
     private ConstructionHeuristic construction = new GreedyConstructionHeuristic();
-    private Neighborhood neighborhood          = new TwoOptNeighborhood();
+    private Neighborhood neighborhood          = new ThreeOptNeighborhoodNew();
+    private int maxTimeInSeconds;
 
+    public SimulatedAnnealing() {
+        this(15 * 60);
+    }
+
+    public SimulatedAnnealing(int maxTimeInSeconds) {
+        this.maxTimeInSeconds = maxTimeInSeconds;
+    }
 
     private static double INITIAL_TEMPERATURE = 1000;
     private static double COOL_UNTIL = 1;
@@ -22,7 +30,6 @@ public class SimulatedAnnealing {
 
 
     public Solution solve(Graph graph) {
-        System.out.println("Starting simulated annealing");
         long size = graph.getMatrix().size();
         long maxIterations = size * (size-1);
 
@@ -32,17 +39,15 @@ public class SimulatedAnnealing {
         double temperature = INITIAL_TEMPERATURE;
         boolean timedOut = false;
         long startTime = ManagementFactory.getThreadMXBean().getCurrentThreadCpuTime();
-        long endTime = startTime + 1000L * 1000L * 1000L * 60L * 15L; // 15Min in nanoS
+        long endTime = startTime + 1000L * 1000L * 1000L * maxTimeInSeconds;
 
         do {
             long iterations = 0;
             do {
                 Solution neighbor = neighborhood.get(solution, graph, StepType.RANDOM);
                 if (neighbor.getAbsoluteObjectiveValue() < solution.getAbsoluteObjectiveValue()) {
-                    System.out.println("Found a better solution: " + neighbor.getAbsoluteObjectiveValue());
                     solution = neighbor;
                 } else if (metropolisCriterion(neighbor, solution, temperature)) {
-                    System.out.println("Choosing a worse solution: " + neighbor.getAbsoluteObjectiveValue());
                     solution = neighbor;
                 }
                 step++;
