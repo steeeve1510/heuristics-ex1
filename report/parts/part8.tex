@@ -1,3 +1,42 @@
 \section*{8. GRASP}
 GRASP is implemented as proposed in the slides. Like local search the number of iterations since the last successful improvements is the termination criteria and can be configured. \\ 
-TODO add configuration (neighborhood structure and step function of local search) !!!
+
+The next table shows the best  value obtained, if the best solution found is infeasible and the average runtime of 10 runs, or of a single one if the search was aborted because of the time limit.
+
+The second machine was used in order to test the GRASP method with a 2Opt local search and \textit{next improvement} step type. The search was aborted after 100 unsuccessful improvements or 15 minutes of CPU time have elapsed.
+
+\begin{center}
+	\begin{tabular}{||c | c | c | c||} 
+		\hline
+		Instance  & Value & Infeasible & Time (ms) \\
+		\hline\hline
+		0010	& 	105	& 	FALSE	& 	241,9	\\
+		0015	& 	305	& 	FALSE	& 	322,9	\\
+		0020	& 	332	& 	FALSE	& 	690,2	\\
+		0025	& 	464	& 	FALSE	& 	1016,7	\\
+		0030	& 	631	& 	FALSE	& 	1510,4	\\
+		0040	& 	934	& 	FALSE	& 	3344,8	\\
+		0050	& 	916	& 	FALSE	& 	4660,5	\\
+		0060	& 	1381	& 	FALSE	& 	5204,2	\\
+		0070	& 	1600	& 	FALSE	& 	9252,6	\\
+	0080	& 	1901	& 	FALSE	& 	4616,9	\\
+	0090	& 	1924	& 	FALSE	& 	6544,9	\\
+	0100	& 	2339	& 	FALSE	& 	2785,4	\\
+	0150	& 	3957	& 	FALSE	& 	5408,9	\\
+	0200	& 	-20296296	& 	TRUE	& 	11752,8	\\
+	0250	& 	472258509	& 	TRUE	& 	23494,9	\\
+	0300	& 	1882505990	& 	TRUE	& 	37893,4	\\
+	0400	& 	5209051710	& 	TRUE	& 	94252,6	\\
+		0500	&	7515	&	TRUE	&	525712,36	\\
+		0600	&	8785	&	TRUE	&	840000	\\
+		0700	&	5203	&	TRUE	&	933359	\\
+		0800	&	18244	&	TRUE	&	998406	\\
+		0900	&	25759	&	TRUE	&	1045625	\\
+		1000	&	5245	&	TRUE	&	819281	\\
+		1500	&	2,39817E+11	&	TRUE	&	909531	\\
+		2000	&	9920087449	&	TRUE	&	954937	\\
+		2500	&	71937	&	TRUE	&	1092890	\\
+		3000	&	458991	&	TRUE	&	997062	\\
+		\hline
+	\end{tabular}
+\end{center}
