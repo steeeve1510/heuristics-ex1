@@ -13,10 +13,16 @@ import java.util.stream.Collectors;
 public class Solution {
 
     private List<Integer> nodes;
+
     private long objectiveValue;
+
     @Getter
     @Setter
     private boolean timedOut = false;
+
+    @Getter
+    @Setter
+    private long fitness;
 
     public Solution(List<Integer> nodes, long objectiveValue) {
         this.nodes = nodes;

@@ -2,6 +2,7 @@ package heuristics.ex1.construction;
 
 import heuristics.ex1.dto.Graph;
 import heuristics.ex1.dto.Solution;
+import heuristics.ex2.ga.util.Recombinator;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -10,7 +11,17 @@ import java.util.stream.Collectors;
 
 public class RandomizedGreedySearch implements ConstructionHeuristic {
 
-    private static final int RESTRICTED_CANDIDATE_LIST_FACTOR = 10;
+    private static final int RESTRICTED_CANDIDATE_LIST_FACTOR_DEFAULT = 10;
+    private int restrictedCandidateListFactor = 10;
+
+    public RandomizedGreedySearch(int restrictedCandidateListFactor) {
+        this.restrictedCandidateListFactor = restrictedCandidateListFactor;
+    }
+
+    public RandomizedGreedySearch() {
+        this(RESTRICTED_CANDIDATE_LIST_FACTOR_DEFAULT);
+    }
+
 
     @Override
     public Solution solve(Graph graph) {
@@ -60,7 +71,7 @@ public class RandomizedGreedySearch implements ConstructionHeuristic {
                                         .collect(Collectors.toList());
 
         return sorted.stream()
-                     .limit(graph.getMatrix().size() / RESTRICTED_CANDIDATE_LIST_FACTOR)
+                     .limit(graph.getMatrix().size() / restrictedCandidateListFactor)
                      .map(NodeWithObjective::getNode)
                      .collect(Collectors.toList());
     }

@@ -15,7 +15,7 @@ import heuristics.ex1.vnd.VND;
 import java.io.File;
 import java.io.IOException;
 
-public class App {
+public class AppEx1 {
 
     private static String instance = "0150";
 
