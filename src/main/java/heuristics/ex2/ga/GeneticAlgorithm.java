@@ -19,10 +19,12 @@ public class GeneticAlgorithm {
     private Replacer replacer = new Replacer();
 
     public Solution solve(Graph graph) {
-
+        //TODO pocket the best solution so far found
         int generation = 0;
         List<Solution> population = initializer.initialize(graph);
-        population = evaluator.evaluate(population);
+
+        //IMO "evaluator" should be called from selector
+        //population = evaluator.evaluate(population);
 
         while (generation < MAX_NUM_GENERATIONS) {
             generation++;
@@ -30,9 +32,10 @@ public class GeneticAlgorithm {
 
             newPopulation = recombinator.recombine(newPopulation);
             newPopulation = mutator.mutate(newPopulation);
-            newPopulation = replacer.replace(population, newPopulation);
+            population = replacer.replace(population, newPopulation);
 
-            population = evaluator.evaluate(newPopulation);
+            //What does evaluator do here?
+            //population = evaluator.evaluate(newPopulation);
         }
 
         return population.get(0);
