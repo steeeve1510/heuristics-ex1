@@ -3,8 +3,8 @@ package heuristics.ex2.ga;
 import heuristics.ex1.dto.Graph;
 import heuristics.ex1.dto.Solution;
 import heuristics.ex2.ga.util.*;
-
 import java.util.List;
+
 
 public class GeneticAlgorithm {
 
@@ -13,7 +13,7 @@ public class GeneticAlgorithm {
 
     private Initializer initializer = new Initializer(POPULATION_SIZE);
     private Evaluator evaluator = new Evaluator();
-    private Selector selector = new Selector();
+    private Selector selector = new Selector(SelectionType.LINEAR_RANKING);
     private Recombinator recombinator = new Recombinator();
     private Mutator mutator = new Mutator();
     private Replacer replacer = new Replacer();
@@ -21,6 +21,7 @@ public class GeneticAlgorithm {
     public Solution solve(Graph graph) {
         //TODO pocket the best solution so far found
         int generation = 0;
+        int parents = 4;
         List<Solution> population = initializer.initialize(graph);
 
         //IMO "evaluator" should be called from selector
@@ -28,7 +29,7 @@ public class GeneticAlgorithm {
 
         while (generation < MAX_NUM_GENERATIONS) {
             generation++;
-            List<Solution> newPopulation = selector.select(population);
+            List<Solution> newPopulation = selector.select(population, parents);
 
             newPopulation = recombinator.recombine(newPopulation);
             newPopulation = mutator.mutate(newPopulation);
