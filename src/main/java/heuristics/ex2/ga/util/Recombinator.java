@@ -43,25 +43,33 @@ public class Recombinator {
             cityEdgeList.add(mother.getSuccessor(i));
             citiesEdgeList.add(cityEdgeList);
         }
+
         Random RNG = new Random();
         List<Integer> combination = new LinkedList<>();
         int currentCity = RNG.nextInt(citiesEdgeList.size());
+        int initialCity = currentCity;
         List<Integer> currentCityEdgeList;
         Long newObjectiveValue = 0L;
+        combination.add(currentCity);
         for (int i = 0; i < father.getSize(); i++){
             combination.add(currentCity);
             currentCityEdgeList = citiesEdgeList.get(currentCity);
-            //citiesEdgeList.remove(currentCity);       // This would fuck up the list structure, indexes will no longer equal city name
-            removeCityFromEdgeList(currentCity, citiesEdgeList); //TODO testing. Does this method work or do I have to build a list again
-            int selectedCity = currentCityEdgeList.get(0);
-            int selCityEdges = citiesEdgeList.get(selectedCity).size();
-            for (int j=1; j < currentCityEdgeList.size(); i++){
-                if (selCityEdges > citiesEdgeList.get(currentCityEdgeList.get(i)).size()){
-                    selectedCity = currentCityEdgeList.get(i);
-                    selCityEdges = citiesEdgeList.get(currentCityEdgeList.get(i)).size();
+            if (!currentCityEdgeList.isEmpty()) {
+                //citiesEdgeList.remove(currentCity);       // This would fuck up the list structure, indexes will no longer equal city name
+                removeCityFromEdgeList(currentCity, citiesEdgeList); //TODO testing. Does this method work or do I have to build a list again
+                int selectedCity = currentCityEdgeList.get(0);
+                int selCityEdges = citiesEdgeList.get(selectedCity).size();
+                for (int j = 1; j < currentCityEdgeList.size(); i++) {
+                    if (selCityEdges > citiesEdgeList.get(currentCityEdgeList.get(i)).size()) {
+                        selectedCity = currentCityEdgeList.get(i);
+                        selCityEdges = citiesEdgeList.get(currentCityEdgeList.get(i)).size();
+                    }
                 }
+                newObjectiveValue += graph.getWeight(currentCity, selectedCity);
+            } else {
+                //last city, edge list is empty
+                newObjectiveValue += graph.getWeight(currentCity, initialCity);
             }
-            newObjectiveValue += graph.getWeight(currentCity, selectedCity);
         }
         return new Solution(combination, newObjectiveValue);
     }

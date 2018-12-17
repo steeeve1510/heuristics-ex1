@@ -4,7 +4,7 @@ import heuristics.ex1.dto.Solution;
 import java.util.Comparator;
 
 public class SolutionComparator implements Comparator<Solution> {
-    // Compares solutions by their
+    // Compares solutions by their Abs Obj Value
     @Override
     public int compare(Solution o1, Solution o2) {
         if (o1.getAbsoluteObjectiveValue() < o2.getAbsoluteObjectiveValue()){

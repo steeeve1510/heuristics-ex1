@@ -58,16 +58,25 @@ public class Selector {
         int tournamentSize = population.size() / parents;
 
         Comparator tourComparator = new SolutionComparator();
-        SortedSet tournament;
+        SortedSet tournament = new TreeSet(tourComparator);
         Random RNG = new Random();
 
         List<Solution> newPopulation = new LinkedList<>();
         for (int i = 0;  i< parents; i++) {
-            tournament = new TreeSet(tourComparator);
-            for (int j = 0;  j< tournamentSize; j++) {
-                int randomSolution = RNG.nextInt(population.size());
-                tournament.add(population.get(randomSolution));
-                population.remove(randomSolution);
+            tournament.clear();
+            if (i == parents -1 ){
+                // Adds the last remanining solutions in case there is a remainder in size / parents
+                for (int j = 0;  j< (tournamentSize + (population.size() % parents)); j++) {
+                    int randomSolution = RNG.nextInt(population.size());
+                    tournament.add(population.get(randomSolution));
+                    population.remove(randomSolution);
+                }
+            } else {
+                for (int j = 0;  j< tournamentSize; j++) {
+                    int randomSolution = RNG.nextInt(population.size());
+                    tournament.add(population.get(randomSolution));
+                    population.remove(randomSolution);
+                }
             }
             newPopulation.add( (Solution) tournament.first());
         }
