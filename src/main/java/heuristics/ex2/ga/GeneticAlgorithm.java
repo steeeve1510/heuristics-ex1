@@ -14,7 +14,7 @@ public class GeneticAlgorithm {
     private Initializer initializer = new Initializer(POPULATION_SIZE);
     private Evaluator evaluator = new Evaluator();
     private Selector selector = new Selector(SelectionType.LINEAR_RANKING);
-    private Recombinator recombinator = new Recombinator();
+    private Recombinator recombinator;
     private Mutator mutator = new Mutator();
     private Replacer replacer = new Replacer();
 
@@ -24,7 +24,7 @@ public class GeneticAlgorithm {
         int parents = 4;
         List<Solution> population = initializer.initialize(graph);
 
-        //IMO "evaluator" should be called from selector
+        recombinator = new Recombinator(graph);
         //population = evaluator.evaluate(population);
 
         while (generation < MAX_NUM_GENERATIONS) {
@@ -35,8 +35,6 @@ public class GeneticAlgorithm {
             newPopulation = mutator.mutate(newPopulation);
             population = replacer.replace(population, newPopulation);
 
-            //What does evaluator do here?
-            //population = evaluator.evaluate(newPopulation);
         }
 
         return population.get(0);
