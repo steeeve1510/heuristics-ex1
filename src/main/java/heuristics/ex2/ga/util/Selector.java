@@ -6,9 +6,6 @@ import org.apache.commons.math3.util.Pair;
 
 import java.util.*;
 
-import static heuristics.ex2.ga.util.SelectionType.K_TOURNAMENT;
-import static heuristics.ex2.ga.util.SelectionType.LINEAR_RANKING;
-
 public class Selector {
     /*
         This class should select the parents that will be used for the next generation
@@ -39,33 +36,31 @@ public class Selector {
 
     private List<Solution> getLinearRanking(List<Solution> population, int parents){
 
-        Comparator tourComparator = new SolutionComparator();
-        SortedSet ranking = new TreeSet(tourComparator);
+        Comparator<Solution> tourComparator = new SolutionComparator();
+        SortedSet<Solution> ranking = new TreeSet<>(tourComparator);
         ranking.addAll(population);
         List<Pair<Solution,Double>> itemWeights = new ArrayList<>();
         double prob = 0.1;
-        for (Object i : ranking) {
-            itemWeights.add(new Pair(i, prob));
+        for (Solution i : ranking) {
+            itemWeights.add(new Pair<>(i, prob));
             prob += 0.1;
         }
 
-        List<Solution> newPopulation = Arrays.asList((Solution[]) new EnumeratedDistribution(itemWeights).sample(parents));
-
-        return newPopulation;
+        return Arrays.asList(new EnumeratedDistribution<>(itemWeights).sample(parents, new Solution[]{}));
     }
 
     private List<Solution> getKTournament(List<Solution> population, int parents){
         int tournamentSize = population.size() / parents;
 
-        Comparator tourComparator = new SolutionComparator();
-        SortedSet tournament = new TreeSet(tourComparator);
+        Comparator<Solution> tourComparator = new SolutionComparator();
+        SortedSet<Solution> tournament = new TreeSet<>(tourComparator);
         Random RNG = new Random();
 
         List<Solution> newPopulation = new LinkedList<>();
-        for (int i = 0;  i< parents; i++) {
+        for (int i = 0;  i < parents; i++) {
             tournament.clear();
-            if (i == parents -1 ){
-                // Adds the last remanining solutions in case there is a remainder in size / parents
+            if (i == parents-1 ){
+                // Adds the last remaining solutions in case there is a remainder in size / parents
                 for (int j = 0;  j< (tournamentSize + (population.size() % parents)); j++) {
                     int randomSolution = RNG.nextInt(population.size());
                     tournament.add(population.get(randomSolution));
@@ -78,7 +73,7 @@ public class Selector {
                     population.remove(randomSolution);
                 }
             }
-            newPopulation.add( (Solution) tournament.first());
+            newPopulation.add(tournament.first());
         }
         return newPopulation;
     }

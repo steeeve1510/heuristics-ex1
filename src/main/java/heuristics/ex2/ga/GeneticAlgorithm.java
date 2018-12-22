@@ -15,22 +15,20 @@ public class GeneticAlgorithm {
     private Initializer initializer = new Initializer(POPULATION_SIZE);
     private Evaluator evaluator = new Evaluator();
     private Selector selector = new Selector(SelectionType.LINEAR_RANKING);
-    private Recombinator recombinator;
-    private Mutator mutator;
+    private Recombinator recombinator = new Recombinator();
+    private Mutator mutator = new Mutator();
     private Replacer replacer = new Replacer();
 
     public Solution solve(Graph graph) {
         int generation = 0;
         int parents = 4;
-        Comparator tourComparator = new SolutionComparator();
-        SortedSet ranking = new TreeSet(tourComparator);
+        Comparator<Solution> tourComparator = new SolutionComparator();
+        SortedSet<Solution> ranking = new TreeSet<>(tourComparator);
         List<Solution> population = initializer.initialize(graph);
         ranking.addAll(population);
-        Solution bestSolution = (Solution) ranking.first();
-        Long bestCost = bestSolution.getAbsoluteObjectiveValue();
+        Solution bestSolution = ranking.first();
+        long bestCost = bestSolution.getAbsoluteObjectiveValue();
 
-        recombinator = new Recombinator(graph);
-        mutator = new Mutator(graph);
         //population = evaluator.evaluate(population);
 
 
@@ -38,9 +36,9 @@ public class GeneticAlgorithm {
             generation++;
             List<Solution> selectedParents = selector.select(new LinkedList<>(ranking), parents);
 
-            List<Solution> offSpring = recombinator.recombine(selectedParents);
-            offSpring = mutator.mutate(offSpring);
-            //population = replacer.replace(population, newPopulation);
+            List<Solution> offSpring = recombinator.recombine(selectedParents, graph);
+            offSpring = mutator.mutate(offSpring, graph);
+            population = replacer.replace(population, offSpring);
 
             //Next generation is the parents and the offspring generated
             //population = new LinkedList<>();
@@ -51,7 +49,7 @@ public class GeneticAlgorithm {
             ranking.addAll(selectedParents);
 
             //Check if there is any solution better than any previous
-            Solution currentBestSolution = (Solution) ranking.first();
+            Solution currentBestSolution = ranking.first();
             if (currentBestSolution.getAbsoluteObjectiveValue() < bestCost){
                 bestSolution = currentBestSolution;
                 bestCost = currentBestSolution.getAbsoluteObjectiveValue();

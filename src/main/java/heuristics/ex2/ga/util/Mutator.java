@@ -12,13 +12,7 @@ import java.util.List;
 
 public class Mutator {
 
-    private Graph graph;
-
-    public Mutator(Graph graph){
-        this.graph = graph;
-    }
-
-    public List<Solution> mutate(List<Solution> population) {
+    public List<Solution> mutate(List<Solution> population, Graph graph) {
         /*
         This class should take the new population from the recombinator and mutate them
 

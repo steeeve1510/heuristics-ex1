@@ -9,30 +9,24 @@ import java.util.Random;
 
 public class Recombinator {
 
-    private Graph graph;
-
-    public Recombinator(Graph graph){
-        this.graph = graph;
-    }
-
-    public List<Solution> recombine(List<Solution> parents) {
+    public List<Solution> recombine(List<Solution> parents, Graph graph) {
         /*
         This class should take the parents from selector and build a whole new generation from them.
         Should we use Edge Recombination Crossover? (Recommended in slides)
          */
         Solution combination;
         List<Solution> newPopulation = new LinkedList<>();
-        for (Solution father: parents){
+        for (Solution father : parents){
             parents.remove(father);
-            for (Solution mother: parents){
-                combination = edgeRecombinationCrossover(father, mother);
+            for (Solution mother : parents){
+                combination = edgeRecombinationCrossover(father, mother, graph);
                 newPopulation.add(combination);
             }
         }
         return newPopulation;
     }
 
-    private Solution edgeRecombinationCrossover(Solution father, Solution mother) {
+    private Solution edgeRecombinationCrossover(Solution father, Solution mother, Graph graph) {
         List<Integer> cityEdgeList;
         List<List<Integer>> citiesEdgeList = new LinkedList<>();
         for (int i = 0; i < father.getSize(); i++){
@@ -76,8 +70,8 @@ public class Recombinator {
 
     private void removeCityFromEdgeList(int currentCity, List<List<Integer>> citiesEdgeList) {
         List<Integer> currentCityEdgeList = citiesEdgeList.get(currentCity);
-        for (int i = 0; i< currentCityEdgeList.size(); i++){
-            citiesEdgeList.get(currentCityEdgeList.get(i)).remove((Integer) currentCity);
+        for (Integer integer : currentCityEdgeList) {
+            citiesEdgeList.get(integer).remove((Integer) currentCity);
         }
     }
 
