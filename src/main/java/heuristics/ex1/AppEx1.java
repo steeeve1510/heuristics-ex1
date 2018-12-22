@@ -60,7 +60,7 @@ public class AppEx1 {
         printResult(graph, solution);
     }
 
-    private static void printResult(Graph graph, Solution solution) {
+    public static void printResult(Graph graph, Solution solution) {
         System.out.println();
         if (solution.getObjectiveValue() != getObjectiveValue(solution,graph)) {
             System.out.println("#########################################");

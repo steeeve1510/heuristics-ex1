@@ -4,14 +4,14 @@ import heuristics.ex1.dto.Graph;
 import heuristics.ex1.dto.Solution;
 import heuristics.ex2.ga.util.*;
 
-import java.util.*;
+import java.util.SortedSet;
 
 
 public class GeneticAlgorithm {
 
-    private static final int MAX_NUM_GENERATIONS = 100;
-    private static final int POPULATION_SIZE = 10;
-    private static final int SELECTION_SIZE = 4;
+    private static final int MAX_NUM_GENERATIONS = 200;
+    private static final int POPULATION_SIZE = 150;
+    private static final int SELECTION_SIZE = 50;
 
     private Initializer initializer = new Initializer(POPULATION_SIZE);
     private Evaluator evaluator = new Evaluator();
@@ -25,36 +25,25 @@ public class GeneticAlgorithm {
 
         SortedSet<Solution> population = initializer.initialize(graph);
 
-        Solution bestSolution = population.first();
-        long bestCost = bestSolution.getAbsoluteObjectiveValue();
+        Solution best = population.first();
 
         //population = evaluator.evaluate(population);
 
-
         while (generation < MAX_NUM_GENERATIONS) {
             generation++;
-            SortedSet<Solution> selectedParents = selector.select(population, SELECTION_SIZE);
+            SortedSet<Solution> parents = selector.select(population, SELECTION_SIZE);
+            SortedSet<Solution> offSpring = recombinator.recombine(parents, graph);
+//            offSpring = mutator.mutate(new LinkedList<>(offSpring), graph);
 
-            List<Solution> offSpring = recombinator.recombine(new LinkedList<>(selectedParents), graph);
-            offSpring = mutator.mutate(offSpring, graph);
-//            population = replacer.replace(population, offSpring);
-
-            //Next generation is the parents and the offspring generated
-            //population = new LinkedList<>();
-            //population.addAll(offSpring);
-            //population.addAll(selectedParents);
-            population.clear();
-            population.addAll(offSpring);
-            population.addAll(selectedParents);
+            population = replacer.replace(parents, offSpring);
 
             //Check if there is any solution better than any previous
-            Solution currentBestSolution = population.first();
-            if (currentBestSolution.getAbsoluteObjectiveValue() < bestCost){
-                bestSolution = currentBestSolution;
-                bestCost = currentBestSolution.getAbsoluteObjectiveValue();
+            Solution bestOfNewPopulation = population.first();
+            if (bestOfNewPopulation.getAbsoluteObjectiveValue() < best.getAbsoluteObjectiveValue()){
+                best = bestOfNewPopulation;
             }
         }
 
-        return bestSolution;
+        return best;
     }
 }

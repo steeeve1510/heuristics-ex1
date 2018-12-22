@@ -2,17 +2,19 @@ package heuristics.ex2.ga.util;
 
 import heuristics.ex1.dto.Solution;
 
-import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
+/**
+ * This class takes the old population and the offspring and defines the new population
+ */
 public class Replacer {
 
-    public List<Solution> replace(List<Solution> parents, List<Solution> offspring) {
-        /*
-        Questions:
-        How many we replace?
-        How to replace?
-        Do the same as in selection but more individuals?
-         */
-        return offspring;
+    public SortedSet<Solution> replace(SortedSet<Solution> parents, SortedSet<Solution> offspring) {
+        SortedSet<Solution> newPopulation = new TreeSet<>(new SolutionComparator());
+        newPopulation.addAll(parents);
+        newPopulation.addAll(offspring);
+
+        return newPopulation;
     }
 }

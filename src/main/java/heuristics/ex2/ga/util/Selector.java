@@ -42,6 +42,9 @@ public class Selector {
         int i = 0;
         for (Solution s : population) {
             double p = (alpha + i * (beta - alpha) / (n - 1d)) / n;
+            if (Double.isNaN(p)) {
+                System.out.println("dafuq");
+            }
             probabilityMassFunction.add(new Pair<>(s, p));
             i++;
         }
@@ -66,11 +69,16 @@ public class Selector {
     }
 
     private SortedSet<Solution> sample(int amount, List<Pair<Solution, Double>> probabilityMassFunction) {
-        EnumeratedDistribution<Solution> distribution = new EnumeratedDistribution<>(probabilityMassFunction);
+        if (amount >= probabilityMassFunction.size()) {
+            throw new RuntimeException("Population is too small, required more than: " + amount + ", actually: " + probabilityMassFunction.size());
+        }
 
+        EnumeratedDistribution<Solution> distribution = new EnumeratedDistribution<>(probabilityMassFunction);
         SortedSet<Solution> selected = new TreeSet<>(new SolutionComparator());
-        Solution[] sample = distribution.sample(amount, new Solution[]{});
-        Collections.addAll(selected, sample);
+        while (selected.size() < amount) {
+            Solution sample = distribution.sample();
+            selected.add(sample);
+        }
         return selected;
     }
 }

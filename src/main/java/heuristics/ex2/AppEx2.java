@@ -1,29 +1,28 @@
 package heuristics.ex2;
 
-import org.apache.commons.math3.distribution.EnumeratedDistribution;
-import org.apache.commons.math3.util.Pair;
+import heuristics.ex1.AppEx1;
+import heuristics.ex1.build.GraphBuilder;
+import heuristics.ex1.dto.Graph;
+import heuristics.ex1.dto.Solution;
+import heuristics.ex2.ga.GeneticAlgorithm;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.io.File;
 
 public class AppEx2 {
+
+    private static String instance = "0010";
+
+    private static GeneticAlgorithm geneticAlgorithm = new GeneticAlgorithm();
+
     public static void main(String[] args) {
-        SortedSet<Integer> set = new TreeSet<>();
 
-        set.add(1);
-        set.add(100);
-        set.add(20);
-        set.add(9999);
-        set.add(15);
+        File file = new File("src/main/resources/" + instance + ".txt");
 
-        List<Pair<Integer, Double>> weights = new LinkedList<>();
-        for(Integer i : set) {
-            weights.add(new Pair<>(i, 1d));
-        }
+        GraphBuilder graphBuilder = new GraphBuilder();
+        Graph graph = graphBuilder.build(file);
 
-        EnumeratedDistribution<Integer> distribution = new EnumeratedDistribution<>(weights);
-        System.out.println(distribution.getPmf().get(0).getValue());
+        Solution solution = geneticAlgorithm.solve(graph);
+
+        AppEx1.printResult(graph, solution);
     }
 }
