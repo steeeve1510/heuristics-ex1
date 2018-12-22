@@ -18,64 +18,59 @@ public class Selector {
      */
     private SelectionType selectionType;
 
-    public Selector(SelectionType type){
+    public Selector(SelectionType type) {
         this.selectionType = type;
     }
 
-    public List<Solution> select(List<Solution> population, int parents) {
+    public SortedSet<Solution> select(SortedSet<Solution> population, int selectionSize) {
         switch (selectionType) {
-                    case LINEAR_RANKING:
-                        return getLinearRanking(population, parents);
-                    case K_TOURNAMENT:
-                        return getKTournament(population, parents);
-        //            case RANK:
-        //                return getRankSelection((population, parents);
+            case LINEAR_RANKING:
+                return getLinearRanking(population, selectionSize);
+            case K_TOURNAMENT:
+                return getKTournament(population, selectionSize);
         }
         return null;
     }
 
-    private List<Solution> getLinearRanking(List<Solution> population, int parents){
+    private SortedSet<Solution> getLinearRanking(SortedSet<Solution> population, int selectionSize) {
+        int n = population.size();
 
-        Comparator<Solution> tourComparator = new SolutionComparator();
-        SortedSet<Solution> ranking = new TreeSet<>(tourComparator);
-        ranking.addAll(population);
-        List<Pair<Solution,Double>> itemWeights = new ArrayList<>();
-        double prob = 0.1;
-        for (Solution i : ranking) {
-            itemWeights.add(new Pair<>(i, prob));
-            prob += 0.1;
+        double alpha = 2d;
+        double beta = 0d;
+
+        List<Pair<Solution, Double>> probabilityMassFunction = new ArrayList<>();
+        int i = 0;
+        for (Solution s : population) {
+            double p = (alpha + i * (beta - alpha) / (n - 1d)) / n;
+            probabilityMassFunction.add(new Pair<>(s, p));
+            i++;
         }
 
-        return Arrays.asList(new EnumeratedDistribution<>(itemWeights).sample(parents, new Solution[]{}));
+        return sample(selectionSize, probabilityMassFunction);
     }
 
-    private List<Solution> getKTournament(List<Solution> population, int parents){
-        int tournamentSize = population.size() / parents;
+    private SortedSet<Solution> getKTournament(SortedSet<Solution> population, int selectionSize) {
+        int n = population.size();
 
-        Comparator<Solution> tourComparator = new SolutionComparator();
-        SortedSet<Solution> tournament = new TreeSet<>(tourComparator);
-        Random RNG = new Random();
+        int k = 10;
 
-        List<Solution> newPopulation = new LinkedList<>();
-        for (int i = 0;  i < parents; i++) {
-            tournament.clear();
-            if (i == parents-1 ){
-                // Adds the last remaining solutions in case there is a remainder in size / parents
-                for (int j = 0;  j< (tournamentSize + (population.size() % parents)); j++) {
-                    int randomSolution = RNG.nextInt(population.size());
-                    tournament.add(population.get(randomSolution));
-                    population.remove(randomSolution);
-                }
-            } else {
-                for (int j = 0;  j< tournamentSize; j++) {
-                    int randomSolution = RNG.nextInt(population.size());
-                    tournament.add(population.get(randomSolution));
-                    population.remove(randomSolution);
-                }
-            }
-            newPopulation.add(tournament.first());
+        List<Pair<Solution, Double>> probabilityMassFunction = new ArrayList<>();
+        int i = 0;
+        for (Solution s : population) {
+            double p = ( Math.pow(n-i, k) - Math.pow(n-i-1, k) ) / Math.pow(n, k);
+            probabilityMassFunction.add(new Pair<>(s, p));
+            i++;
         }
-        return newPopulation;
+
+        return sample(selectionSize, probabilityMassFunction);
     }
 
+    private SortedSet<Solution> sample(int amount, List<Pair<Solution, Double>> probabilityMassFunction) {
+        EnumeratedDistribution<Solution> distribution = new EnumeratedDistribution<>(probabilityMassFunction);
+
+        SortedSet<Solution> selected = new TreeSet<>(new SolutionComparator());
+        Solution[] sample = distribution.sample(amount, new Solution[]{});
+        Collections.addAll(selected, sample);
+        return selected;
+    }
 }

@@ -5,8 +5,8 @@ import heuristics.ex1.construction.RandomizedGreedySearch;
 import heuristics.ex1.dto.Graph;
 import heuristics.ex1.dto.Solution;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 public class Initializer {
 
@@ -18,8 +18,8 @@ public class Initializer {
         this.populationSize = populationSize;
     }
 
-    public List<Solution> initialize(Graph graph) {
-        List<Solution> population = new LinkedList<>();
+    public SortedSet<Solution> initialize(Graph graph) {
+        SortedSet<Solution> population = new TreeSet<>(new SolutionComparator());
 
         for (int i = 0; i < populationSize; i++) {
             Solution solution = construction.solve(graph);
