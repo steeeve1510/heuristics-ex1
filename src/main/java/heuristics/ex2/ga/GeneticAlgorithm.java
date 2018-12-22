@@ -9,11 +9,11 @@ import java.util.SortedSet;
 
 public class GeneticAlgorithm {
 
-    private static final int MAX_NUM_GENERATIONS = 200;
-    private static final int POPULATION_SIZE = 150;
-    private static final int SELECTION_SIZE = 50;
+    private static final int MAX_NUM_GENERATIONS = 750;
+    private static final int INITIAL_POPULATION_SIZE = 1000;
+    private static final int SELECTION_SIZE = 35;
 
-    private Initializer initializer = new Initializer(POPULATION_SIZE);
+    private Initializer initializer = new Initializer(INITIAL_POPULATION_SIZE);
     private Evaluator evaluator = new Evaluator();
     private Selector selector = new Selector(SelectionType.LINEAR_RANKING);
     private Recombinator recombinator = new Recombinator();
