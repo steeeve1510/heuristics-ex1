@@ -2,17 +2,17 @@ package heuristics.ex2.ga.util;
 
 import heuristics.ex1.dto.Graph;
 import heuristics.ex1.dto.Solution;
-import heuristics.ex1.localsearch.LocalSearch;
 import heuristics.ex1.localsearch.neighborhood.Neighborhood;
 import heuristics.ex1.localsearch.neighborhood.StepType;
-import heuristics.ex1.localsearch.neighborhood.ThreeOptNeighborhoodNew;
+import heuristics.ex1.localsearch.neighborhood.TwoOptNeighborhood;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Random;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 public class Mutator {
 
-    public List<Solution> mutate(List<Solution> population, Graph graph) {
+    public SortedSet<Solution> mutate(SortedSet<Solution> population, Graph graph) {
         /*
         This class should take the new population from the recombinator and mutate them
 
@@ -20,21 +20,29 @@ public class Mutator {
         Reciprocal Exchange
         Insertion
         Displacement
-        Inversion ¿?
-
-        ¿Or just do random local search with first improvement?
+        Inversion
          */
 
-        Neighborhood neighborhood = new ThreeOptNeighborhoodNew();
-        StepType stepType = StepType.RANDOM; //TODO try other steptype? First Improvement?
-        LocalSearch localSearch = new LocalSearch(neighborhood, stepType);
-        List<Solution> newPopulation = new LinkedList<>();
+        double p = 1d / population.size();
 
-        for (Solution tour : population){
-            tour = localSearch.improve(tour, graph);
-            newPopulation.add(tour);
+        Random random = new Random();
+
+        SortedSet<Solution> mutatedPopulation = new TreeSet<>(new SolutionComparator());
+
+        for (Solution solution : population) {
+            double randomNumber = random.nextDouble();
+            if (randomNumber < p) {
+                solution = reciprocalExchange(solution, graph);
+            }
+            mutatedPopulation.add(solution);
         }
 
-        return newPopulation;
+        return mutatedPopulation;
+    }
+
+    private Solution reciprocalExchange(Solution solution, Graph graph) {
+        Neighborhood neighborhood = new TwoOptNeighborhood();
+
+        return neighborhood.get(solution, graph, StepType.RANDOM);
     }
 }

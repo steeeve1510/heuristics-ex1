@@ -33,7 +33,7 @@ public class GeneticAlgorithm {
             generation++;
             SortedSet<Solution> parents = selector.select(population, SELECTION_SIZE);
             SortedSet<Solution> offSpring = recombinator.recombine(parents, graph);
-//            offSpring = mutator.mutate(new LinkedList<>(offSpring), graph);
+            offSpring = mutator.mutate(offSpring, graph);
 
             population = replacer.replace(parents, offSpring);
 
