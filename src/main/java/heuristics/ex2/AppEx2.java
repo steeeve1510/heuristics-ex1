@@ -5,8 +5,10 @@ import heuristics.ex1.build.GraphBuilder;
 import heuristics.ex1.dto.Graph;
 import heuristics.ex1.dto.Solution;
 import heuristics.ex2.ga.GeneticAlgorithm;
+import heuristics.ex2.ga.util.Initializer;
 
 import java.io.File;
+import java.util.SortedSet;
 
 public class AppEx2 {
 
@@ -22,7 +24,6 @@ public class AppEx2 {
         Graph graph = graphBuilder.build(file);
 
         Solution solution = geneticAlgorithm.solve(graph);
-
         AppEx1.printResult(graph, solution);
     }
 }

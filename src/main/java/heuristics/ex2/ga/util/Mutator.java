@@ -4,13 +4,22 @@ import heuristics.ex1.dto.Graph;
 import heuristics.ex1.dto.Solution;
 import heuristics.ex1.localsearch.neighborhood.Neighborhood;
 import heuristics.ex1.localsearch.neighborhood.StepType;
-import heuristics.ex1.localsearch.neighborhood.TwoOptNeighborhood;
+import heuristics.ex1.localsearch.neighborhood.ThreeOptNeighborhoodNew;
 
 import java.util.Random;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
 public class Mutator {
+
+    private double mutationFactor;
+
+    /*
+     * @param mutationFactor how many percent of the population should mutate. (0.0 - 1.0)
+     */
+    public Mutator(double mutationFactor) {
+        this.mutationFactor = mutationFactor;
+    }
 
     public SortedSet<Solution> mutate(SortedSet<Solution> population, Graph graph) {
         /*
@@ -23,15 +32,13 @@ public class Mutator {
         Inversion
          */
 
-        double p = 1d / population.size();
-
         Random random = new Random();
 
         SortedSet<Solution> mutatedPopulation = new TreeSet<>(new SolutionComparator());
 
         for (Solution solution : population) {
             double randomNumber = random.nextDouble();
-            if (randomNumber < p) {
+            if (randomNumber < mutationFactor) {
                 solution = reciprocalExchange(solution, graph);
             }
             mutatedPopulation.add(solution);
@@ -41,7 +48,7 @@ public class Mutator {
     }
 
     private Solution reciprocalExchange(Solution solution, Graph graph) {
-        Neighborhood neighborhood = new TwoOptNeighborhood();
+        Neighborhood neighborhood = new ThreeOptNeighborhoodNew();
 
         return neighborhood.get(solution, graph, StepType.RANDOM);
     }

@@ -16,23 +16,30 @@ public class Selector {
             K-tournament (another extra parameter)
         Select how many?
      */
+    private double selectionSizeFactor;
     private SelectionType selectionType;
 
-    public Selector(SelectionType type) {
+    /**
+     *
+     * @param selectionSizeFactor how many percent of the population should be chosen as parents (0.0 - 1.0)
+     * @param type which selection algorithm should be chosen
+     */
+    public Selector(double selectionSizeFactor, SelectionType type) {
+        this.selectionSizeFactor = selectionSizeFactor;
         this.selectionType = type;
     }
 
-    public SortedSet<Solution> select(SortedSet<Solution> population, int selectionSize) {
+    public SortedSet<Solution> select(SortedSet<Solution> population) {
         switch (selectionType) {
             case LINEAR_RANKING:
-                return getLinearRanking(population, selectionSize);
+                return getLinearRanking(population);
             case K_TOURNAMENT:
-                return getKTournament(population, selectionSize);
+                return getKTournament(population);
         }
         return null;
     }
 
-    private SortedSet<Solution> getLinearRanking(SortedSet<Solution> population, int selectionSize) {
+    private SortedSet<Solution> getLinearRanking(SortedSet<Solution> population) {
         int n = population.size();
 
         double alpha = 2d;
@@ -42,17 +49,14 @@ public class Selector {
         int i = 0;
         for (Solution s : population) {
             double p = (alpha + i * (beta - alpha) / (n - 1d)) / n;
-            if (Double.isNaN(p)) {
-                System.out.println("dafuq");
-            }
             probabilityMassFunction.add(new Pair<>(s, p));
             i++;
         }
 
-        return sample(selectionSize, probabilityMassFunction);
+        return sample((int) Math.ceil(population.size() * selectionSizeFactor), probabilityMassFunction);
     }
 
-    private SortedSet<Solution> getKTournament(SortedSet<Solution> population, int selectionSize) {
+    private SortedSet<Solution> getKTournament(SortedSet<Solution> population) {
         int n = population.size();
 
         int k = 10;
@@ -65,7 +69,7 @@ public class Selector {
             i++;
         }
 
-        return sample(selectionSize, probabilityMassFunction);
+        return sample((int) Math.ceil(population.size() * selectionSizeFactor), probabilityMassFunction);
     }
 
     private SortedSet<Solution> sample(int amount, List<Pair<Solution, Double>> probabilityMassFunction) {

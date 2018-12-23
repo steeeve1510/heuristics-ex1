@@ -9,16 +9,16 @@ import java.util.SortedSet;
 
 public class GeneticAlgorithm {
 
-    private static final int MAX_NUM_GENERATIONS = 750;
-    private static final int INITIAL_POPULATION_SIZE = 1000;
-    private static final int SELECTION_SIZE = 35;
+    private static final int MAX_NUM_GENERATIONS = 250;
+    private static final int MAX_POPULATION_SIZE = 1000;
+    private static final double SELECTION_SIZE_FACTOR = 0.2;
+    private static final double MUTATION_FACTOR = 0.1;
 
-    private Initializer initializer = new Initializer(INITIAL_POPULATION_SIZE);
-    private Evaluator evaluator = new Evaluator();
-    private Selector selector = new Selector(SelectionType.LINEAR_RANKING);
+    private Initializer initializer = new Initializer(MAX_POPULATION_SIZE);
+    private Selector selector = new Selector(SELECTION_SIZE_FACTOR, SelectionType.LINEAR_RANKING);
     private Recombinator recombinator = new Recombinator();
-    private Mutator mutator = new Mutator();
-    private Replacer replacer = new Replacer();
+    private Mutator mutator = new Mutator(MUTATION_FACTOR);
+    private Replacer replacer = new Replacer(MAX_POPULATION_SIZE);
 
     public Solution solve(Graph graph) {
         int generation = 0;
@@ -27,11 +27,9 @@ public class GeneticAlgorithm {
 
         Solution best = population.first();
 
-        //population = evaluator.evaluate(population);
-
         while (generation < MAX_NUM_GENERATIONS) {
             generation++;
-            SortedSet<Solution> parents = selector.select(population, SELECTION_SIZE);
+            SortedSet<Solution> parents = selector.select(population);
             SortedSet<Solution> offSpring = recombinator.recombine(parents, graph);
             offSpring = mutator.mutate(offSpring, graph);
 
@@ -40,6 +38,7 @@ public class GeneticAlgorithm {
             //Check if there is any solution better than any previous
             Solution bestOfNewPopulation = population.first();
             if (bestOfNewPopulation.getAbsoluteObjectiveValue() < best.getAbsoluteObjectiveValue()){
+                System.out.println("Update best: " + bestOfNewPopulation.getAbsoluteObjectiveValue());
                 best = bestOfNewPopulation;
             }
         }
