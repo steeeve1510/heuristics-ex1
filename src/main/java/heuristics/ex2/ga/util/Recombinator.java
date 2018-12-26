@@ -38,7 +38,7 @@ public class Recombinator {
             Set<Integer> edgeList = edgeLists.get(city);
             edgeLists.remove(city);
 
-            Integer bestNeighbor = getBestNeighbor(city, edgeList, graph);
+            Integer bestNeighbor = getBestNeighbor(city, edgeList, graph, objectiveValue);
             if (bestNeighbor == null) {
                 Integer[] remainingCities = edgeLists.keySet().toArray(new Integer[]{});
                 bestNeighbor = remainingCities[new Random().nextInt(remainingCities.length)];
@@ -58,7 +58,7 @@ public class Recombinator {
     }
 
     private void addSolutionToEdgeLists(Solution solution, Map<Integer, Set<Integer>> edgeLists) {
-        solution.getNodes().forEach(c -> {
+        for (Integer c : solution.getNodes()) {
             Set<Integer> edgeList = edgeLists.get(c);
             if (edgeList == null) {
                 edgeList = new HashSet<>();
@@ -66,27 +66,28 @@ public class Recombinator {
             edgeList.add(solution.getPredecessor(c));
             edgeList.add(solution.getSuccessor(c));
             edgeLists.put(c, edgeList);
-        });
+        }
     }
 
-    private Integer getBestNeighbor(Integer city, Set<Integer> neighbors, Graph graph) {
+    private Integer getBestNeighbor(Integer city, Set<Integer> neighbors, Graph graph, long objectiveValueSoFar) {
         List<Integer> closestNeighbors = new ArrayList<>();
 
-        int cheapestEdge = 0;
+        long cheapestObjectiveValue = 0;
         for(Integer neighbor : neighbors) {
             int edge = graph.getWeight(city, neighbor);
 
             if (closestNeighbors.isEmpty()) {
                 closestNeighbors.add(neighbor);
-                cheapestEdge = edge;
+                cheapestObjectiveValue = objectiveValueSoFar + edge;
                 continue;
             }
 
-            if (edge < cheapestEdge) {
+            long currentObjectiveValue = objectiveValueSoFar + edge;
+            if (Math.abs(currentObjectiveValue) < Math.abs(cheapestObjectiveValue)) {
                 closestNeighbors.clear();
                 closestNeighbors.add(neighbor);
-                cheapestEdge = edge;
-            } else if (edge == cheapestEdge) {
+                cheapestObjectiveValue = objectiveValueSoFar + edge;
+            } else if (currentObjectiveValue == cheapestObjectiveValue) {
                 closestNeighbors.add(neighbor);
             }
         }
@@ -105,8 +106,8 @@ public class Recombinator {
     }
 
     private void removeCityFromAllLists(Integer city, Map<Integer, Set<Integer>> edgeLists) {
-        edgeLists.forEach((c, edgeList) -> {
+        for (Set<Integer> edgeList : edgeLists.values()) {
             edgeList.remove(city);
-        });
+        }
     }
 }

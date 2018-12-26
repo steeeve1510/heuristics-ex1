@@ -9,10 +9,10 @@ import java.util.SortedSet;
 
 public class GeneticAlgorithm {
 
-    private static final int MAX_NUM_GENERATIONS = 250;
-    private static final int MAX_POPULATION_SIZE = 1000;
-    private static final double SELECTION_SIZE_FACTOR = 0.2;
-    private static final double MUTATION_FACTOR = 0.1;
+    private static final int MAX_NUM_GENERATIONS = 50;
+    private static final int MAX_POPULATION_SIZE = 400;
+    private static final double SELECTION_SIZE_FACTOR = 0.6;
+    private static final double MUTATION_FACTOR = 0.25;
 
     private Initializer initializer = new Initializer(MAX_POPULATION_SIZE);
     private Selector selector = new Selector(SELECTION_SIZE_FACTOR, SelectionType.LINEAR_RANKING);
@@ -35,6 +35,7 @@ public class GeneticAlgorithm {
 
             population = replacer.replace(parents, offSpring);
 
+            System.out.println("Generation: " + generation + ", Population:  " + population.size());
             //Check if there is any solution better than any previous
             Solution bestOfNewPopulation = population.first();
             if (bestOfNewPopulation.getAbsoluteObjectiveValue() < best.getAbsoluteObjectiveValue()){

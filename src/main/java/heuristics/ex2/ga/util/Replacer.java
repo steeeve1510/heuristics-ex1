@@ -18,7 +18,7 @@ public class Replacer {
 
     public SortedSet<Solution> replace(SortedSet<Solution> parents, SortedSet<Solution> offspring) {
         SortedSet<Solution> newPopulation = new TreeSet<>(new SolutionComparator());
-//        newPopulation.addAll(parents);
+        newPopulation.addAll(parents);
 
         int counter = newPopulation.size();
         for (Solution child : offspring) {
