@@ -2,6 +2,7 @@ package heuristics.ex2.ga.util;
 
 import heuristics.ex1.dto.Graph;
 import heuristics.ex1.dto.Solution;
+import heuristics.ex2.ga.util.recombinator.EdgeLists;
 
 import java.util.*;
 
@@ -23,28 +24,29 @@ public class Recombinator {
     }
 
     private Solution edgeRecombinationCrossover(Solution father, Solution mother, Graph graph) {
-        Map<Integer, Set<Integer>> edgeLists = new HashMap<>();
-        addSolutionToEdgeLists(father, edgeLists);
-        addSolutionToEdgeLists(mother, edgeLists);
+        EdgeLists edgeLists = new EdgeLists();
+        edgeLists.addSolution(father);
+        edgeLists.addSolution(mother);
+        edgeLists.generateAppearanceList();
 
         List<Integer> cities = new LinkedList<>();
         long objectiveValue = 0;
 
         Integer city = father.getNodes().get(0);
         cities.add(city);
-        removeCityFromAllLists(city, edgeLists);
+        edgeLists.removeCityFromEdgeLists(city);
 
-        while (edgeLists.keySet().size() != 1) {
-            Set<Integer> edgeList = edgeLists.get(city);
+        while (edgeLists.getCities().size() != 1) {
+            Set<Integer> edgeList = edgeLists.getEdgeList(city);
             edgeLists.remove(city);
 
             Integer bestNeighbor = getBestNeighbor(city, edgeList, graph, objectiveValue);
             if (bestNeighbor == null) {
-                Integer[] remainingCities = edgeLists.keySet().toArray(new Integer[]{});
+                Integer[] remainingCities = edgeLists.getCities().toArray(new Integer[]{});
                 bestNeighbor = remainingCities[new Random().nextInt(remainingCities.length)];
             }
 
-            removeCityFromAllLists(bestNeighbor, edgeLists);
+            edgeLists.removeCityFromEdgeLists(bestNeighbor);
 
             cities.add(bestNeighbor);
             objectiveValue += graph.getWeight(city, bestNeighbor);
@@ -55,18 +57,6 @@ public class Recombinator {
         objectiveValue += graph.getWeight(city, cities.get(0));
 
         return new Solution(cities, objectiveValue);
-    }
-
-    private void addSolutionToEdgeLists(Solution solution, Map<Integer, Set<Integer>> edgeLists) {
-        for (Integer c : solution.getNodes()) {
-            Set<Integer> edgeList = edgeLists.get(c);
-            if (edgeList == null) {
-                edgeList = new HashSet<>();
-            }
-            edgeList.add(solution.getPredecessor(c));
-            edgeList.add(solution.getSuccessor(c));
-            edgeLists.put(c, edgeList);
-        }
     }
 
     private Integer getBestNeighbor(Integer city, Set<Integer> neighbors, Graph graph, long objectiveValueSoFar) {
@@ -105,9 +95,4 @@ public class Recombinator {
         return bestNeighbor;
     }
 
-    private void removeCityFromAllLists(Integer city, Map<Integer, Set<Integer>> edgeLists) {
-        for (Set<Integer> edgeList : edgeLists.values()) {
-            edgeList.remove(city);
-        }
-    }
 }

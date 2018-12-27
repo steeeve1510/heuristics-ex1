@@ -13,12 +13,16 @@ import java.util.TreeSet;
 public class Mutator {
 
     private double mutationFactor;
+    private int mutationsCounterFactor;
 
     /*
      * @param mutationFactor how many percent of the population should mutate. (0.0 - 1.0)
+     * @param mutationsPerSolutionFactor this factor defines how many mutations per solution are applies
+     *          (e.g. 90 = one mutation per 90 cities)
      */
-    public Mutator(double mutationFactor) {
+    public Mutator(double mutationFactor, int mutationsPerSolutionFactor) {
         this.mutationFactor = mutationFactor;
+        this.mutationsCounterFactor = mutationsPerSolutionFactor;
     }
 
     public SortedSet<Solution> mutate(SortedSet<Solution> population, Graph graph) {
@@ -48,8 +52,14 @@ public class Mutator {
     }
 
     private Solution reciprocalExchange(Solution solution, Graph graph) {
+        int size = solution.getSize();
+
         Neighborhood neighborhood = new ThreeOptNeighborhoodNew();
 
-        return neighborhood.get(solution, graph, StepType.RANDOM);
+        Solution mutated = solution;
+        for (int i = 0; i < size / mutationsCounterFactor + 1; i++) {
+            mutated = neighborhood.get(mutated, graph, StepType.RANDOM);
+        }
+        return mutated;
     }
 }

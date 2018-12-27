@@ -4,15 +4,15 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.ArrayUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Getter
 public class Solution {
 
     private List<Integer> nodes;
+    private Integer[] nodesAsArray;
+    private Map<Integer, Integer> indexLookUp = new HashMap<>();
 
     private long objectiveValue;
 
@@ -26,6 +26,12 @@ public class Solution {
 
     public Solution(List<Integer> nodes, long objectiveValue) {
         this.nodes = nodes;
+        this.nodesAsArray = nodes.toArray(new Integer[]{});
+        for (int i = 0; i < nodesAsArray.length; i++) {
+            int city = nodesAsArray[i];
+            indexLookUp.put(city, i);
+        }
+
         this.objectiveValue = objectiveValue;
     }
 
@@ -45,21 +51,21 @@ public class Solution {
     }
 
     public int getSuccessor(int node) {
-        int index = nodes.indexOf(node);
+        int index = indexLookUp.get(node);
         if (index < 0) {
             throw new IllegalArgumentException("Solution does not contain node " + node);
         }
         int indexOfSuccessor = (index+1) % nodes.size();
-        return nodes.get(indexOfSuccessor);
+        return nodesAsArray[indexOfSuccessor];
     }
 
     public int getPredecessor(int node) {
-        int index = nodes.indexOf(node);
+        int index = indexLookUp.get(node);
         if (index < 0) {
             throw new IllegalArgumentException("Solution does not contain node " + node);
         }
-        int indexOfSuccessor = Math.floorMod(index-1, nodes.size());
-        return nodes.get(indexOfSuccessor);
+        int indexOfPredecessor = Math.floorMod(index-1, nodes.size());
+        return nodesAsArray[indexOfPredecessor];
     }
 
     public List<Integer> getPart(int from, int to) {

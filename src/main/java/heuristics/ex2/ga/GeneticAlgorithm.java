@@ -13,11 +13,12 @@ public class GeneticAlgorithm {
     private static final int MAX_POPULATION_SIZE = 400;
     private static final double SELECTION_SIZE_FACTOR = 0.6;
     private static final double MUTATION_FACTOR = 0.25;
+    private static final int MUTATIONS_PER_SOLUTION_FACTOR = 90;
 
     private Initializer initializer = new Initializer(MAX_POPULATION_SIZE);
     private Selector selector = new Selector(SELECTION_SIZE_FACTOR, SelectionType.LINEAR_RANKING);
     private Recombinator recombinator = new Recombinator();
-    private Mutator mutator = new Mutator(MUTATION_FACTOR);
+    private Mutator mutator = new Mutator(MUTATION_FACTOR, MUTATIONS_PER_SOLUTION_FACTOR);
     private Replacer replacer = new Replacer(MAX_POPULATION_SIZE);
 
     public Solution solve(Graph graph) {

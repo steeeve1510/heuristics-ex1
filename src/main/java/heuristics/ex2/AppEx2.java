@@ -10,7 +10,7 @@ import java.io.File;
 
 public class AppEx2 {
 
-    private static String instance = "1000";
+    private static String instance = "0090";
 
     private static GeneticAlgorithm geneticAlgorithm = new GeneticAlgorithm();
 
