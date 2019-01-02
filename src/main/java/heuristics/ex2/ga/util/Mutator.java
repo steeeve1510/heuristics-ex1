@@ -43,7 +43,7 @@ public class Mutator {
         for (Solution solution : population) {
             double randomNumber = random.nextDouble();
             if (randomNumber < mutationFactor) {
-                solution = reciprocalExchange(solution, graph);
+                solution = inversion(solution, graph);
             }
             mutatedPopulation.add(solution);
         }
@@ -51,7 +51,7 @@ public class Mutator {
         return mutatedPopulation;
     }
 
-    private Solution reciprocalExchange(Solution solution, Graph graph) {
+    private Solution inversion(Solution solution, Graph graph) {
         int size = solution.getSize();
 
         Neighborhood neighborhood = new ThreeOptNeighborhoodNew();
