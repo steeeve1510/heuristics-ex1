@@ -10,7 +10,7 @@ import java.util.TreeSet;
 
 public class Initializer {
 
-    private ConstructionHeuristic construction = new RandomizedGreedySearch(5);
+    private ConstructionHeuristic construction = new RandomizedGreedySearch(1);
 
     private int populationSize;
 

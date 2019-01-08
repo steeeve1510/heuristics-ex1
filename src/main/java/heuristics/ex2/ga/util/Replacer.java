@@ -22,7 +22,7 @@ public class Replacer {
 
         int counter = newPopulation.size();
         for (Solution child : offspring) {
-            if (counter >= maxPopulationSize) {
+            if (counter >= maxPopulationSize * 1.5) {
                 break;
             }
             newPopulation.add(child);

@@ -9,17 +9,17 @@ import java.util.SortedSet;
 
 public class GeneticAlgorithm {
 
-    private static final int MAX_NUM_GENERATIONS = 50;
-    private static final int MAX_POPULATION_SIZE = 400;
-    private static final double SELECTION_SIZE_FACTOR = 0.6;
-    private static final double MUTATION_FACTOR = 0.25;
-    private static final int MUTATIONS_PER_SOLUTION_FACTOR = 90;
+    private static final int MAX_NUM_GENERATIONS = 100;
+    private static final int INIT_POPULATION_SIZE = 150;
+    private static final double CROSSOVER_FACTOR_OVER_POPULATION = 0.8;
+    private static final double MUTATION_FACTOR_ON_POPULATION = 0.1;
+    private static final int MUTATION_RATE = 40;
 
-    private Initializer initializer = new Initializer(MAX_POPULATION_SIZE);
-    private Selector selector = new Selector(SELECTION_SIZE_FACTOR, SelectionType.LINEAR_RANKING);
-    private Recombinator recombinator = new Recombinator();
-    private Mutator mutator = new Mutator(MUTATION_FACTOR, MUTATIONS_PER_SOLUTION_FACTOR);
-    private Replacer replacer = new Replacer(MAX_POPULATION_SIZE);
+    private Initializer initializer = new Initializer(INIT_POPULATION_SIZE);
+    private Selector selector = new Selector(CROSSOVER_FACTOR_OVER_POPULATION, SelectionType.LINEAR_RANKING);
+    private Recombinator recombinator = new Recombinator(INIT_POPULATION_SIZE);
+    private Mutator mutator = new Mutator(MUTATION_FACTOR_ON_POPULATION, MUTATION_RATE);
+    private Replacer replacer = new Replacer(INIT_POPULATION_SIZE);
 
     public Solution solve(Graph graph) {
         int generation = 0;

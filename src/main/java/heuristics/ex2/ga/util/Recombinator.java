@@ -8,6 +8,12 @@ import java.util.*;
 
 public class Recombinator {
 
+    private int initPopulationSize;
+
+    public Recombinator(int initPopulationSize) {
+        this.initPopulationSize = initPopulationSize;
+    }
+
     public SortedSet<Solution> recombine(SortedSet<Solution> parents, Graph graph) {
         SortedSet<Solution> newPopulation = new TreeSet<>(new SolutionComparator());
         for (Solution father : parents) {
@@ -19,6 +25,7 @@ public class Recombinator {
                 Solution offspring = edgeRecombinationCrossover(father, mother, graph);
                 newPopulation.add(offspring);
             }
+            newPopulation = limit(newPopulation, Math.round(initPopulationSize * 1.5));
         }
         return newPopulation;
     }
@@ -63,7 +70,7 @@ public class Recombinator {
         List<Integer> closestNeighbors = new ArrayList<>();
 
         long cheapestObjectiveValue = 0;
-        for(Integer neighbor : neighbors) {
+        for (Integer neighbor : neighbors) {
             int edge = graph.getWeight(city, neighbor);
 
             if (closestNeighbors.isEmpty()) {
@@ -95,4 +102,18 @@ public class Recombinator {
         return bestNeighbor;
     }
 
+    private SortedSet<Solution> limit(SortedSet<Solution> population, long limit) {
+        SortedSet<Solution> restricted = new TreeSet<>(new SolutionComparator());
+
+        long counter = 0;
+        for (Solution solution : population) {
+            if (counter >= limit) {
+                break;
+            }
+            restricted.add(solution);
+            counter++;
+        }
+
+        return restricted;
+    }
 }
