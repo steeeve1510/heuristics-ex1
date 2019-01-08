@@ -25,7 +25,7 @@ public class Recombinator {
                 Solution offspring = edgeRecombinationCrossover(father, mother, graph);
                 newPopulation.add(offspring);
             }
-            newPopulation = limit(newPopulation, Math.round(initPopulationSize * 1.5));
+            newPopulation = limit(newPopulation, initPopulationSize * 100);
         }
         return newPopulation;
     }

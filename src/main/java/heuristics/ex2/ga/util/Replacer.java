@@ -10,19 +10,19 @@ import java.util.TreeSet;
  */
 public class Replacer {
 
-    private int maxPopulationSize;
+    private int initPopulationSize;
 
-    public Replacer(int maxPopulationSize) {
-        this.maxPopulationSize = maxPopulationSize;
+    public Replacer(int initPopulationSize) {
+        this.initPopulationSize = initPopulationSize;
     }
 
     public SortedSet<Solution> replace(SortedSet<Solution> parents, SortedSet<Solution> offspring) {
         SortedSet<Solution> newPopulation = new TreeSet<>(new SolutionComparator());
-        newPopulation.addAll(parents);
+        newPopulation.addAll(limit(parents, 20));
 
         int counter = newPopulation.size();
         for (Solution child : offspring) {
-            if (counter >= maxPopulationSize * 1.5) {
+            if (counter >= initPopulationSize * 1.5) {
                 break;
             }
             newPopulation.add(child);
@@ -30,5 +30,20 @@ public class Replacer {
         }
 
         return newPopulation;
+    }
+
+    private SortedSet<Solution> limit(SortedSet<Solution> population, long limit) {
+        SortedSet<Solution> restricted = new TreeSet<>(new SolutionComparator());
+
+        long counter = 0;
+        for (Solution solution : population) {
+            if (counter >= limit) {
+                break;
+            }
+            restricted.add(solution);
+            counter++;
+        }
+
+        return restricted;
     }
 }
