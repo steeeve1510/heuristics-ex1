@@ -24,7 +24,7 @@ public class EvaluateBenchmark {
                 .flatMap(f -> read(f).stream())
                 .collect(Collectors.toList());
 
-        storeSubmissionFiles(entries, "sa");
+        storeSubmissionFiles(entries, "ga");
 //        createLatexStatistics(entries);
     }
 
@@ -218,7 +218,8 @@ public class EvaluateBenchmark {
 
 //        names.add("06 - vnd - new.csv");
 //        names.add("07 - grasp - new.csv");
-        names.add("08 - sa - new.csv");
+//        names.add("08 - sa - new.csv");
+        names.add("10 - ga.csv");
 
         return names.stream()
                 .map(n -> new File("benchmarks/" + n))
