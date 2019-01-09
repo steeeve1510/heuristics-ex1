@@ -9,10 +9,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class EvaluateBenchmark {
@@ -24,8 +22,8 @@ public class EvaluateBenchmark {
                 .flatMap(f -> read(f).stream())
                 .collect(Collectors.toList());
 
-        storeSubmissionFiles(entries, "ga");
-//        createLatexStatistics(entries);
+//        storeSubmissionFiles(entries, "ga");
+        createLatexStatistics(entries);
     }
 
     private static void createLatexStatistics(List<Entry> entries) throws FileNotFoundException {
@@ -60,21 +58,23 @@ public class EvaluateBenchmark {
                 int numberOfInfeasible = entriesForInstance.size()  - filteredEntriesForInstance.size();
 
                 if (filteredEntriesForInstance.size() > 0) {
-                    double meanObjectiveValue = filteredEntriesForInstance.stream()
-                            .mapToLong(Entry::getObjectiveValue)
-                            .average()
-                            .orElseThrow(() -> new RuntimeException("Dafuq"));
+                    double meanObjectiveValue = median(
+                            filteredEntriesForInstance.stream()
+                            .map(Entry::getObjectiveValue)
+                            .collect(Collectors.toList())
+                    );
                     double sdObjectiveValue = calculateSD(
                             filteredEntriesForInstance.stream()
                                     .map(Entry::getObjectiveValue)
                                     .collect(Collectors.toList())
                     );
 
-                    double meanTime = filteredEntriesForInstance.stream()
-                            .mapToLong(Entry::getTime)
+                    double meanTime = median(
+                            filteredEntriesForInstance.stream()
+                            .map(Entry::getTime)
                             .filter(n -> n>0)
-                            .average()
-                            .orElse(-1);
+                            .collect(Collectors.toList())
+                    );
                     double sdTime = calculateSD(
                             filteredEntriesForInstance.stream()
                                     .map(Entry::getTime)
@@ -128,6 +128,25 @@ public class EvaluateBenchmark {
             }
 
             System.out.println(line);
+        }
+    }
+
+    private static double median(List<Long> values) {
+        if (values.size() % 2 == 1) {
+            return values.stream()
+                    .sorted()
+                    .skip(Math.floorDiv(values.size(), 2))
+                    .limit(1)
+                    .findFirst()
+                    .orElse(-1L);
+        } else {
+            return values.stream()
+                    .sorted()
+                    .skip(Math.floorDiv(values.size(), 2) - 1)
+                    .limit(2)
+                    .mapToLong(l -> l)
+                    .average()
+                    .orElse(-1);
         }
     }
 
