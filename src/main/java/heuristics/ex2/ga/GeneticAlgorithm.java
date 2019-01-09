@@ -19,10 +19,12 @@ public class GeneticAlgorithm {
     private Selector selector = new Selector(CROSSOVER_FACTOR_OVER_POPULATION, SelectionType.LINEAR_RANKING);
     private Recombinator recombinator = new Recombinator(INIT_POPULATION_SIZE);
     private Mutator mutator = new Mutator(MUTATION_FACTOR_ON_POPULATION, MUTATION_RATE);
+    private HybridMutator hybridMutator = new HybridMutator();
     private Replacer replacer = new Replacer(INIT_POPULATION_SIZE);
 
     public Solution solve(Graph graph) {
         int generation = 0;
+        int unsuccesful = 0;
 
         SortedSet<Solution> population = initializer.initialize(graph);
 
@@ -42,9 +44,23 @@ public class GeneticAlgorithm {
             if (bestOfNewPopulation.getAbsoluteObjectiveValue() < best.getAbsoluteObjectiveValue()){
                 System.out.println("Update best: " + bestOfNewPopulation.getAbsoluteObjectiveValue());
                 best = bestOfNewPopulation;
+                unsuccesful = 0;
+            } else {
+                unsuccesful++;
+                if (unsuccesful > 5) {
+                    //TODO (or not) experiment with higher/¿lower? trigger
+                    System.out.println("Running Local Search after " + unsuccesful +" generations");
+                    population = hybridMutator.mutate(population, graph);
+                }
+                bestOfNewPopulation = population.first();
+                if (bestOfNewPopulation.getAbsoluteObjectiveValue() < best.getAbsoluteObjectiveValue()) {
+                    System.out.println("Update best: " + bestOfNewPopulation.getAbsoluteObjectiveValue());
+                    best = bestOfNewPopulation;
+                    unsuccesful = 0;
+                }
             }
-        }
 
+        }
         return best;
     }
 }
