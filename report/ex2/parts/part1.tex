@@ -1,5 +1,27 @@
 \section*{1. Genetic Algorithm}
 
+For the seconds programing exercise we chose to implement a genetic algorithm (GA). We configured the GA as follows:
+\begin{itemize}
+	\item Each run has exactly 100 generations
+	\item We started with a population of 150. During the run a maximal population of 225 is allowed.
+	\item We didn't chose any special genotype. The solutions are represented as in the exercise before. The solution is represented as a list of cities.
+	\item We didn't chose any special fitness function. The fitness is the objective value. So the fitness has a reverse interpretation. A lower fitness value is better than a higher one. Therefore we don't need any evaluation step, as presented in the slides.
+	\item The initial solutions are generated completely random.
+	\item In each generation the best 20 parents will survive for the next generation. The remaining 130 solutions are the best of the new generation.
+\end{itemize}
+
+
+\subsection*{Selection}
+We chose a linear ranking for our selection algorithm. As parameter we chose $\alpha = 2$ and $\beta = 0$.
+
+\subsection*{Recombination}
+We used the edge recombination crossover algorithm as presented in the slides for the recombination step. We did implement to presented optimization as well. If an edge is used in both parents it is double as likely to choose that edge. $0.8\%$ of a generation will be used for recombination.
+
+\subsection*{Mutation}
+As mutation we chose a random 3-opt step. To make the mutation on big instances as effective as on the small instances, we did one step for every 40 cities. $0.1\%$ of a generation will be mutated.
+
+\subsection*{Results}
+For the benchmark we did 10 runs on each of the instances. Unfortunately our algorithm performed really poor, as shown in table~\ref{tab:ga-results}.
 
 \begin{table}[H]
 	\centering
@@ -32,4 +54,5 @@
 		\end{tabular}
 	}
 	\caption{Genetic algorithm - results}
+	\label{tab:ga-results}
 \end{table}
