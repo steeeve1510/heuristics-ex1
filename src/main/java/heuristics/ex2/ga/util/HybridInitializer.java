@@ -6,6 +6,7 @@ import heuristics.ex1.dto.Graph;
 import heuristics.ex1.dto.Solution;
 import heuristics.ex1.localsearch.LocalSearch;
 import heuristics.ex1.localsearch.neighborhood.StepType;
+import heuristics.ex1.localsearch.neighborhood.ThreeOptNeighborhoodNew;
 import heuristics.ex1.localsearch.neighborhood.TwoOptNeighborhood;
 
 import java.util.SortedSet;
@@ -25,8 +26,8 @@ public class HybridInitializer {
 
     public SortedSet<Solution> initialize(Graph graph) {
         SortedSet<Solution> population = new TreeSet<>(new SolutionComparator());
-        LocalSearch localSearch = new LocalSearch(new TwoOptNeighborhood(), StepType.NEXT_IMPROVEMENT,
-                                    timeLimitSeconds / populationSize);
+        LocalSearch localSearch = new LocalSearch(new ThreeOptNeighborhoodNew(), StepType.NEXT_IMPROVEMENT,
+                (int) Math.ceil(timeLimitSeconds / populationSize));
 
         for (int i = 0; i < populationSize; i++) {
             Solution solution = construction.solve(graph);

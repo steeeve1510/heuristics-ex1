@@ -11,7 +11,7 @@ import java.io.File;
 
 public class AppEx2 {
 
-    private static String instance = "0100";
+    private static String instance = "0500";
 
     private static GeneticAlgorithm geneticAlgorithm = new GeneticAlgorithm();
     private static HybridAlgorithm hybridAlgorithm = new HybridAlgorithm();

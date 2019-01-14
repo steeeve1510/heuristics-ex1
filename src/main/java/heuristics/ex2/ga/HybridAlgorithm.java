@@ -1,11 +1,13 @@
 package heuristics.ex2.ga;
 
 import com.sun.istack.internal.FinalArrayList;
+import heuristics.ex1.AppEx1;
 import heuristics.ex1.dto.Graph;
 import heuristics.ex1.dto.Solution;
 import heuristics.ex1.localsearch.LocalSearch;
 import heuristics.ex1.localsearch.neighborhood.StepType;
 import heuristics.ex1.localsearch.neighborhood.ThreeOptNeighborhoodNew;
+import heuristics.ex1.sa.SimulatedAnnealing;
 import heuristics.ex2.ga.util.*;
 
 import java.util.SortedSet;
@@ -13,7 +15,7 @@ import java.util.SortedSet;
 public class HybridAlgorithm {
 
     private static final int MAX_NUM_GENERATIONS = 100;
-    private static final int INIT_POPULATION_SIZE = 150;
+    private static final int INIT_POPULATION_SIZE = 25;
     private static final double CROSSOVER_FACTOR_OVER_POPULATION = 0.8;
     private static final double MUTATION_FACTOR_ON_POPULATION = 0.1;
     private static final int MUTATION_RATE = 40;
@@ -33,7 +35,7 @@ public class HybridAlgorithm {
         SortedSet<Solution> population = hybridInitializer.initialize(graph);
 
         Solution best = population.first();
-        System.out.println("Initial best: " + best.getAbsoluteObjectiveValue());
+        //System.out.println("Initial best: " + best.getAbsoluteObjectiveValue());
 
         while (generation < MAX_NUM_GENERATIONS) {
             generation++;
@@ -43,17 +45,17 @@ public class HybridAlgorithm {
 
             population = replacer.replace(parents, offSpring);
 
-            System.out.println("Generation: " + generation + ", Population:  " + population.size());
+            //System.out.println("Generation: " + generation + ", Population:  " + population.size());
             //Check if there is any solution better than any previous
             Solution bestOfNewPopulation = population.first();
             if (bestOfNewPopulation.getAbsoluteObjectiveValue() < best.getAbsoluteObjectiveValue()){
-                System.out.println("Update best: " + bestOfNewPopulation.getAbsoluteObjectiveValue());
+                //System.out.println("Update best: " + bestOfNewPopulation.getAbsoluteObjectiveValue());
                 best = bestOfNewPopulation;
             }
         }
 
-        LocalSearch finalImprover = new LocalSearch(new ThreeOptNeighborhoodNew(), StepType.NEXT_IMPROVEMENT, IMPROVEMENT_TIME_SECONDS);
-        best = finalImprover.improve(best, graph);
+        SimulatedAnnealing sa = new SimulatedAnnealing(IMPROVEMENT_TIME_SECONDS);
+        best = sa.solve(graph, best);
 
         return best;
     }

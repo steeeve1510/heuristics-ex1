@@ -1,2 +1,57 @@
+\pagebreak
 \section*{2. Hybrid Approach}
+For the second part of this assignment, we constructed a hybrid algorithm that used our previously implemented local search, simulated annealing and genetic algorithm:
+\begin{enumerate}
+	\item Our \textit{hybrid initializer} generates the initial population in two steps:
+	\begin{enumerate}
+		\item[1.1] Uses \textit{randomized greedy search} as construction heuristic to generate the elements. 
+		\item[1.2] For each element of the population we run local search, using a 3-Opt neighbourhood and a \textit{next-improvement} step function. We limit this improvement phase of the initialization to 180 seconds for the whole population.
+	\end{enumerate}
+	\item Run the genetic algorithm with the same parameters as the first part.
+	\item Run simulated annealing to improve the best solution returned by the genetic algorithm. Again, we limit this final improvement phase to 180 seconds.
+\end{enumerate}
 
+
+\subsection*{Results}
+For the benchmark we did 5 runs on each of the instances. Unfortunately our algorithm performed really poor, as shown in table~\ref{tab:ha-results}. To make the runs shorter, we lowered the population size of the instances 700 to 2000 to 60 elements, and the instances 2500 and 3000 to 25 elements.
+
+\begin{table}[H]
+	\centering
+	\resizebox{\textwidth}{!}{
+		\begin{tabular}{|| c | c | c | c | c | c | c | c ||} 
+			\hline
+			Instance & Best-Value & Infeasible & Objective Median & Objective SD & Time Median & Time SD & \# feasible solution \\
+			\hline\hline
+			0010 & 105 & false & 139,0 & 25,5 & 12921,0ms & 836,7ms & 5/5 \\
+			0015 & 271 & false & 282,0 & 36,0 & 22125,0ms & 834,1ms & 5/5 \\
+			0020 & 297 & false & 297,0 & 61,2 & 30812,0ms & 779,2ms & 5/5 \\
+			0025 & 375 & false & 441,0 & 72,8 & 37250,0ms & 746,1ms & 5/5 \\
+			0030 & 477 & false & 523,0 & 65,4 & 47515,0ms & 1320,2ms & 5/5 \\
+			0040 & 469 & false & 514,0 & 38,1 & 61312,0ms & 1632,3ms & 5/5 \\
+			0050 & 762 & false & 764,0 & 32,3 & 75500,0ms & 3840,6ms & 5/5 \\
+			0060 & 1000 & false & 1151,0 & 80,0 & 106609,0ms & 5792,1ms & 5/5 \\
+			0070 & 1238 & false & 1311,0 & 121,9 & 128578,0ms & 3465,7ms & 5/5 \\
+			0080 & 1369 & false & 1642,0 & 123,1 & 153562,0ms & 5028,0ms & 5/5 \\
+			0090 & 1477 & false & 1606,0 & 161,8 & 184484,0ms & 3423,1ms & 5/5 \\
+			0100 & 1417 & false & 1735,0 & 229,3 & 234578,0ms & 6709,0ms & 5/5 \\
+			0150 & 3497 & false & 3582,0 & 78,8 & 454125,0ms & 13644,8ms & 5/5 \\
+			0200 & 4667 & false & 95039,0 & 205930,8 & timeout & timeout & 5/5 \\
+			0250 & 10593876 & false & 10593876,0 & 0,0 & timeout & timeout & 1/5 \\
+			0300 & 103896578 & false & 103896578,0 & 0,0 & timeout & timeout & 1/5 \\
+			0400 & 1618719895 & true & - & - & - & - & 0/5 \\
+			0500 & 8824989250 & true & - & - & - & - & 0/5 \\
+			0600 & 19421307329 & true & - & - & - & - & 0/5 \\
+			0700 & 48555982126 & true & - & - & - & - & 0/5 \\
+			0800 & 72059397385 & true & - & - & - & - & 0/5 \\
+			0900 & 98729904534 & true & - & - & - & - & 0/5 \\
+			1000 & 99716184771 & true & - & - & - & - & 0/5 \\
+			1500 & 90127119998 & true & - & - & - & - & 0/5 \\
+			2000 & 18442207532 & true & - & - & - & - & 0/5 \\
+			2500 & 378942773257 & true & - & - & - & - & 0/5 \\
+			3000 & 788515088588 & true & - & - & - & - & 0/5 \\
+			\hline
+		\end{tabular}
+	}
+	\caption{Hybrid algorithm - results}
+	\label{tab:ha-results}
+\end{table}
