@@ -11,6 +11,11 @@ For the second part of this assignment, we constructed a hybrid algorithm that u
 	\item Run simulated annealing to improve the best solution returned by the genetic algorithm. Again, we limit this final improvement phase to 180 seconds.
 \end{enumerate}
 
+The reason we chose local search for the initializer was because we wanted a simple algorithm that made simple changes reasonably fast to slightly improve the initial population. The neighbourhood 3-opt was chosen over 2-opt because using 2-opt the search would finish earlier because it was unable to find further improvements.
+
+Our first choice for the final improvement was to use local search, but after a few experiments we observed that the algorithm finished earlier unable to find an improvement. We decided to use simulated annealing because it returned better results in those experiments.
+
+With this final improvement phase our objective is to improve the final solution, since the genetic algorithm might be too coarse to find good improvements when the search needs to be intensified rather than diversified.
 
 \subsection*{Results}
 For the benchmark we did 5 runs on each of the instances. Unfortunately our algorithm performed really poor, as shown in table~\ref{tab:ha-results}. To make the runs shorter, we lowered the population size of the instances 700 to 2000 to 60 elements, and the instances 2500 and 3000 to 25 elements.
@@ -35,20 +40,33 @@ For the benchmark we did 5 runs on each of the instances. Unfortunately our algo
 			0090 & 1477 & false & 1606,0 & 161,8 & 184484,0ms & 3423,1ms & 5/5 \\
 			0100 & 1417 & false & 1735,0 & 229,3 & 234578,0ms & 6709,0ms & 5/5 \\
 			0150 & 3497 & false & 3582,0 & 78,8 & 454125,0ms & 13644,8ms & 5/5 \\
-			0200 & 4667 & false & 95039,0 & 205930,8 & timeout & timeout & 5/5 \\
-			0250 & 10593876 & false & 10593876,0 & 0,0 & timeout & timeout & 1/5 \\
-			0300 & 103896578 & false & 103896578,0 & 0,0 & timeout & timeout & 1/5 \\
-			0400 & 1618719895 & true & - & - & - & - & 0/5 \\
-			0500 & 8824989250 & true & - & - & - & - & 0/5 \\
-			0600 & 19421307329 & true & - & - & - & - & 0/5 \\
-			0700 & 48555982126 & true & - & - & - & - & 0/5 \\
-			0800 & 72059397385 & true & - & - & - & - & 0/5 \\
-			0900 & 98729904534 & true & - & - & - & - & 0/5 \\
-			1000 & 99716184771 & true & - & - & - & - & 0/5 \\
-			1500 & 90127119998 & true & - & - & - & - & 0/5 \\
-			2000 & 18442207532 & true & - & - & - & - & 0/5 \\
-			2500 & 378942773257 & true & - & - & - & - & 0/5 \\
-			3000 & 788515088588 & true & - & - & - & - & 0/5 \\
+			0200 & 4667 & false & 95039,0 & 205930,8 & 634977,6ms & 16618 & 5/5 \\
+			0250 & 10593876 & false & 10593876,0 & 791436662
+			 & 668408,8ms & 13396 & 1/5 \\
+			0300 & 103896578 & false & 103896578,0 & 1422762856
+			 & 760015,2ms & 18860 & 1/5 \\
+			0400 & 1618719895 & true & 4300344688& 2634634467
+			 & 976877,6ms& 19656 & 0/5 \\
+			0500 & 8824989250 & true & 14495243186 & 3145118913
+			 & 1148743,4ms& 7992 & 0/5 \\
+			0600 & 19421307329 & true & 22039334128& 1172726149
+			 & 1367918,4ms& 9759 & 0/5 \\
+			0700 & 48555982126 & true & 54860324363 & 7643687768
+			 & 644561,8ms& 40821 & 0/5 \\
+			0800 & 72059397385 & true & 75684731963 & 2863960119
+			 & 722068,2ms& 72692 & 0/5 \\
+			0900 & 98729904534 & true & 102706408627& 6815695245
+			 & 853921,4ms& 42352 & 0/5 \\
+			1000 & 99716184771 & true & 122210388515 & 12605535512
+			 & 928709ms& 47793 & 0/5 \\
+			1500 & 90127119998 & true & 92037474263 & 1788517506
+			 & 1588515ms& 162213 & 0/5 \\
+			2000 & 18442207532 & true & 19431823077 & 515047881
+			 &2860974,4ms& 54025 & 0/5 \\
+			2500 & 378942773257 & true & 383976521835 & 12698747288
+			 & 3467262,2ms& 37964 & 0/5 \\
+			3000 & 788515088588 & true & 798180628873 & 17710565130
+			 & 5697824,6ms& 262421 & 0/5 \\
 			\hline
 		\end{tabular}
 	}
